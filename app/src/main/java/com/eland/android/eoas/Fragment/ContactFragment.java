@@ -2,17 +2,30 @@ package com.eland.android.eoas.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.eland.android.eoas.Activity.SearchActivity;
 import com.eland.android.eoas.Adapt.ContactAdapt;
+import com.eland.android.eoas.Model.Constant;
 import com.eland.android.eoas.Model.LoginInfo;
 import com.eland.android.eoas.R;
+import com.eland.android.eoas.Service.ContactService;
+import com.eland.android.eoas.Util.CacheInfoUtil;
+import com.eland.android.eoas.Util.SharedReferenceHelper;
+import com.eland.android.eoas.Util.ToastUtil;
 import com.eland.android.eoas.Views.SwipeRefreshView.MaterialRefreshLayout;
 import com.eland.android.eoas.Views.SwipeRefreshView.MaterialRefreshListener;
 import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
@@ -27,9 +40,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by elandmac on 15/12/14.
+ * Created by liu.wenbin on 15/12/14.
  */
-public class ContactFragment extends Fragment {
+public class ContactFragment extends Fragment implements ContactService.IOnSearchContactListener{
 
     @Bind(R.id.listView)
     ListView listView;
@@ -40,6 +53,15 @@ public class ContactFragment extends Fragment {
     List<LoginInfo> mLsit;
     private ContactAdapt mAdapt;
     private ImageLoader imageLoader;
+    String userId;
+    Toolbar toolbar;
+
+    private ContactService contactService;
+    private REFRESH_TYPE refreshType = REFRESH_TYPE.RERESH;
+
+    public enum REFRESH_TYPE {
+        RERESH, LOAD
+    }
 
     public ContactFragment() {
     }
@@ -62,6 +84,9 @@ public class ContactFragment extends Fragment {
 
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
+        contactService = new ContactService();
+        userId = SharedReferenceHelper.getInstance(context).getValue(Constant.LOGINID);
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
         initListener();
 
@@ -75,12 +100,25 @@ public class ContactFragment extends Fragment {
 
             @Override
             public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+                refreshType = REFRESH_TYPE.RERESH;
+                refresh.finishRefreshLoadMore();
 
+                getData();
             }
 
             @Override
             public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
                 super.onRefreshLoadMore(materialRefreshLayout);
+                refreshType = REFRESH_TYPE.LOAD;
+                refresh.finishRefresh();
+
+                new Handler().postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        refresh.finishRefreshLoadMore();
+                    }
+                }, 3000);
             }
 
             @Override
@@ -93,15 +131,12 @@ public class ContactFragment extends Fragment {
 
     private void initAdapter() {
         mLsit = new ArrayList<>();
-        LoginInfo dto = null;
 
-        for(int i = 0; i < 100; i++) {
-            dto = new LoginInfo();
-            dto.userName = "系统管理员" + i;
-            dto.email = "sysadmin@eland.co.kr";
-            dto.cellNo = "15110188722";
-            dto.url = "http://182.92.65.253:30001/Eland.EOAS/images/liuwenbin.jpg";
-            mLsit.add(dto);
+        if(CacheInfoUtil.loadContact(context).size() > 0) {
+            mLsit = CacheInfoUtil.loadContact(context);
+        }
+        else {
+            getData();
         }
 
         mAdapt = new ContactAdapt(context, mLsit, imageLoader) ;
@@ -111,9 +146,54 @@ public class ContactFragment extends Fragment {
         listView.setAdapter(animAdapter);
     }
 
+
+    private void getData() {
+        contactService.searchContact(userId, this);
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.toolbar_menu,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.ab_search) {
+            Intent intent = new Intent(getActivity(), SearchActivity.class);
+            startActivity(intent);
+
+            return  true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSearchSuccess(ArrayList<LoginInfo> list) {
+        if(list != null && list.get(list.size() - 1) != null) {
+            //把数据加入缓存
+            CacheInfoUtil.saveContact(context, list);
+
+            mLsit.clear();
+            mLsit.addAll(list);
+            mAdapt.setList(mLsit);
+            mAdapt.notifyDataSetChanged();
+
+            refresh.finishRefresh();
+        }
+    }
+
+    @Override
+    public void onSearchFailure(int code, String msg) {
+        ToastUtil.showToast(context, msg, Toast.LENGTH_LONG);
+        refresh.finishRefresh();
     }
 }

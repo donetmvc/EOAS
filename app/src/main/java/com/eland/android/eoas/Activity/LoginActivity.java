@@ -17,16 +17,21 @@ import com.eland.android.eoas.Util.ProgressUtil;
 import com.eland.android.eoas.Util.SharedReferenceHelper;
 import com.eland.android.eoas.Util.ToastUtil;
 import com.eland.android.eoas.Views.EditTextView;
+import com.pgyersdk.javabean.AppBean;
+import com.pgyersdk.update.PgyUpdateManager;
+import com.pgyersdk.update.UpdateManagerListener;
 import com.rey.material.widget.Button;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.drakeet.materialdialog.MaterialDialog;
 
 /**
  * Created by liu.wenbin on 15/11/10.
  */
-public class LoginActivity extends AppCompatActivity implements LoginService.ISignInListener{
+public class LoginActivity extends AppCompatActivity implements
+        LoginService.ISignInListener, ProgressUtil.IOnDialogConfirmListener{
 
     @Bind(R.id.edit_username)
     EditTextView editUsername;
@@ -42,16 +47,21 @@ public class LoginActivity extends AppCompatActivity implements LoginService.ISi
     private String loginId,password = "";
     private int loginFailCount = 0;
 
+    private UpdateManagerListener updateManagerListener;
+    private String downUri;
+    private ProgressUtil dialogUtil;
+    private MaterialDialog updateDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         context = this;
-
         ButterKnife.bind(this);
 
         initActivity();
+        initUpdate();
     }
 
     @OnClick(R.id.btn_login)
@@ -68,6 +78,31 @@ public class LoginActivity extends AppCompatActivity implements LoginService.ISi
         loginService = new LoginService(context);
         loginService.setOnSignInListener(this);
         telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+
+        dialogUtil = new ProgressUtil();
+        dialogUtil.setOnDialogConfirmListener(this);
+    }
+
+    private void initUpdate() {
+        updateManagerListener = new UpdateManagerListener() {
+            @Override
+            public void onNoUpdateAvailable() {
+
+            }
+
+            @Override
+            public void onUpdateAvailable(String result) {
+                AppBean appBean = getAppBeanFromString(result);
+                String message = appBean.getReleaseNote();
+                downUri = appBean.getDownloadURL();
+
+                updateDialog = dialogUtil.showDialogUpdate(message, getResources().getString(R.string.hasupdate), context);
+                updateDialog.show();
+            }
+        };
+
+        //检测更新
+        PgyUpdateManager.register(this, updateManagerListener);
     }
 
     private Boolean invalidateInput() {
@@ -149,5 +184,11 @@ public class LoginActivity extends AppCompatActivity implements LoginService.ISi
             ConsoleUtil.i(TAG, "--------try login again------------");
             loginService.signIn(loginId, password, "", telephonyManager.getDeviceId());
         }
+    }
+
+    @Override
+    public void OnDialogConfirmListener() {
+        updateDialog.dismiss();
+        updateManagerListener.startDownloadTask(LoginActivity.this, downUri);
     }
 }

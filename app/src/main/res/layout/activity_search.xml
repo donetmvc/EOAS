@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".Activity.SearchActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/searchtoolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp">
+                <com.rey.material.widget.EditText
+                    android:id="@+id/edit_searchKey"
+                    style="@style/Material.Widget.EditText.Light"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:inputType="text"
+                    android:hint="输入姓名或者ID(liu.wenbin)"
+                    android:singleLine="true"
+                    android:textColorHint="@color/md_white_1000"
+                    android:textColor="#ffffff"
+                    app:et_dividerColor="@color/md_white_1000"
+                    app:et_labelEnable="false"
+                    android:textSize="16dp"
+                    android:focusable="true"
+                    android:textCursorDrawable="@null"
+                    android:text=""
+                    android:layout_gravity="bottom" />
+            </LinearLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/search_main" />
+
+</android.support.design.widget.CoordinatorLayout>

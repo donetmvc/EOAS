@@ -1,9 +1,11 @@
 package com.eland.android.eoas.Model;
 
+import java.io.Serializable;
+
 /**
- * Created by elandmac on 15/11/27.
+ * Created by liu.wenbin on 15/11/27.
  */
-public class LoginInfo {
+public class LoginInfo implements Serializable {
 
     public String userId;
     public String password;

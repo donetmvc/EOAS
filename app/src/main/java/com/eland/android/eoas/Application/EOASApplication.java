@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 
 import com.eland.android.eoas.Util.ActivityManager;
+import com.pgyersdk.crash.PgyCrashManager;
 
 
 /**
@@ -31,17 +32,7 @@ public class EOASApplication extends Application {
         super.onCreate();
 
         //蒲公英捕捉crash
-//        PgyCrashManager.register(this);
-//
-//        ConsoleUtil.i(TAG, "I am started!!");
-//
-//        PushConfiguration config = new PushConfiguration(this.getApplicationContext());
-//        if(config != null && config.getCrashLog()) {
-//            CrashHandler crashHandler = CrashHandler.getInstance();
-//            crashHandler.init(this);
-//        }
-//
-//        ServiceManager.getInstance(this).startService();
+        PgyCrashManager.register(this);
     }
 
     public void addActivity(Activity ac){

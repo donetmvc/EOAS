@@ -44,4 +44,6 @@ dependencies {
     compile 'com.victor:lib:1.0.1'
     compile files('libs/listviewanimations-2.6.0.jar')
     compile files('libs/nineoldandroids-2.4.0.jar')
+    compile files('libs/pgyer_sdk_2.2.2.jar')
+    compile 'me.drakeet.materialdialog:library:1.2.2'
 }

@@ -14,8 +14,8 @@
 
         <com.victor.loading.rotate.RotateLoading
             android:id="@+id/rotateloading"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             app:loading_width="5dp"
             app:loading_color="@color/md_red_500"
             android:layout_centerInParent="true"

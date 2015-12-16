@@ -28,6 +28,8 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <!--发短信-->
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <!-- 允许程序录制音频 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
 
     <application
@@ -39,6 +41,11 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="d22063f1bb48ca40901097e6a1c7d3cf">
+        </meta-data>
+
+        <meta-data
+            android:name="PGYER_APPID"
+            android:value="ce9cd6d5807086878b038fb57983347c" >
         </meta-data>
 
         <activity
@@ -62,6 +69,11 @@
             android:theme="@style/NoActionBarTheme"
             android:windowSoftInputMode="stateHidden|adjustResize" >
 
+        </activity>
+
+        <activity android:name=".Activity.SearchActivity"
+            android:theme="@style/NoActionBarTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan|adjustResize" >
         </activity>
 
         <service android:name="com.amap.api.location.APSService"></service>

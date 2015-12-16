@@ -1,5 +1,6 @@
 package com.eland.android.eoas.Activity;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,17 +20,23 @@ import com.eland.android.eoas.Application.EOASApplication;
 import com.eland.android.eoas.Fragment.DrawerFragment;
 import com.eland.android.eoas.Fragment.MainFragment;
 import com.eland.android.eoas.R;
+import com.eland.android.eoas.Util.ProgressUtil;
 import com.eland.android.eoas.Util.ToastUtil;
+import com.pgyersdk.javabean.AppBean;
+import com.pgyersdk.update.PgyUpdateManager;
+import com.pgyersdk.update.UpdateManagerListener;
 
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import me.drakeet.materialdialog.MaterialDialog;
+
 
 /**
  * Created by liu.wenbin on 15/11/10.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ProgressUtil.IOnDialogConfirmListener{
 
     private String TAG = "EOAS";
     private Boolean isExit = false;
@@ -55,16 +62,25 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private boolean drawerStatus;
 
+    private UpdateManagerListener updateManagerListener;
+    private String downUri;
+    private ProgressUtil dialogUtil;
+    private MaterialDialog updateDialog;
+    private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
         fragmentManager = getSupportFragmentManager();
-
         EOASApplication.getInstance().addActivity(this);
 
+        context = this;
+
         initDrawer();
+        initActivity();
+        initUpdate();
         setMainPage(MAIN_FRAGMENT);
     }
 
@@ -103,6 +119,33 @@ public class MainActivity extends AppCompatActivity {
         mActionBarDrawerToggle.syncState();
         mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
         setmDrawerLayout(mDrawerLayout);
+    }
+
+    private void initActivity() {
+        dialogUtil = new ProgressUtil();
+        dialogUtil.setOnDialogConfirmListener(this);
+    }
+
+    private void initUpdate() {
+        updateManagerListener = new UpdateManagerListener() {
+            @Override
+            public void onNoUpdateAvailable() {
+
+            }
+
+            @Override
+            public void onUpdateAvailable(String result) {
+                AppBean appBean = getAppBeanFromString(result);
+                String message = appBean.getReleaseNote();
+                downUri = appBean.getDownloadURL();
+
+                updateDialog = dialogUtil.showDialogUpdate(message, getResources().getString(R.string.hasupdate), context);
+                updateDialog.show();
+            }
+        };
+
+        //检测更新
+        PgyUpdateManager.register(this, updateManagerListener);
     }
 
     /*
@@ -176,5 +219,11 @@ public class MainActivity extends AppCompatActivity {
             EOASApplication.getInstance().existApp();
             finish();
         }
+    }
+
+    @Override
+    public void OnDialogConfirmListener() {
+        updateDialog.dismiss();
+        updateManagerListener.startDownloadTask(MainActivity.this, downUri);
     }
 }

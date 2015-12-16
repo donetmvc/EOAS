@@ -31,7 +31,6 @@ public class LoginService {
 
     public void signIn(String loginId, String password, String username, String imei) {
         String uri = "api/Login";
-        StringEntity stringEntity = null;
 
         RequestParams params = new RequestParams();
         params.put("userId", loginId);
@@ -85,8 +84,6 @@ public class LoginService {
 
             }
         });
-
-
     }
 
     public void setOnSignInListener(ISignInListener isignInListener) {

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.eland.android.eoas.Fragment.ContactFragment">
+    <item
+        android:id="@+id/ab_search"
+        android:title="输入姓名或ID"
+        android:icon="@mipmap/icon_search"
+        app:showAsAction="ifRoom" />
+</menu>

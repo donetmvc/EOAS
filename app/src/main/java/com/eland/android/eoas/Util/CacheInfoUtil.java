@@ -1,8 +1,10 @@
 package com.eland.android.eoas.Util;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.eland.android.eoas.Model.Constant;
+import com.eland.android.eoas.Model.LoginInfo;
 import com.eland.android.eoas.Model.RegAutoInfo;
 
 import java.io.File;
@@ -19,8 +21,19 @@ public class CacheInfoUtil {
 
     private static final String TAG = "EOAS";
 
+    //自动出勤与否缓存
     public static void saveIsRegAuto(Context context, ArrayList<RegAutoInfo> data) {
         new DataCache<RegAutoInfo>().saveGlobal(context, data, Constant.EOAS_REGAUTO);
+    }
+
+    //联系人缓存
+    public static void saveContact(Context context, ArrayList<LoginInfo> data) {
+        new DataCache<LoginInfo>().saveGlobal(context, data, Constant.EOAS_CONTACT);
+    }
+
+    //读取联系人
+    public static ArrayList<LoginInfo> loadContact(Context context) {
+        return new DataCache<LoginInfo>().loadGlobal(context, Constant.EOAS_CONTACT);
     }
 
     //判断是否自动设置出勤

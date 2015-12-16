@@ -25,6 +25,7 @@
         <!--控件switch,checkbox,radio激活状态和非激活状态颜色-->
         <item name="colorControlNormal">@color/colorControlNormal</item>
         <item name="colorControlActivated">@color/md_red_500</item>
+        <item name="colorButtonNormal">@color/md_white_1000</item>
         <item name="colorSwitchThumbNormal">@color/colorSwitchThumbNormal</item>
     </style>
 
@@ -39,7 +40,8 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:background">@color/md_red_500</item>
     </style>
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
+    </style>
 
     <!--不带背景框的dialog-->
     <style name="CustomDialog" parent="android:style/Theme.Dialog">

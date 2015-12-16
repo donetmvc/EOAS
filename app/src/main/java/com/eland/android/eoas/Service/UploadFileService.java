@@ -13,7 +13,7 @@ import java.io.FileNotFoundException;
 import cz.msebera.android.httpclient.Header;
 
 /**
- * Created by elandmac on 15/12/8.
+ * Created by liu.wenbin on 15/12/8.
  */
 public class UploadFileService {
 

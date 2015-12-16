@@ -16,6 +16,7 @@ public class Constant {
     public static final String REG_AUTO = "REG_AUTO";
     public static final String EOAS_CACHE = "EOAS_CACHE";
     public static final String EOAS_REGAUTO = "EOAS_REGAUTO";
+    public static final String EOAS_CONTACT = "EOAS_CONTACT";
     public static final String LOGINRESPONE = "LOGINRESPONE";
     public static final String EMPDI = "EMPID";
     public static final String SHOPCODE = "SHOPCODE";
