@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="seg_text_selected">#FFFFFFFF</color>
+    <color name="seg_text_unselected">#FFF44336</color>
+
+    <drawable name="edit_bg_select">#FFF44336</drawable>
+    <drawable name="edit_bg_normal">#000000</drawable>
+
+    <color name="text_color">#FF717171</color><!--浅玫瑰色 -->
+
+    <array name="progress_colors">
+        <item>#FF3F8AF8</item>
+        <item>#FFF44336</item>
+        <item>#FFF2AF3A</item>
+        <item>#FF279B5E</item>
+    </array>
+
+    <color name="material_red">#FFF44336</color>
+    <color name="material_green">#FFF44336</color>
+    <color name="material_blue">#FFF44336</color>
+    <color name="material_yellow">#FFF44336</color>
+
+    <color name="font_white">#ffffffff</color>
+    <color name="gray">#808080</color><!--灰色 -->
+    <color name="green">#FF3BBD79</color>
+
+    <color name="colorControlNormal">#FF78909C</color>
+    <color name="colorControlActivated">#FF03A9F4</color>
+    <color name="colorSwitchThumbNormal">#FF78909C</color>
+</resources>

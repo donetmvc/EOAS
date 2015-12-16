@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/seg_text_selected"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:gravity="center"
+        android:paddingLeft="15dp"
+        >
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/icon_update"
+             />
+
+        <com.eland.android.eoas.Views.EditTextView
+            android:id="@+id/edt_tel"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:hint="输入电话号码"
+            android:layout_weight="0.3"
+            android:textSize="16dp"
+            android:maxLength="13"
+            android:maxLines="1"
+            android:inputType="number"
+            android:textColor="@color/text_color"
+            android:layout_marginLeft="25dp" />
+
+        <ImageView
+            android:id="@+id/img_save"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/icon_save"
+            android:layout_weight="0.3" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lin_make"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:gravity="center"
+        android:paddingLeft="15dp"
+        android:clickable="true"
+        android:visibility="gone"
+        android:background="@drawable/drawer_line_selector">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/icon_makecall" />
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:text="打电话"
+            android:layout_weight="0.3"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="center_vertical"
+            android:paddingLeft="25dp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lin_send"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:gravity="center"
+        android:paddingLeft="15dp"
+        android:clickable="true"
+        android:visibility="gone"
+        android:background="@drawable/drawer_line_selector">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/icon_msg" />
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:text="发短信"
+            android:layout_weight="0.3"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="center_vertical"
+            android:paddingLeft="25dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
