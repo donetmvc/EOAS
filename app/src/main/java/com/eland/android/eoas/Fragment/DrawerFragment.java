@@ -7,9 +7,9 @@ import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -78,7 +78,7 @@ import me.drakeet.materialdialog.MaterialDialog;
 public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarmerListener,
         ChooseImageUtil.IOnAlbumListener, UploadFileService.IOnUploadListener,
         PhoneNumberView.OnActionSheetSelected, UpdatePhoneNmService.IOnUpdateListener,
-        ProgressUtil.IOnDialogConfirmListener{
+        ProgressUtil.IOnDialogConfirmListener {
 
     @Bind(R.id.img_photo)
     CircleImageView imgPhoto;
@@ -96,6 +96,10 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
     TextView txtLogout;
     @Bind(R.id.lin_logout)
     LinearLayout linLogout;
+    @Bind(R.id.txt_versionname)
+    TextView txtVersionname;
+    @Bind(R.id.lin_update)
+    LinearLayout linUpdate;
     private String TAG = "EOAS";
     private MainActivity mainActivity;
     private View rootView;
@@ -134,6 +138,10 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
     private ProgressUtil dialogUtil;
     private MaterialDialog updateDialog;
 
+    //get app version info
+    PackageManager packageManager;
+    PackageInfo packageInfo;
+
     DisplayImageOptions options = new DisplayImageOptions.Builder()
             .showImageForEmptyUri(R.mipmap.eland_log)
             .showImageOnFail(R.mipmap.eland_log)
@@ -146,7 +154,8 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
             .displayer(new FadeInBitmapDisplayer(300))
             .build();
 
-    public DrawerFragment() {}
+    public DrawerFragment() {
+    }
 
     public DrawerFragment(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -167,6 +176,14 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
         dialogUtil = new ProgressUtil();
         dialogUtil.setOnDialogConfirmListener(this);
 
+        packageManager = getActivity().getPackageManager();
+
+        try {
+            packageInfo = packageManager.getPackageInfo(getActivity().getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
         initView();
         return rootView;
     }
@@ -181,11 +198,10 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
         initClock();
 
         //设置用户名
-        if(!loginId.isEmpty()) {
+        if (!loginId.isEmpty()) {
             fileName = loginId.replace(".", "");
             imgUri = EOASApplication.getInstance().photoUri + fileName + ".jpg";
-        }
-        else {
+        } else {
             txtName.setText("无名氏");
             fileName = "sysadmin";
         }
@@ -197,10 +213,9 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
         txtTel.setText(cellNo);
 
         //设置自动出勤与否
-        if(CacheInfoUtil.loadIsRegAuto(getContext(), loginId)) {
+        if (CacheInfoUtil.loadIsRegAuto(getContext(), loginId)) {
             aSwitch.setChecked(true);
-        }
-        else {
+        } else {
             aSwitch.setChecked(false);
         }
 
@@ -208,11 +223,14 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getActivity()));
         ImageLoader.getInstance().displayImage(imgUri, imgPhoto, options);
 
+        //设置版本信息
+        txtVersionname.setText("当前版本(" + packageInfo.versionName + ")");
+
         aSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(Switch view, boolean checked) {
                 ConsoleUtil.i(TAG, String.valueOf(checked));
-                TelephonyManager telephonyManager = (TelephonyManager)getContext().getSystemService(Context.TELEPHONY_SERVICE);
+                TelephonyManager telephonyManager = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
                 imei = telephonyManager.getDeviceId();
 
                 ArrayList<RegAutoInfo> list = new ArrayList<RegAutoInfo>();
@@ -220,14 +238,13 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
                 reg.userId = loginId;
                 reg.imei = imei;
 
-                if(checked) {
+                if (checked) {
                     reg.isRegAuto = "TRUE";
                     list.add(reg);
                     CacheInfoUtil.saveIsRegAuto(getContext(), list);
 
                     startRegAutoService();
-                }
-                else {
+                } else {
                     reg.isRegAuto = "FALSE";
                     list.add(reg);
                     CacheInfoUtil.saveIsRegAuto(getContext(), list);
@@ -247,7 +264,7 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
 
     private void startRegAutoService() {
         //设置闹钟服务
-        alar.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10*1000, pi);
+        alar.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10 * 1000, pi);
     }
 
     private void stopRegAutoService() {
@@ -256,7 +273,7 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
         //check service is running
         running = checkRegServiceIsRunning();
 
-        if(running) {
+        if (running) {
             //stop service
             Intent intent = new Intent(getActivity(), RegWorkInfoService.class);
             getContext().stopService(intent);
@@ -268,16 +285,19 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
         return running;
     }
 
-    @OnClick(R.id.img_photo) void showChooseImage() {
+    @OnClick(R.id.img_photo)
+    void showChooseImage() {
         imgDialog = chooseImageUtil.showChooseImageDialog(getContext());
     }
 
-    @OnClick(R.id.img_more) void showMoreAction() {
+    @OnClick(R.id.img_more)
+    void showMoreAction() {
         updateNumDialog = PhoneNumberView.showNumActionSheete(mainActivity, this);
         //dialog.se
     }
 
-    @OnClick(R.id.lin_update) void checkUpdate() {
+    @OnClick(R.id.lin_update)
+    void checkUpdate() {
         updateManagerListener = new UpdateManagerListener() {
             @Override
             public void onNoUpdateAvailable() {
@@ -299,7 +319,8 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
         PgyUpdateManager.register(getActivity(), updateManagerListener);
     }
 
-    @OnClick(R.id.lin_logout) void logOut() {
+    @OnClick(R.id.lin_logout)
+    void logOut() {
         clearCach();
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
@@ -313,7 +334,7 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(null != bitmap) {
+        if (null != bitmap) {
             bitmap.recycle();
         }
         ButterKnife.unbind(this);
@@ -341,14 +362,14 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == getActivity().RESULT_OK) {
+        if (resultCode == getActivity().RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_CODE_RESULT:
 
                     break;
                 case REQUEST_CODE_IMAGE:
                     //String fileName = null;
-                    if(data!=null){
+                    if (data != null) {
                         Uri originalUri = data.getData();
                         ContentResolver cr = getActivity().getContentResolver();
                         //FileUtil.compressImageFromFile(fileName);
@@ -358,14 +379,14 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
                             e.printStackTrace();
                         }
                         imageLocalPath = FileUtil.saveToSdCard(bitmap, getContext(), fileName);
-                        ConsoleUtil.d(TAG,"------imageLocalPath--------"+imageLocalPath);
+                        ConsoleUtil.d(TAG, "------imageLocalPath--------" + imageLocalPath);
                         //imgPhoto.setBackgroundDrawable(new BitmapDrawable(bitmap));
                         //imgPhoto.setImageBitmap(bitmap);
 
                         Message message = new Message();
                         message.obj = bitmap;
 
-                        if(null != animation) {
+                        if (null != animation) {
                             imgPhoto.startAnimation(animation);
                         }
 
@@ -375,19 +396,19 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
                 case REQUEST_CODE_CAMERA:
                     String files = FileUtil.getCacheDirectory(getContext(), true, "pic") + dateTime;
                     File file = new File(files);
-                    if(file.exists()){
+                    if (file.exists()) {
                         Bitmap bitmap = FileUtil.compressImageFromFile(files);
                         imageLocalPath = FileUtil.saveToSdCard(bitmap, getContext(), fileName);
                         //imgPhoto.setImageBitmap(bitmap);
                         Message message = new Message();
                         message.obj = bitmap;
 
-                        if(null != animation) {
+                        if (null != animation) {
                             imgPhoto.startAnimation(animation);
                         }
 
                         uploadFileService.uploadFile(imageLocalPath, fileName, message);
-                    }else{
+                    } else {
 
                     }
                     break;
@@ -404,12 +425,12 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                    setBitmap((Bitmap)msg.obj);
+                    setBitmap((Bitmap) msg.obj);
                     break;
                 case 1:
                     break;
                 case 2:
-                    txtTel.setText((String)msg.obj);
+                    txtTel.setText((String) msg.obj);
                     break;
                 default:
                     break;
@@ -424,7 +445,7 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
     /**
      * 图库
      */
-    private void getPicFromAlbum(){
+    private void getPicFromAlbum() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setDataAndType(MediaStore.Images.Media.INTERNAL_CONTENT_URI, "image/*");
         startActivityForResult(intent, REQUEST_CODE_IMAGE);
@@ -433,7 +454,7 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
     /**
      * 照相机
      */
-    private void getPicFromCamere(){
+    private void getPicFromCamere() {
         File f = new File(FileUtil.getCacheDirectory(getContext(), true, "pic") + dateTime);
         if (f.exists()) {
             f.delete();
@@ -465,7 +486,7 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
         ToastUtil.showToast(getContext(), "上传失败，请重试", Toast.LENGTH_LONG);
     }
 
-    private void clean(){
+    private void clean() {
         imgPhoto.clearAnimation();
         ImageLoader.getInstance().clearDiskCache();
         ImageLoader.getInstance().clearMemoryCache();
@@ -474,11 +495,11 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
     @Override
     public void onClick(String numValue) {
         //ConsoleUtil.i(TAG, numValue);
-        if(numValue.isEmpty()) {
+        if (numValue.isEmpty()) {
             ToastUtil.showToast(getContext(), "电话号码不能为空", Toast.LENGTH_LONG);
             return;
         }
-        if(!numValue.isEmpty() && numValue.length() != 11) {
+        if (!numValue.isEmpty() && numValue.length() != 11) {
             ToastUtil.showToast(getContext(), "电话号码位数不正确", Toast.LENGTH_LONG);
             return;
         }
@@ -501,10 +522,10 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
         message.obj = cellNo;
         handler.sendMessage(message);
 
-        if(httpDialog.isShowing()) {
+        if (httpDialog.isShowing()) {
             httpDialog.dismiss();
         }
-        if(updateNumDialog.isShowing()) {
+        if (updateNumDialog.isShowing()) {
             updateNumDialog.dismiss();
         }
     }
@@ -512,7 +533,7 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
     @Override
     public void onUpdateFailure(int code, String msg) {
         ToastUtil.showToast(getContext(), "电话号码修改失败", Toast.LENGTH_LONG);
-        if(httpDialog.isShowing()) {
+        if (httpDialog.isShowing()) {
             httpDialog.dismiss();
         }
     }
