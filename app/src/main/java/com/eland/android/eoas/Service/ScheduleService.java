@@ -6,6 +6,8 @@ import com.eland.android.eoas.Util.HttpRequstUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONObject;
+
 import cz.msebera.android.httpclient.Header;
 
 /**
@@ -24,6 +26,15 @@ public class ScheduleService {
         params.put("isAM", isAM);
 
         HttpRequstUtil.get(uri, params, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+
+                if (null != iScheduleListener) {
+                    iScheduleListener.onScheduleFailure(99999, "无法连接服务器.");
+                }
+            }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
@@ -49,6 +60,15 @@ public class ScheduleService {
         params.put("isAM", isAM);
 
         HttpRequstUtil.get(uri, params, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+
+                if (null != iScheduleListener) {
+                    iScheduleListener.onScheduleFailure(99999, "无法连接服务器.");
+                }
+            }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {

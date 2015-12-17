@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.eland.android.eoas.R;
+import com.eland.android.eoas.Service.UpdatePhoneNmService;
 import com.rey.material.widget.ProgressView;
 import com.victor.loading.rotate.RotateLoading;
 
@@ -22,6 +23,7 @@ public class ProgressUtil {
     private static String TAG = "EOAS";
 
     public static IOnDialogConfirmListener iOnDialogConfirmListener;
+    public static IOnMainUpdateListener iOnMainUpdateListener;
 
     public static Dialog showProgress(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context) ;
@@ -73,11 +75,41 @@ public class ProgressUtil {
         return dialog;
     }
 
+    public static MaterialDialog showDialogUpdateForMain(String message, String title, Context context) {
+        final MaterialDialog dialog = new MaterialDialog(context);
+        dialog.setTitle(title);
+        dialog.setMessage(message);
+
+        dialog.setPositiveButton(context.getResources().getString(R.string.update), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(null != iOnMainUpdateListener) {
+                    iOnMainUpdateListener.onUpdateSuccess();
+                }
+            }
+        }).setNegativeButton(context.getResources().getString(R.string.refuse), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        return dialog;
+    }
+
     public void setOnDialogConfirmListener(IOnDialogConfirmListener iOnDialogConfirmListener) {
         this.iOnDialogConfirmListener = iOnDialogConfirmListener;
     }
 
+    public void setOnMainUpdateListener(IOnMainUpdateListener iOnMainUpdateListener) {
+        this.iOnMainUpdateListener = iOnMainUpdateListener;
+    }
+
     public interface IOnDialogConfirmListener {
         void OnDialogConfirmListener();
+    }
+
+    public interface IOnMainUpdateListener {
+        void onUpdateSuccess();
     }
 }

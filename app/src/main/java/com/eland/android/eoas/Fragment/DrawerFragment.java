@@ -37,7 +37,7 @@ import com.eland.android.eoas.Model.Constant;
 import com.eland.android.eoas.Model.RegAutoInfo;
 import com.eland.android.eoas.R;
 import com.eland.android.eoas.Receiver.AutoReceiver;
-import com.eland.android.eoas.Service.RegWorkInfoService;
+import com.eland.android.eoas.Service.RegAutoService;
 import com.eland.android.eoas.Service.UpdatePhoneNmService;
 import com.eland.android.eoas.Service.UploadFileService;
 import com.eland.android.eoas.Util.CacheInfoUtil;
@@ -275,13 +275,13 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
 
         if (running) {
             //stop service
-            Intent intent = new Intent(getActivity(), RegWorkInfoService.class);
+            Intent intent = new Intent(getActivity(), RegAutoService.class);
             getContext().stopService(intent);
         }
     }
 
     private Boolean checkRegServiceIsRunning() {
-        running = SystemMethodUtil.isWorked(getContext(), "RegWorkInfoService");
+        running = SystemMethodUtil.isWorked(getContext(), "RegAutoService");
         return running;
     }
 
@@ -540,7 +540,9 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
 
     @Override
     public void OnDialogConfirmListener() {
-        updateDialog.dismiss();
-        updateManagerListener.startDownloadTask(getActivity(), downUri);
+        if(null != updateDialog) {
+            updateDialog.dismiss();
+            updateManagerListener.startDownloadTask(getActivity(), downUri);
+        }
     }
 }

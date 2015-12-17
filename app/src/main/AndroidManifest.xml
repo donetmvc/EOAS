@@ -79,6 +79,10 @@
         <service android:name="com.amap.api.location.APSService"></service>
 
         <service android:name=".Service.RegWorkInfoService"
+            >
+        </service>
+
+        <service android:name=".Service.RegAutoService"
             android:process=":EScheduleService">
         </service>
 

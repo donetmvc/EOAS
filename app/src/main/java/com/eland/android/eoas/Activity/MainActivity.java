@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.eland.android.eoas.Application.EOASApplication;
@@ -36,7 +35,7 @@ import me.drakeet.materialdialog.MaterialDialog;
 /**
  * Created by liu.wenbin on 15/11/10.
  */
-public class MainActivity extends AppCompatActivity implements ProgressUtil.IOnDialogConfirmListener{
+public class MainActivity extends AppCompatActivity implements ProgressUtil.IOnMainUpdateListener{
 
     private String TAG = "EOAS";
     private Boolean isExit = false;
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements ProgressUtil.IOnD
     private UpdateManagerListener updateManagerListener;
     private String downUri;
     private ProgressUtil dialogUtil;
-    private MaterialDialog updateDialog;
+    private MaterialDialog updateMainDialog;
     private Context context;
 
     @Override
@@ -111,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements ProgressUtil.IOnD
 
     private void initActivity() {
         dialogUtil = new ProgressUtil();
-        dialogUtil.setOnDialogConfirmListener(this);
+        dialogUtil.setOnMainUpdateListener(this);
     }
 
     private void initUpdate() {
@@ -127,8 +126,8 @@ public class MainActivity extends AppCompatActivity implements ProgressUtil.IOnD
                 String message = appBean.getReleaseNote();
                 downUri = appBean.getDownloadURL();
 
-                updateDialog = dialogUtil.showDialogUpdate(message, getResources().getString(R.string.hasupdate), context);
-                updateDialog.show();
+                updateMainDialog = dialogUtil.showDialogUpdateForMain(message, getResources().getString(R.string.hasupdate), context);
+                updateMainDialog.show();
             }
         };
 
@@ -210,8 +209,8 @@ public class MainActivity extends AppCompatActivity implements ProgressUtil.IOnD
     }
 
     @Override
-    public void OnDialogConfirmListener() {
-        updateDialog.dismiss();
+    public void onUpdateSuccess() {
+        updateMainDialog.dismiss();
         updateManagerListener.startDownloadTask(MainActivity.this, downUri);
     }
 }

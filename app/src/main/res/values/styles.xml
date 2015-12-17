@@ -8,7 +8,7 @@
 
     </style>
 
-    <style name="LoginTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="LoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!--状态栏颜色-->
         <item name="colorPrimaryDark">#FF2196F3</item>
     </style>

@@ -22,6 +22,7 @@ import com.eland.android.eoas.R;
 import com.eland.android.eoas.Service.RegWorkInfoService;
 import com.eland.android.eoas.Service.ScheduleService;
 import com.eland.android.eoas.Util.ConsoleUtil;
+import com.eland.android.eoas.Util.SystemMethodUtil;
 import com.eland.android.eoas.Util.ToastUtil;
 
 import java.io.IOException;
@@ -189,7 +190,13 @@ public class RegistScheduleFragment extends Fragment implements AnimationListene
     }
 
     private void stopRegist() {
-
+        if(SystemMethodUtil.isWorked(getContext(), "RegWorkInfoService")) {
+            ConsoleUtil.i(TAG, "---------------Service is running,you can stop it.--------------");
+            if(null != conn) {
+                context.unbindService(conn);
+                ConsoleUtil.i(TAG, "---------------stop success.--------------");
+            }
+        }
     }
 
     @Override
@@ -223,7 +230,7 @@ public class RegistScheduleFragment extends Fragment implements AnimationListene
 
     @Override
     public void onScheduleFailure(int code, String msg) {
-        ToastUtil.showToast(context, "打卡成功.", Toast.LENGTH_LONG);
+        ToastUtil.showToast(context, msg, Toast.LENGTH_LONG);
         setDisableImg();
     }
 }
