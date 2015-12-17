@@ -12,7 +12,7 @@
     <drawable name="tab_selected_focused">#ff000000</drawable>
     <drawable name="tab_unselected_focused">#22ffffff</drawable>
     <drawable name="letf_draw_item_unpressed">#00000000</drawable>
-    <drawable name="letf_draw_item_pressed">#FF50597b</drawable>
+    <drawable name="letf_draw_item_pressed">#FFD3D3D3</drawable>
     <drawable name="drawer_exit_item_unpressed">#FFD8433C</drawable>
     <drawable name="drawer_exit_item_pressed">#ffac2925</drawable>
 

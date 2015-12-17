@@ -2,13 +2,13 @@ package com.eland.android.eoas.Activity;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,11 +16,13 @@ import android.widget.Toast;
 
 import com.eland.android.eoas.Adapt.ContactAdapt;
 import com.eland.android.eoas.Application.EOASApplication;
+import com.eland.android.eoas.Model.Constant;
 import com.eland.android.eoas.Model.LoginInfo;
 import com.eland.android.eoas.R;
 import com.eland.android.eoas.Service.ContactService;
 import com.eland.android.eoas.Util.CacheInfoUtil;
 import com.eland.android.eoas.Util.ProgressUtil;
+import com.eland.android.eoas.Util.SharedReferenceHelper;
 import com.eland.android.eoas.Util.ToastUtil;
 import com.eland.android.eoas.Views.SwipeRefreshView.MaterialRefreshLayout;
 import com.eland.android.eoas.Views.SwipeRefreshView.MaterialRefreshListener;
@@ -59,6 +61,7 @@ public class SearchActivity extends AppCompatActivity implements ContactService.
 
     private String searchKey;
     private com.rey.material.app.Dialog httpDialog;
+    private String userId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,6 +76,7 @@ public class SearchActivity extends AppCompatActivity implements ContactService.
 
         initToolbar();
         editText = (EditText) searchtoolbar.findViewById(R.id.edit_searchKey);
+        userId = SharedReferenceHelper.getInstance(this).getValue(Constant.LOGINID);
 
         initRefreshListener();
     }
@@ -93,6 +97,13 @@ public class SearchActivity extends AppCompatActivity implements ContactService.
         searchtoolbar.setNavigationIcon(R.mipmap.icon_back);
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        searchtoolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -142,7 +153,7 @@ public class SearchActivity extends AppCompatActivity implements ContactService.
     }
 
     private void getData() {
-        contactService.searchContact("liu.wenbin", this);
+        contactService.searchContact(userId, this);
     }
 
     @Override

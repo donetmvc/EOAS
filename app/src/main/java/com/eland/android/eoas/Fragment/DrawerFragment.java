@@ -55,6 +55,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.pgyersdk.javabean.AppBean;
+import com.pgyersdk.update.PgyUpdateManager;
+import com.pgyersdk.update.UpdateManagerListener;
 import com.rey.material.widget.Switch;
 
 import java.io.File;
@@ -65,6 +68,7 @@ import java.util.Date;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.drakeet.materialdialog.MaterialDialog;
 
 
 /**
@@ -73,7 +77,8 @@ import butterknife.OnClick;
 @SuppressLint("ValidFragment")
 public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarmerListener,
         ChooseImageUtil.IOnAlbumListener, UploadFileService.IOnUploadListener,
-        PhoneNumberView.OnActionSheetSelected, UpdatePhoneNmService.IOnUpdateListener{
+        PhoneNumberView.OnActionSheetSelected, UpdatePhoneNmService.IOnUpdateListener,
+        ProgressUtil.IOnDialogConfirmListener{
 
     @Bind(R.id.img_photo)
     CircleImageView imgPhoto;
@@ -118,9 +123,16 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
     private Animation animation;
     private UpdatePhoneNmService updateService;
 
+    //clock
     private PendingIntent pi;
     private AlarmManager alar;
     private Boolean running = false;
+
+    //check update
+    private UpdateManagerListener updateManagerListener;
+    private String downUri;
+    private ProgressUtil dialogUtil;
+    private MaterialDialog updateDialog;
 
     DisplayImageOptions options = new DisplayImageOptions.Builder()
             .showImageForEmptyUri(R.mipmap.eland_log)
@@ -152,6 +164,8 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
         chooseImageUtil.setOnAlbumListener(this);
         chooseImageUtil.setOnCarmerListener(this);
         uploadFileService.setUploadListener(this);
+        dialogUtil = new ProgressUtil();
+        dialogUtil.setOnDialogConfirmListener(this);
 
         initView();
         return rootView;
@@ -261,6 +275,28 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
     @OnClick(R.id.img_more) void showMoreAction() {
         updateNumDialog = PhoneNumberView.showNumActionSheete(mainActivity, this);
         //dialog.se
+    }
+
+    @OnClick(R.id.lin_update) void checkUpdate() {
+        updateManagerListener = new UpdateManagerListener() {
+            @Override
+            public void onNoUpdateAvailable() {
+                ToastUtil.showToast(getContext(), "已经是最新版本啦", Toast.LENGTH_SHORT);
+            }
+
+            @Override
+            public void onUpdateAvailable(String result) {
+                AppBean appBean = getAppBeanFromString(result);
+                String message = appBean.getReleaseNote();
+                downUri = appBean.getDownloadURL();
+
+                updateDialog = dialogUtil.showDialogUpdate(message, getResources().getString(R.string.hasupdate), mainActivity);
+                updateDialog.show();
+            }
+        };
+
+        //检测更新
+        PgyUpdateManager.register(getActivity(), updateManagerListener);
     }
 
     @OnClick(R.id.lin_logout) void logOut() {
@@ -479,5 +515,11 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
         if(httpDialog.isShowing()) {
             httpDialog.dismiss();
         }
+    }
+
+    @Override
+    public void OnDialogConfirmListener() {
+        updateDialog.dismiss();
+        updateManagerListener.startDownloadTask(getActivity(), downUri);
     }
 }

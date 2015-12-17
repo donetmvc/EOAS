@@ -42,18 +42,6 @@ public class MainActivity extends AppCompatActivity implements ProgressUtil.IOnD
     private Boolean isExit = false;
     private static final int PROFILE_SETTING = 1;
 
-//    private static final int SCHEDULE_SEARCH = 0; //出勤查询
-//    private int VACATION_APPLY = 1; //休假申请
-//    private int VACATION_APPROVE = 2;   //休假批准
-//    private int MEETINGROOM_APPLY = 3;  //会议室申请
-//    private int TRAVEL_APPLY = 4;   //出差申请
-//    private int DASH_BOARD = 5; //Dash board
-//    private int BOOK_BR = 6; //图书借阅
-//    private int MONEY_MANAGER = 7;  //财务管理
-//    private int SHCEDULE_MANAGER = 8;   //日程管理
-//    private int CONTACT_PEPOLE = 9;
-//    private static final int SCHEDULE_REGISTER = 10;    //打卡
-
     private static final int MAIN_FRAGMENT = 10;
 
     private FragmentManager fragmentManager;

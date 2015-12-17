@@ -39,7 +39,6 @@ public class EOASApplication extends Application {
         ActivityManager.getInstance().addActivity(ac);
     }
 
-
     public void existApp() {
         ActivityManager.getInstance().removeAllActivity();
         System.exit(0);

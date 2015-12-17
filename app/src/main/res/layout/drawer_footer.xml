@@ -47,6 +47,74 @@
             android:layout_height="1dp"
             android:background="@color/gray"></View>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:gravity="center_vertical"
+            android:baselineAligned="false">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="消息通知"
+                android:layout_weight="1"
+                android:textSize="15dp"
+                android:gravity="center" />
+
+
+            <com.rey.material.widget.Switch
+                style="@style/Material.Widget.Switch"
+                android:id="@+id/sw_receive"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:checked="false"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp" />
+            <!--<Switch-->
+            <!--android:id="@+id/sw_auto"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:paddingLeft="70dp"-->
+            <!--android:paddingRight="70dp" />-->
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"></View>
+
+        <LinearLayout
+            android:id="@+id/lin_update"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:gravity="center_vertical"
+            android:baselineAligned="false"
+            android:background="@drawable/drawer_item_selector">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="检测更新"
+                android:textSize="15dp"
+                android:gravity="center"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="当前版本(1.0.3)"
+                android:textSize="15dp"
+                android:gravity="center"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"></View>
+
     </LinearLayout>
 
     <LinearLayout
