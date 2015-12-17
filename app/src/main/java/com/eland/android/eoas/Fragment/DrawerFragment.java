@@ -68,6 +68,7 @@ import java.util.Date;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 import me.drakeet.materialdialog.MaterialDialog;
 
 
@@ -104,6 +105,7 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
     private MainActivity mainActivity;
     private View rootView;
     private Switch aSwitch;
+    private Switch bSwitch;
     private String loginId;
     private String imei;
     private String userName;
@@ -167,6 +169,7 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
         ButterKnife.bind(this, rootView);
 
         aSwitch = (Switch) rootView.findViewById(R.id.sw_auto);
+        bSwitch = (Switch) rootView.findViewById(R.id.sw_receive);
         chooseImageUtil = new ChooseImageUtil();
         uploadFileService = new UploadFileService(getContext());
         updateService = new UpdatePhoneNmService();
@@ -219,6 +222,14 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
             aSwitch.setChecked(false);
         }
 
+        //设置用户是否接收push
+        if(CacheInfoUtil.loadIsReceive(getContext(), loginId)) {
+            bSwitch.setChecked(true);
+        } else {
+            bSwitch.setChecked(false);
+        }
+
+
         //设置头像
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getActivity()));
         ImageLoader.getInstance().displayImage(imgUri, imgPhoto, options);
@@ -251,6 +262,31 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
 
                     stopRegAutoService();
                 }
+            }
+        });
+
+        bSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(Switch view, boolean checked) {
+
+                ArrayList<RegAutoInfo> list = new ArrayList<RegAutoInfo>();
+                RegAutoInfo reg = new RegAutoInfo();
+                reg.userId = loginId;
+
+                if (checked) {
+                    reg.isReceive = "TRUE";
+                    list.add(reg);
+                    CacheInfoUtil.saveIsReceive(getContext(), list);
+
+                    JPushInterface.onResume(getContext().getApplicationContext());
+                } else {
+                    reg.isReceive = "FALSE";
+                    list.add(reg);
+                    CacheInfoUtil.saveIsReceive(getContext(), list);
+
+                    JPushInterface.stopPush(getContext().getApplicationContext());
+                }
+
             }
         });
     }
@@ -322,6 +358,8 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
     @OnClick(R.id.lin_logout)
     void logOut() {
         clearCach();
+        //关闭push服务
+        JPushInterface.stopPush(getContext().getApplicationContext());
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
         getActivity().finish();

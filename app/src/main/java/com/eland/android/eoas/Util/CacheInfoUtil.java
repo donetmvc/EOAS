@@ -26,16 +26,6 @@ public class CacheInfoUtil {
         new DataCache<RegAutoInfo>().saveGlobal(context, data, Constant.EOAS_REGAUTO);
     }
 
-    //联系人缓存
-    public static void saveContact(Context context, ArrayList<LoginInfo> data) {
-        new DataCache<LoginInfo>().saveGlobal(context, data, Constant.EOAS_CONTACT);
-    }
-
-    //读取联系人
-    public static ArrayList<LoginInfo> loadContact(Context context) {
-        return new DataCache<LoginInfo>().loadGlobal(context, Constant.EOAS_CONTACT);
-    }
-
     //判断是否自动设置出勤
     public static Boolean loadIsRegAuto(Context context, String userId) {
         ArrayList<RegAutoInfo> list = new DataCache<RegAutoInfo>().loadGlobal(context, Constant.EOAS_REGAUTO);
@@ -46,6 +36,36 @@ public class CacheInfoUtil {
             if((list.get(i).userId.equals(userId)
                     || list.get(i).imei.equals(userId))
                     && list.get(i).isRegAuto.equals("TRUE")) {
+                isReg = true;
+                break;
+            }
+        }
+
+        return isReg;
+    }
+
+    //联系人缓存
+    public static void saveContact(Context context, ArrayList<LoginInfo> data) {
+        new DataCache<LoginInfo>().saveGlobal(context, data, Constant.EOAS_CONTACT);
+    }
+
+    //读取联系人
+    public static ArrayList<LoginInfo> loadContact(Context context) {
+        return new DataCache<LoginInfo>().loadGlobal(context, Constant.EOAS_CONTACT);
+    }
+
+    //保存是否接收push设置
+    public static void saveIsReceive(Context context, ArrayList<RegAutoInfo> data) {
+        new DataCache<RegAutoInfo>().saveGlobal(context, data, Constant.EOAS_RECEIVE);
+    }
+
+    public static Boolean loadIsReceive(Context context, String userId) {
+        ArrayList<RegAutoInfo> list = new DataCache<RegAutoInfo>().loadGlobal(context, Constant.EOAS_RECEIVE);
+
+        boolean isReg = false;
+
+        for(int i= 0; i < list.size(); i++) {
+            if(list.get(i).userId.equals(userId) && list.get(i).isReceive.equals("TRUE")) {
                 isReg = true;
                 break;
             }

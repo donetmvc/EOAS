@@ -146,7 +146,6 @@ public class ContactFragment extends Fragment implements ContactService.IOnSearc
         listView.setAdapter(animAdapter);
     }
 
-
     private void getData() {
         contactService.searchContact(userId, this);
     }
@@ -194,6 +193,9 @@ public class ContactFragment extends Fragment implements ContactService.IOnSearc
     @Override
     public void onSearchFailure(int code, String msg) {
         ToastUtil.showToast(context, msg, Toast.LENGTH_LONG);
-        refresh.finishRefresh();
+
+        if(null != refresh) {
+            refresh.finishRefresh();
+        }
     }
 }

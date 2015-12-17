@@ -12,6 +12,7 @@ import com.eland.android.eoas.Model.Constant;
 import com.eland.android.eoas.Model.LoginInfo;
 import com.eland.android.eoas.R;
 import com.eland.android.eoas.Service.LoginService;
+import com.eland.android.eoas.Util.CacheInfoUtil;
 import com.eland.android.eoas.Util.ConsoleUtil;
 import com.eland.android.eoas.Util.ProgressUtil;
 import com.eland.android.eoas.Util.SharedReferenceHelper;
@@ -25,6 +26,7 @@ import com.rey.material.widget.Button;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 import me.drakeet.materialdialog.MaterialDialog;
 
 /**
@@ -151,6 +153,14 @@ public class LoginActivity extends AppCompatActivity implements
         SharedReferenceHelper.getInstance(context).setValue(Constant.LOGINID_CELLNO, info.cellNo);
         SharedReferenceHelper.getInstance(context).setValue(Constant.LOGINID_EMAIL, info.email);
         SharedReferenceHelper.getInstance(context).setValue(Constant.LOGINID_USERNAME, info.userName);
+
+        //登录系统后开启接收push,当然需要判断下用户是否设置了接收与否
+        if(CacheInfoUtil.loadIsReceive(this, loginId)) {
+            JPushInterface.resumePush(getApplicationContext());
+        } else {
+            JPushInterface.stopPush(getApplicationContext());
+        }
+
 
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);

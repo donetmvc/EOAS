@@ -12,6 +12,8 @@ import com.eland.android.eoas.Util.SharedReferenceHelper;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created by liu.wenbin on 15/11/10.
  */
@@ -30,6 +32,18 @@ public class LauncherActivity extends Activity{
         context = this;
 
         initTimer();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        JPushInterface.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JPushInterface.onPause(this);
     }
 
     private void initTimer() {

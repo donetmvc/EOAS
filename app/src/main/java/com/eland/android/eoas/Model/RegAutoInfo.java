@@ -9,5 +9,6 @@ public class RegAutoInfo implements Serializable {
 
     public String userId;
     public String isRegAuto;
+    public String isReceive;
     public String imei;
 }
