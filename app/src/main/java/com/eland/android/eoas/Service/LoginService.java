@@ -30,12 +30,11 @@ public class LoginService {
     }
 
     public void signIn(String loginId, String password, String username, String imei) {
-        String uri = "api/Login";
+        String uri = "api/NewLogin";
 
         RequestParams params = new RequestParams();
         params.put("userId", loginId);
         params.put("password", password);
-        params.put("userName", username);
         params.put("iemi", imei);
 
         HttpRequstUtil.get(uri, params, new JsonHttpResponseHandler() {

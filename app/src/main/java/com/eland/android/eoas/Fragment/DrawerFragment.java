@@ -37,6 +37,7 @@ import com.eland.android.eoas.Model.Constant;
 import com.eland.android.eoas.Model.RegAutoInfo;
 import com.eland.android.eoas.R;
 import com.eland.android.eoas.Receiver.AutoReceiver;
+import com.eland.android.eoas.Service.LogOutService;
 import com.eland.android.eoas.Service.RegAutoService;
 import com.eland.android.eoas.Service.UpdatePhoneNmService;
 import com.eland.android.eoas.Service.UploadFileService;
@@ -362,6 +363,10 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
         JPushInterface.stopPush(getContext().getApplicationContext());
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
+
+        Intent serviceIntent = new Intent(getActivity(), LogOutService.class);
+        getContext().startService(serviceIntent);
+
         getActivity().finish();
     }
 

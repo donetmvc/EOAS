@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.eland.android.eoas.Activity.TestActivity;
+import com.eland.android.eoas.Service.RegistAutoService;
 import com.eland.android.eoas.Util.ConsoleUtil;
 
 import cn.jpush.android.api.JPushInterface;
@@ -14,12 +15,14 @@ import cn.jpush.android.api.JPushInterface;
 /**
  * Created by liu.wenbin on 15/12/17.
  */
-public class PushMessageReceiver extends BroadcastReceiver{
+public class PushMessageReceiver extends BroadcastReceiver {
 
     private String TAG = "EOAS";
+    private Context context;
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        this.context = context;
         Bundle bundle = intent.getExtras();
         ConsoleUtil.i(TAG, "onReceive - " + intent.getAction());
 
@@ -27,6 +30,7 @@ public class PushMessageReceiver extends BroadcastReceiver{
             String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
             Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
             //send the Registration Id to your server...
+            startRegistPushID(regId);
 
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
@@ -60,4 +64,9 @@ public class PushMessageReceiver extends BroadcastReceiver{
 
     }
 
+    private void startRegistPushID(String pushId) {
+        Intent intents = new Intent(context, RegistAutoService.class);
+        intents.putExtra("PUSHID", pushId);
+        context.startService(intents);
+    }
 }
