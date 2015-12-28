@@ -77,6 +77,9 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     private void initActivity() {
+        //如果进入登录页面说明还未登录，暂不能接收push
+        JPushInterface.stopPush(getApplicationContext());
+
         loginService = new LoginService(context);
         loginService.setOnSignInListener(this);
         telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
@@ -157,10 +160,7 @@ public class LoginActivity extends AppCompatActivity implements
         //登录系统后开启接收push,当然需要判断下用户是否设置了接收与否
         if(CacheInfoUtil.loadIsReceive(this, loginId)) {
             JPushInterface.resumePush(getApplicationContext());
-        } else {
-            JPushInterface.stopPush(getApplicationContext());
         }
-
 
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);

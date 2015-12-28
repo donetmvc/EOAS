@@ -35,7 +35,7 @@ public class LoginService {
         RequestParams params = new RequestParams();
         params.put("userId", loginId);
         params.put("password", password);
-        params.put("iemi", imei);
+        params.put("imei", imei);
 
         HttpRequstUtil.get(uri, params, new JsonHttpResponseHandler() {
             @Override

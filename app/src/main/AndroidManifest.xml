@@ -100,6 +100,10 @@
             android:process=":EScheduleService">
         </service>
 
+        <service android:name=".Service.RegistAutoService"
+            android:process=":RegistPushService">
+        </service>
+
         <receiver android:name=".Receiver.AutoReceiver">
         </receiver>
 

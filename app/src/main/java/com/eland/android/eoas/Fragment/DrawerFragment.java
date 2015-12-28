@@ -65,6 +65,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.EmptyStackException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -226,8 +227,10 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
         //设置用户是否接收push
         if(CacheInfoUtil.loadIsReceive(getContext(), loginId)) {
             bSwitch.setChecked(true);
+            JPushInterface.resumePush(getContext().getApplicationContext());
         } else {
             bSwitch.setChecked(false);
+            JPushInterface.stopPush(getContext().getApplicationContext());
         }
 
 
@@ -279,7 +282,7 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
                     list.add(reg);
                     CacheInfoUtil.saveIsReceive(getContext(), list);
 
-                    JPushInterface.onResume(getContext().getApplicationContext());
+                    JPushInterface.resumePush(getContext().getApplicationContext());
                 } else {
                     reg.isReceive = "FALSE";
                     list.add(reg);

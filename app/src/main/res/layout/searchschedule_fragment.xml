@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:baselineAligned="false">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="期间"
+                android:textColor="@color/text_color"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/edit_startdate"
+                style="@style/Material.Widget.EditText.Light"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:focusable="false"
+                android:textCursorDrawable="@null"
+                android:text="2015-12-21"
+                android:layout_gravity="center"
+                android:gravity="center" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="~"
+                android:gravity="center"
+                android:textColor="@color/text_color"
+                android:textSize="14dp" />
+
+            <EditText
+                android:id="@+id/edit_enddate"
+                style="@style/Material.Widget.EditText.Light"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:focusable="false"
+                android:textCursorDrawable="@null"
+                android:text="2015-12-28"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:gravity="center" />
+            <ImageView
+                android:id="@+id/img_search"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/search_button_selector"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:padding="13dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:background="#d3d3d3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <com.eland.android.eoas.Views.SwipeRefreshView.MaterialRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/refresh"
+        app:wave_color="#ff8BC34A"
+        app:progress_show_circle_backgroud="true"
+        app:overlay="false"
+        app:wave_show="false"
+        app:progress_backgroud_color="#FFFAFAFA"
+        app:progress_colors="@array/material_colors"
+        app:wave_height_type="normal"
+        app:progress_show_arrow="true"
+        app:isLoadMore="true">
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="#00000000"
+            android:fadingEdge="none"
+            android:fastScrollEnabled="false"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
+            android:smoothScrollbar="true" />
+    </com.eland.android.eoas.Views.SwipeRefreshView.MaterialRefreshLayout>
+
+</LinearLayout>

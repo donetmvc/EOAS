@@ -22,8 +22,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:src="@mipmap/icon_schedule_regist" />
 
             <TextView
@@ -44,8 +44,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:src="@mipmap/icon_contact_contact" />
 
             <TextView
@@ -57,6 +57,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/img_searchSchedule"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
@@ -64,10 +65,16 @@
             android:gravity="center"
             android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@mipmap/icon_schecule_search" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:text="考勤查询"
                 android:textColor="@color/text_color" />
         </LinearLayout>
     </LinearLayout>

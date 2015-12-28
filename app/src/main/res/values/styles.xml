@@ -93,4 +93,27 @@
         <item name="sw_animDuration">@android:integer/config_shortAnimTime</item>
         <item name="sw_interpolator">@android:anim/decelerate_interpolator</item>
     </style>
+
+    <!--date picker-->
+    <style name="Material.App.Dialog.DatePicker" parent="Material.App.Dialog">
+        <item name="dp_yearTextSize">@dimen/abc_text_size_title_material</item>
+        <item name="dp_yearItemHeight">48dp</item>
+        <item name="dp_textColor">@color/abc_primary_text_material_dark</item>
+        <item name="dp_textHighlightColor">#FFFFFFFF</item>
+        <item name="dp_selectionColor">@color/md_red_500</item>
+        <item name="dp_animDuration">@android:integer/config_mediumAnimTime</item>
+        <item name="dp_inInterpolator">@android:anim/decelerate_interpolator</item>
+        <item name="dp_outInterpolator">@android:anim/decelerate_interpolator</item>
+        <item name="dp_textStyle">normal</item>
+        <item name="dp_dayTextSize">@dimen/abc_text_size_caption_material</item>
+        <item name="dp_textLabelColor">@color/abc_secondary_text_material_dark</item>
+        <item name="dp_textDisableColor">@color/abc_secondary_text_material_dark</item>
+        <item name="dp_headerPrimaryHeight">144dp</item>
+        <item name="dp_headerSecondaryHeight">32dp</item>
+        <item name="dp_headerPrimaryColor">@color/md_red_500</item>
+        <item name="dp_headerSecondaryColor">?attr/colorPrimaryDark</item>
+        <item name="dp_headerPrimaryTextSize">@dimen/abc_text_size_display_2_material</item>
+        <item name="dp_headerSecondaryTextSize">@dimen/abc_text_size_headline_material</item>
+        <item name="dp_textHeaderColor">#90FFFFFF</item>
+    </style>
 </resources>

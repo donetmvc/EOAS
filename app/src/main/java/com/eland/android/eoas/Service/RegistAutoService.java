@@ -6,6 +6,9 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.telephony.TelephonyManager;
 
+import com.eland.android.eoas.Model.Constant;
+import com.eland.android.eoas.Util.SharedReferenceHelper;
+
 /**
  * Created by liu.wenbin on 15/12/18.
  */
@@ -13,7 +16,6 @@ public class RegistAutoService extends Service implements RegistPushIDService.IO
 
     private String pushId,imei = "";
     private TelephonyManager telephonyManager;
-    int registCount = 0;
 
     @Override
     public void onCreate() {
@@ -53,18 +55,14 @@ public class RegistAutoService extends Service implements RegistPushIDService.IO
 
     @Override
     public void onRegistSuccess() {
+        SharedReferenceHelper.getInstance(this).setValue(Constant.EOAS_PUSHID, "SUCCESS");
         stopSelf();
     }
 
     @Override
     public void onRegistFailure() {
-        //retry
-        if(registCount > 20) {
-            stopSelf();
-        }
-        else {
-            registCount++;
-            startRegistService();
-        }
+        //save push id to cache
+        SharedReferenceHelper.getInstance(this).setValue(Constant.EOAS_PUSHID, "FAILURE");
+        stopSelf();
     }
 }

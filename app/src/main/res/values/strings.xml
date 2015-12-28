@@ -14,4 +14,6 @@
         <item>@color/material_blue</item>
         <item>@color/material_yellow</item>
     </integer-array>
+
+
 </resources>

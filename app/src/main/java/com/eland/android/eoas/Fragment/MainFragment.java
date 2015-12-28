@@ -91,6 +91,12 @@ public class MainFragment extends Fragment {
         goView(mainFragment, contactFragment);
     }
 
+    @OnClick(R.id.img_searchSchedule) void goSearchSchedule() {
+        SearchScheduleFragment searchScheduleFragment = new SearchScheduleFragment(context);
+        Fragment mainFragment = fragmentManager.getFragments().get(1);
+        goView(mainFragment, searchScheduleFragment);
+    }
+
     private void goView(Fragment from, Fragment to) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);

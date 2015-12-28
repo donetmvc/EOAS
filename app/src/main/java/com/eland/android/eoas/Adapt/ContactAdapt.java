@@ -29,7 +29,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by elandmac on 15/12/15.
+ * Created by liu.wenbin on 15/12/15.
  */
 public class ContactAdapt extends BaseAdapter {
 

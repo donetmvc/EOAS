@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp">
+        <TextView
+            android:id="@+id/txt_date"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="2015-12-24"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:layout_weight="0.3"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text=""
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:layout_weight="0.3"
+            android:gravity="center"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text=""
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:layout_weight="0.3"
+            android:gravity="center"
+            />
+    </LinearLayout>
+    
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="上班"
+                android:textColor="@color/text_color"
+                android:textSize="16dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="下班"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/text_color"
+                android:textSize="16dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3">
+            <TextView
+                android:id="@+id/txt_work"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="07:53:22"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:textSize="16dp"/>
+
+            <TextView
+                android:id="@+id/txt_offwork"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="18:34:22"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:textColor="#000000"
+                android:textSize="16dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3">
+            <TextView
+                android:id="@+id/txt_workdes"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:background="@color/green"
+                android:text="正常"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/text_color"
+                android:textSize="16dp"/>
+
+            <TextView
+                android:id="@+id/txt_offworkdes"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:background="@color/green"
+                android:text="正常"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/text_color"
+                android:textSize="16dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
