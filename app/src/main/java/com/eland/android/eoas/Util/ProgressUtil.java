@@ -38,13 +38,13 @@ public class ProgressUtil {
         return dialog;
     }
 
-    public static com.rey.material.app.Dialog showHttpLoading(Context context) {
+    public static Dialog showHttpLoading(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context) ;
         View view = inflater.inflate(R.layout.http_loading,null) ;
 
         rotateLoading = (RotateLoading) view.findViewById(R.id.rotateloading);
         rotateLoading.start();
-        com.rey.material.app.Dialog dialog = new com.rey.material.app.Dialog(context);
+        Dialog dialog = new Dialog(context, R.style.CustomDialog);
         dialog.setContentView(view);
 
         dialog.setCanceledOnTouchOutside(false);

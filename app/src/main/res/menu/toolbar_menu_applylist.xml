@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.eland.android.eoas.Fragment.ApplyListFragment">
+    <item
+        android:id="@+id/ab_apply"
+        android:title="申请"
+        android:icon="@mipmap/icon_apply"
+        app:showAsAction="ifRoom" />
+
+</menu>

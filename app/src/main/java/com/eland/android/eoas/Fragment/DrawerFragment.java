@@ -120,7 +120,7 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
     private static final int REQUEST_CODE_RESULT = 3;
     private String dateTime;
     private com.rey.material.app.Dialog imgDialog;
-    private com.rey.material.app.Dialog httpDialog;
+    private Dialog httpDialog;
     private Dialog updateNumDialog;
 
     private String imgUri = "";//"http://182.92.65.253:30001/Eland.EOAS/images/chengcuicui.jpg";
@@ -205,7 +205,7 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
         //设置用户名
         if (!loginId.isEmpty()) {
             fileName = loginId.replace(".", "");
-            imgUri = EOASApplication.getInstance().photoUri + fileName + ".jpg";
+            imgUri = EOASApplication.getInstance().getPhotoUri() + fileName + ".jpg";
         } else {
             txtName.setText("无名氏");
             fileName = "sysadmin";
@@ -220,8 +220,10 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
         //设置自动出勤与否
         if (CacheInfoUtil.loadIsRegAuto(getContext(), loginId)) {
             aSwitch.setChecked(true);
+            startRegAutoService();
         } else {
             aSwitch.setChecked(false);
+            stopRegAutoService();
         }
 
         //设置用户是否接收push

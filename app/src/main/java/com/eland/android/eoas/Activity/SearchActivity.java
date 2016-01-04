@@ -1,5 +1,6 @@
 package com.eland.android.eoas.Activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -41,7 +42,7 @@ import butterknife.ButterKnife;
 /**
  * Created by liu.wenbin on 15/12/16.
  */
-public class SearchActivity extends AppCompatActivity implements ContactService.IOnSearchContactListener{
+public class SearchActivity extends AppCompatActivity implements ContactService.IOnSearchContactListener {
 
     @Bind(R.id.searchtoolbar)
     Toolbar searchtoolbar;
@@ -60,7 +61,7 @@ public class SearchActivity extends AppCompatActivity implements ContactService.
     ContactService contactService;
 
     private String searchKey;
-    private com.rey.material.app.Dialog httpDialog;
+    private Dialog httpDialog;
     private String userId;
 
     @Override
@@ -133,9 +134,9 @@ public class SearchActivity extends AppCompatActivity implements ContactService.
         }
 
         //hide input keyboard
-        InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        if(im.isActive()) {
+        if (im.isActive()) {
             im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
 
@@ -158,12 +159,20 @@ public class SearchActivity extends AppCompatActivity implements ContactService.
 
     @Override
     public void onSearchSuccess(ArrayList<LoginInfo> list) {
-        startFindLikeData(list);
+        if(null != list && list.size() > 0) {
+            startFindLikeData(list);
+        }
+        else {
+            if (httpDialog.isShowing()) {
+                httpDialog.dismiss();
+            }
+            ToastUtil.showToast(this, "没有搜索到匹配的人员信息", Toast.LENGTH_SHORT);
+        }
     }
 
     @Override
     public void onSearchFailure(int code, String msg) {
-        if(httpDialog.isShowing()) {
+        if (httpDialog.isShowing()) {
             httpDialog.dismiss();
         }
         ToastUtil.showToast(this, "没有搜索到匹配的人员信息", Toast.LENGTH_SHORT);
@@ -172,8 +181,8 @@ public class SearchActivity extends AppCompatActivity implements ContactService.
     private void startFindLikeData(List<LoginInfo> list) {
         List<LoginInfo> returnList = new ArrayList<>();
 
-        for(int i = 0; i < list.size(); i++) {
-            if(list.get(i).userName.contains(searchKey)
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).userName.contains(searchKey)
                     || list.get(i).userId.contains(searchKey)
                     || list.get(i).cellNo.contains(searchKey)) {
                 returnList.add(list.get(i));
@@ -185,13 +194,17 @@ public class SearchActivity extends AppCompatActivity implements ContactService.
     }
 
     private void initAdapt(List<LoginInfo> list) {
-        mAdapt = new ContactAdapt(this, list, imageLoader) ;
-        AnimationAdapter animAdapter = new ScaleInAnimationAdapter(mAdapt);
-        animAdapter.setAbsListView(listView);
-        animAdapter.setInitialDelayMillis(300);
-        listView.setAdapter(animAdapter);
+        if (null != list && list.size() > 0) {
+            mAdapt = new ContactAdapt(this, list, imageLoader);
+            AnimationAdapter animAdapter = new ScaleInAnimationAdapter(mAdapt);
+            animAdapter.setAbsListView(listView);
+            animAdapter.setInitialDelayMillis(300);
+            listView.setAdapter(animAdapter);
+        } else {
+            ToastUtil.showToast(this, "没有搜索到匹配的人员信息", Toast.LENGTH_SHORT);
+        }
 
-        if(httpDialog.isShowing()) {
+        if (httpDialog.isShowing()) {
             httpDialog.dismiss();
         }
     }

@@ -3,15 +3,9 @@ package com.eland.android.eoas.Util;
 import android.content.Context;
 
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.BaseJsonHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-
 import cz.msebera.android.httpclient.entity.StringEntity;
 
 /**

@@ -19,6 +19,7 @@ import com.eland.android.eoas.Model.Constant;
 import com.eland.android.eoas.Model.ScheduleInfo;
 import com.eland.android.eoas.R;
 import com.eland.android.eoas.Service.SearchScheduleService;
+import com.eland.android.eoas.Util.ProgressUtil;
 import com.eland.android.eoas.Util.SharedReferenceHelper;
 import com.eland.android.eoas.Util.ToastUtil;
 import com.eland.android.eoas.Views.SwipeRefreshView.MaterialRefreshLayout;
@@ -64,6 +65,7 @@ public class SearchScheduleFragment extends Fragment implements SearchScheduleSe
     public enum REFRESHTYEP {
         REFRESH,LOAD_MORE,NONE
     }
+    private android.app.Dialog httpDialog;
 
     public SearchScheduleFragment() {
     }
@@ -206,6 +208,7 @@ public class SearchScheduleFragment extends Fragment implements SearchScheduleSe
     }
 
     @OnClick(R.id.img_search) void searchSchedule() {
+        httpDialog = ProgressUtil.showHttpLoading(getContext());
         getData();
     }
 
@@ -222,6 +225,10 @@ public class SearchScheduleFragment extends Fragment implements SearchScheduleSe
         }
         refresh.finishRefresh();
         refresh.finishRefreshLoadMore();
+
+        if(httpDialog.isShowing()) {
+            httpDialog.dismiss();
+        }
     }
 
     @Override
@@ -229,6 +236,10 @@ public class SearchScheduleFragment extends Fragment implements SearchScheduleSe
         ToastUtil.showToast(context, msg, Toast.LENGTH_SHORT);
         refresh.finishRefresh();
         refresh.finishRefreshLoadMore();
+
+        if(httpDialog.isShowing()) {
+            httpDialog.dismiss();
+        }
     }
 
     @Override

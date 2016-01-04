@@ -42,10 +42,10 @@ public class SearchScheduleService {
                         for (int i = 0; i < response.length(); i++) {
                             JSONObject obj = response.getJSONObject(i);
                             dto = new ScheduleInfo();
-                            dto.work = obj.getString("work");
-                            dto.workdes = obj.getString("workdes");
-                            dto.offwork = obj.getString("offwork");
-                            dto.offworkdes = obj.getString("offworkdes");
+                            dto.work = obj.getString("work").equals("null") ? "" : obj.getString("work");
+                            dto.workdes = obj.getString("workdes").equals("null") ? "" : obj.getString("workdes");
+                            dto.offwork = obj.getString("offwork").equals("null") ? "" : obj.getString("offwork");
+                            dto.offworkdes = obj.getString("offworkdes").equals("null") ? "" : obj.getString("offworkdes");
                             dto.date = obj.getString("date");
 
                             list.add(dto);

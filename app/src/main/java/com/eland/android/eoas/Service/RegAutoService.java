@@ -210,14 +210,8 @@ public class RegAutoService extends Service implements AMapLocationListener, Sch
 
     @Override
     public void onScheduleFailure(int code, String msg) {
-
-        if(regCount > 10) {
-            showNotification(msg);
-            stopSelf();
-        }
-        else {
-            mLocationClient.startLocation();
-        }
+        showNotification(msg);
+        stopSelf();
     }
 
     @Override

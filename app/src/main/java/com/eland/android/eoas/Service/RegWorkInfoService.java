@@ -210,14 +210,8 @@ public class RegWorkInfoService extends Service implements AMapLocationListener,
 
     @Override
     public void onScheduleFailure(int code, String msg) {
-
-        if(regCount > 10) {
-            showNotification("F");
-            stopSelf();
-        }
-        else {
-            mLocationClient.startLocation();
-        }
+        showNotification("F");
+        stopSelf();
     }
 
     @Override
@@ -225,6 +219,7 @@ public class RegWorkInfoService extends Service implements AMapLocationListener,
         super.onDestroy();
         mLocationClient.stopLocation();
         mLocationClient.onDestroy();
+        stopSelf();
     }
 
     @Nullable

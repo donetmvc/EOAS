@@ -97,6 +97,16 @@ public class MainFragment extends Fragment {
         goView(mainFragment, searchScheduleFragment);
     }
 
+    @OnClick(R.id.img_applyList) void goApplyList() {
+        ApplyListFragment applyListFragment = new ApplyListFragment(context);
+        Fragment mainFragment = fragmentManager.getFragments().get(1);
+        goView(mainFragment, applyListFragment);
+    }
+
+    @OnClick(R.id.img_approveList) void goApproveList() {
+
+    }
+
     private void goView(Fragment from, Fragment to) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);

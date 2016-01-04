@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    android:layout_width="800dp"
-    android:minWidth="600dp"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:background="@android:color/transparent"
+    android:layout_height="wrap_content"
+    android:gravity="center">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_weight="0.5"
-        android:gravity="center">
+    <com.victor.loading.rotate.RotateLoading
+        android:id="@+id/rotateloading"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@android:color/transparent"
+        app:loading_width="5dp"
+        app:loading_color="@color/md_red_500" />
 
-        <com.victor.loading.rotate.RotateLoading
-            android:id="@+id/rotateloading"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            app:loading_width="5dp"
-            app:loading_color="@color/md_red_500"
-            android:layout_centerInParent="true"
-             />
-    </LinearLayout>
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="80dp"-->
+        <!--android:gravity="center">-->
+
+        <!---->
+    <!--</LinearLayout>-->
 
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:text="正在处理,请稍等..."
-        android:gravity="left|center"
-        android:layout_weight="0.5" />
+    <!--<TextView-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="80dp"-->
+        <!--android:text="正在处理,请稍等..."-->
+        <!--android:gravity="left|center"-->
+        <!--android:layout_weight="0.5" />-->
 
 </LinearLayout>

@@ -8,6 +8,7 @@ import com.eland.android.eoas.Model.Constant;
 import com.eland.android.eoas.Service.RegistAutoService;
 import com.eland.android.eoas.Util.ActivityManager;
 import com.eland.android.eoas.Util.SharedReferenceHelper;
+import com.eland.android.eoas.Util.SystemMethodUtil;
 import com.pgyersdk.crash.PgyCrashManager;
 
 import cn.jpush.android.api.JPushInterface;
@@ -22,6 +23,7 @@ public class EOASApplication extends Application {
     public static EOASApplication mInstance;
 
     public String photoUri = "http://182.92.65.253:30001/Eland.EOAS/Images/";
+    public String apiUri;
 
     public static synchronized EOASApplication getInstance() {
         if(mInstance == null) {
@@ -46,6 +48,13 @@ public class EOASApplication extends Application {
     }
 
     private void initApplicantion() {
+//        if(SystemMethodUtil.isInnerNetwork()) {
+//            photoUri = "http://10.202.101.11:30001/Eland.EOAS/Images/";
+//        }
+//        else {
+//            photoUri = "http://182.92.65.253:30001/Eland.EOAS/Images/";
+//        }
+
         //check is push id regist success or failure?
         //the first time launcher app it does't work
         String isOk = SharedReferenceHelper.getInstance(this).getValue(Constant.EOAS_PUSHID);//"FAILURE");
@@ -60,6 +69,10 @@ public class EOASApplication extends Application {
         Intent intents = new Intent(this, RegistAutoService.class);
         intents.putExtra("PUSHID", pushId);
         startService(intents);
+    }
+
+    public String getPhotoUri() {
+        return photoUri;
     }
 
     public void addActivity(Activity ac){

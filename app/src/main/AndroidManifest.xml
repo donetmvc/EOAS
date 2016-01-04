@@ -22,8 +22,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
     <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位-->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
-    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+    <!-- 打电话-->
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <!-- 改变wifi-->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
     <!--用于访问网络，网络定位需要上网-->
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
@@ -37,8 +38,6 @@
     <uses-permission android:name="android.permission.READ_LOGS"></uses-permission>
     <!--开机自启动-->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <!--打电话-->
-    <uses-permission android:name="android.permission.CALL_PHONE" />
     <!--发短信-->
     <uses-permission android:name="android.permission.SEND_SMS" />
     <!-- 允许程序录制音频 -->
@@ -86,6 +85,16 @@
         </activity>
 
         <activity android:name=".Activity.SearchActivity"
+            android:theme="@style/NoActionBarTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan|adjustResize" >
+        </activity>
+
+        <activity android:name=".Activity.ApplyActivity"
+            android:theme="@style/NoActionBarTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan|adjustResize" >
+        </activity>
+
+        <activity android:name=".Activity.ApplyStateActivity"
             android:theme="@style/NoActionBarTheme"
             android:windowSoftInputMode="stateHidden|adjustPan|adjustResize" >
         </activity>

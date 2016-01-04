@@ -74,7 +74,10 @@ public class ScheduleAdapt extends BaseAdapter {
             viewHolder.txtWork.setText(scheduleInfo.work);
             viewHolder.txtWorkdes.setText(scheduleInfo.workdes);
 
-            if(scheduleInfo.workdes.equals("迟到") || scheduleInfo.workdes.equals("旷工")) {
+            if(scheduleInfo.workdes.isEmpty()) {
+
+            }
+            else if(scheduleInfo.workdes.equals("迟到") || scheduleInfo.workdes.equals("旷工")) {
                 viewHolder.txtWorkdes.setBackgroundColor(context.getResources().getColor(R.color.md_red_500));
             }
             else {
@@ -84,7 +87,10 @@ public class ScheduleAdapt extends BaseAdapter {
             viewHolder.txtOffwork.setText(scheduleInfo.offwork);
             viewHolder.txtOffworkdes.setText(scheduleInfo.offworkdes);
 
-            if(scheduleInfo.offworkdes.equals("早退") || scheduleInfo.offworkdes.equals("旷工")) {
+            if(scheduleInfo.offworkdes.isEmpty()) {
+
+            }
+            else if(scheduleInfo.offworkdes.equals("早退") || scheduleInfo.offworkdes.equals("旷工")) {
                 viewHolder.txtOffworkdes.setBackgroundColor(context.getResources().getColor(R.color.md_red_500));
             }
             else {
