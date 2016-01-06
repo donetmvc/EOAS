@@ -141,6 +141,34 @@ public class ApplyService {
 
     }
 
+    public static void searchApprogressList(String userId, String applyId, final IOnApplyListener iOnApplyListener) {
+        String uri = "api/ADM";
+        RequestParams params = new RequestParams();
+        params.add("userId", userId);
+        params.add("applyId", applyId);
+
+        HttpRequstUtil.get(uri, params, new JsonHttpResponseHandler(){
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+                iOnApplyListener.onSuccess(response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                iOnApplyListener.onFailure(1, 99999, "连接服务器超时");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                iOnApplyListener.onFailure(1, 99999, "连接服务器超时");
+            }
+        });
+    }
+
     public interface IOnApplyListener {
         void onSuccess(JSONObject obj);
         void onSuccess(JSONArray array);

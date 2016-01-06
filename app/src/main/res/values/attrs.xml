@@ -41,4 +41,8 @@
         </attr>
         <attr name="isLoadMore" format="boolean"></attr>
     </declare-styleable>
+    <!--step view-->
+    <declare-styleable name="StepsViewIndicator">
+        <attr name="numOfSteps" format="integer" />
+    </declare-styleable>
 </resources>

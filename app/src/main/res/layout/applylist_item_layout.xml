@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/img_vacationstate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:src="@mipmap/apply_success_icon"/>
 
     </LinearLayout>
