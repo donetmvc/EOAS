@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.eland.android.eoas.Activity.ApproveActivity;
 import com.eland.android.eoas.Activity.TestActivity;
 import com.eland.android.eoas.Service.RegistAutoService;
 import com.eland.android.eoas.Util.ConsoleUtil;
@@ -45,7 +46,7 @@ public class PushMessageReceiver extends BroadcastReceiver {
             Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
 
             //打开自定义的Activity
-            Intent i = new Intent(context, TestActivity.class);
+            Intent i = new Intent(context, ApproveActivity.class);
             i.putExtras(bundle);
             //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );

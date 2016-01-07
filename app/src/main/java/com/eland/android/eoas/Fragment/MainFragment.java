@@ -104,7 +104,9 @@ public class MainFragment extends Fragment {
     }
 
     @OnClick(R.id.img_approveList) void goApproveList() {
-
+        ApproveListFragment approveListFragment = new ApproveListFragment(context);
+        Fragment mainFragment = fragmentManager.getFragments().get(1);
+        goView(mainFragment, approveListFragment);
     }
 
     private void goView(Fragment from, Fragment to) {

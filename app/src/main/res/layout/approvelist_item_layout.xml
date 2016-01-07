@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+    
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="0.9">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="3dp">
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:text="申请人员"
+                android:gravity="center_vertical"
+                android:textColor="@color/text_color"
+                android:textSize="15dp"/>
+            <TextView
+                android:id="@+id/txt_applicant"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:textColor="#000"
+                android:textSize="15dp"
+                android:text="刘文彬"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="3dp">
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:text="休假类型"
+                android:gravity="center_vertical"
+                android:textColor="@color/text_color"
+                android:textSize="15dp"/>
+            <TextView
+                android:id="@+id/txt_vacationName"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:textColor="#000"
+                android:textSize="15dp"
+                android:text="企业年休假"
+                android:gravity="center_vertical" />
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:text="休假天数"
+                android:gravity="center_vertical"
+                android:textColor="@color/text_color"
+                android:textSize="15dp"/>
+            <TextView
+                android:id="@+id/txt_vacationdays"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:textColor="#000"
+                android:textSize="15dp"
+                android:text="0.5天"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="3dp">
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:text="休假日期"
+                android:gravity="center_vertical"
+                android:textColor="@color/text_color"
+                android:textSize="15dp"/>
+            <TextView
+                android:id="@+id/txt_vacationperiod"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:textColor="#000"
+                android:textSize="15dp"
+                android:layout_weight="0.5"
+                android:text="2015-12-21 08:00~2015-12-21 13:00"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="3dp">
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:text="申请理由"
+                android:gravity="center_vertical"
+                android:textColor="@color/text_color"
+                android:textSize="15dp"/>
+            <TextView
+                android:id="@+id/txt_remark"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:textColor="#000"
+                android:textSize="15dp"
+                android:text="家中有事需要处理"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="20dp"
+        android:layout_height="120dp"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/item_arrow"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_applyId"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+</LinearLayout>
