@@ -301,6 +301,11 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
             }
         }
 
+        if(diffDays.equals("0.0")) {
+            ToastUtil.showToast(this, "选择正确的休假日期", Toast.LENGTH_LONG);
+            return false;
+        }
+
         return true;
     }
 
@@ -386,25 +391,29 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
     public void onSuccess(int type, String msg) {
         String message = msg.replaceAll("\"", "");
         String alertMessage = "";
-
-        if(message.isEmpty()) {
-            alertMessage = "申请失败";
-        }
-        else if(message.equals("HUM008")) {
-            alertMessage = "此期间内已申请过相同的假期";
-        }
-        else if(message.equals("HUM009")) {
-            alertMessage = "请先设置代理负责人";
-        }
-        else {
-            alertMessage = "申请成功";
-        }
-        ToastUtil.showToast(this, alertMessage, Toast.LENGTH_LONG);
         if (httpDialog.isShowing()) {
             httpDialog.dismiss();
         }
 
-        if(alertMessage.equals("申请成功")) {
+        if(message.isEmpty()) {
+            alertMessage = "申请失败";
+            ToastUtil.showToast(this, alertMessage, Toast.LENGTH_LONG);
+        }
+        else if(message.equals("HUM008")) {
+            alertMessage = "此期间内已申请过相同的假期";
+            ToastUtil.showToast(this, alertMessage, Toast.LENGTH_LONG);
+        }
+        else if(message.equals("HUM009")) {
+            //alertMessage = "请先设置代理负责人";
+            Intent intent = new Intent(ApplyActivity.this, SetProxyUserActivity.class);
+            intent.putExtra("StartDate", startDate);
+            intent.putExtra("EndDate", endDate);
+
+            startActivityForResult(intent, 1);
+        }
+        else {
+            alertMessage = "申请成功";
+            ToastUtil.showToast(this, alertMessage, Toast.LENGTH_LONG);
             Intent intent = new Intent();
             //把返回数据存入Intent
             intent.putExtra("result", "refresh");
@@ -412,6 +421,18 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
             ApplyActivity.this.setResult(RESULT_OK, intent);
             ApplyActivity.this.finish();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if(null != intent) {
+            String result = intent.getExtras().getString("result");//得到新Activity 关闭后返回的数据
+            if(result.equals("OK")) {
+                startApply();
+            }
+        }
+
     }
 
     @Override

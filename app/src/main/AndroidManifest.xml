@@ -99,6 +99,11 @@
             android:windowSoftInputMode="stateHidden|adjustPan|adjustResize" >
         </activity>
 
+        <activity android:name=".Activity.SetProxyUserActivity"
+            android:theme="@style/NoActionBarTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan|adjustResize" >
+        </activity>
+
         <service android:name="com.amap.api.location.APSService"></service>
 
         <service android:name=".Service.RegWorkInfoService"

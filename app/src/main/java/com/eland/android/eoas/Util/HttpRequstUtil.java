@@ -13,8 +13,8 @@ import cz.msebera.android.httpclient.entity.StringEntity;
  */
 public class HttpRequstUtil {
 
-//    private static final String baseURL = "http://10.202.101.150/EOAS/";
-    private static final String baseURL = "http://182.92.65.253:30001/";
+    private static final String baseURL = "http://10.202.101.11:30002/";
+//    private static final String baseURL = "http://182.92.65.253:30001/";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 

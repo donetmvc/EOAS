@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".Activity.ApplyStateActivity">
+    tools:context=".Activity.SetProxyUserActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/applytoolbar"
+            android:id="@+id/setProxytoolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay">
@@ -24,11 +24,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
-        <com.eland.android.eoas.Views.stepView.StepsView
-            android:id="@+id/step"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></com.eland.android.eoas.Views.stepView.StepsView>
+        android:layout_marginTop="55dp">
+        <include layout="@layout/contact_fragment" />
     </LinearLayout>
-
 </android.support.design.widget.CoordinatorLayout>

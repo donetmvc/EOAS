@@ -131,10 +131,8 @@ public class SearchScheduleFragment extends Fragment implements SearchScheduleSe
                 refresh.finishRefreshLoadMore();
                 refreshType = REFRESHTYEP.REFRESH;
 
-                if(null != mList && mList.get(mList.size() - 1) != null) {
-                    mList.clear();
-                    mAdapt.notifyDataSetChanged();
-                }
+                mList.clear();
+                mAdapt.notifyDataSetChanged();
                 getData();
             }
 

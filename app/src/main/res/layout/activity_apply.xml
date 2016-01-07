@@ -21,6 +21,11 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/apply_main" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp">
+        <include layout="@layout/apply_main" />
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

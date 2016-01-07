@@ -63,19 +63,19 @@ public class ApplyListService {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                iOnSearchApplyListListener.onSearchFailure(99999, "服务器异常");
+                iOnSearchApplyListListener.onSearchFailure(99999, "连接服务器超时");
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                iOnSearchApplyListListener.onSearchFailure(99999, "服务器异常");
+                iOnSearchApplyListListener.onSearchFailure(99999, "连接服务器超时");
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                iOnSearchApplyListListener.onSearchFailure(99999, "服务器异常");
+                iOnSearchApplyListListener.onSearchFailure(99999, "连接服务器超时");
             }
 
         });
