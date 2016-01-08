@@ -2,6 +2,7 @@ package com.eland.android.eoas.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,9 +14,17 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.eland.android.eoas.Activity.MainActivity;
+import com.eland.android.eoas.Model.ApproveListInfo;
+import com.eland.android.eoas.Model.Constant;
 import com.eland.android.eoas.R;
+import com.eland.android.eoas.Receiver.DeskCountChangeReceiver;
+import com.eland.android.eoas.Service.ApproveListService;
 import com.eland.android.eoas.Util.ConsoleUtil;
+import com.eland.android.eoas.Util.SharedReferenceHelper;
 import com.eland.android.eoas.Util.ToastUtil;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,7 +33,7 @@ import butterknife.OnClick;
 /**
  * Created by liu.wenbin on 15/11/27.
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements ApproveListService.IOnApproveListListener{
 
     @Bind(R.id.img_registSchedule)
     LinearLayout imgRegistSchedule;
@@ -35,6 +44,7 @@ public class MainFragment extends Fragment {
     private ContactFragment contactFragment;
     private static final int SCHEDULE_REGISTER = 10;    //打卡
     private String TAG = "EOAS";
+    private String mUserId;
 
     public MainFragment() {
     }
@@ -51,7 +61,13 @@ public class MainFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
 
+        mUserId = SharedReferenceHelper.getInstance(context).getValue(Constant.LOGINID);
+        setApproveCount();
         return rootView;
+    }
+
+    private void setApproveCount() {
+        ApproveListService.searchApproveList(mUserId, this);
     }
 
     @Override
@@ -142,4 +158,16 @@ public class MainFragment extends Fragment {
         super.onDetach();
     }
 
+    @Override
+    public void onSuccess(List<ApproveListInfo> list) {
+        Intent intent = new Intent(getActivity(), DeskCountChangeReceiver.class);
+        intent.setAction("EOAS_COUNT_CHANGED");
+        intent.putExtra("COUNT", String.valueOf(list.size() == 0 ? 0 : list.size()));
+        context.sendBroadcast(intent);
+    }
+
+    @Override
+    public void onFailure(int code, String msg) {
+
+    }
 }

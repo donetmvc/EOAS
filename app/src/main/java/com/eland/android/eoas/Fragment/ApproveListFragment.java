@@ -16,13 +16,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.eland.android.eoas.Activity.ApplyStateActivity;
 import com.eland.android.eoas.Activity.ApproveActivity;
-import com.eland.android.eoas.Adapt.ApplyListAdapt;
 import com.eland.android.eoas.Adapt.ApproveListAdapt;
 import com.eland.android.eoas.Model.ApproveListInfo;
 import com.eland.android.eoas.Model.Constant;
 import com.eland.android.eoas.R;
+import com.eland.android.eoas.Receiver.DeskCountChangeReceiver;
 import com.eland.android.eoas.Service.ApproveListService;
 import com.eland.android.eoas.Util.ProgressUtil;
 import com.eland.android.eoas.Util.SharedReferenceHelper;
@@ -182,6 +181,12 @@ public class ApproveListFragment extends Fragment implements ApproveListService.
         animAdapter.setAbsListView(listView);
         animAdapter.setInitialDelayMillis(300);
         listView.setAdapter(animAdapter);
+
+
+        Intent intent = new Intent(getActivity(), DeskCountChangeReceiver.class);
+        intent.setAction("EOAS_COUNT_CHANGED");
+        intent.putExtra("COUNT", String.valueOf(list.size() == 0 ? 0 : list.size()));
+        context.sendBroadcast(intent);
     }
 
     @Override

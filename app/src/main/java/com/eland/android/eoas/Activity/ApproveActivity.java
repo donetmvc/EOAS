@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by liu.wenbin on 16/1/7.
@@ -57,6 +58,7 @@ public class ApproveActivity extends AppCompatActivity implements
     private Dialog httpDialog;
     private String[] approves;
     private int approvePosition = 0;
+    private int approveType = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,8 +77,23 @@ public class ApproveActivity extends AppCompatActivity implements
 
         if (null != intent) {
             String param = intent.getStringExtra("VACATIONNO");
-            if (!param.isEmpty()) {
+            if (null != param && !param.isEmpty()) {
                 applyId = param;
+                approveType = 0;
+            }
+            else {
+                Bundle bundle = intent.getExtras();
+                if(null != bundle) {
+                    String applyJson = bundle.getString(JPushInterface.EXTRA_EXTRA);
+                    JSONObject obj;
+                    try {
+                        obj = new JSONObject(applyJson);
+                        applyId = obj.getString("ApplyID");
+                        approveType = 1;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }
@@ -97,6 +114,11 @@ public class ApproveActivity extends AppCompatActivity implements
     }
 
     private void initView() {
+
+        if(applyId == null || applyId.isEmpty()) {
+            ToastUtil.showToast(this, "没有可批准的信息", Toast.LENGTH_SHORT);
+            return;
+        }
         httpDialog = ProgressUtil.showHttpLoading(this);
         startSearchApproveInfo();
     }
@@ -107,6 +129,10 @@ public class ApproveActivity extends AppCompatActivity implements
 
     @OnClick(R.id.btn_approve)
     void approve() {
+        if(null == httpDialog) {
+            httpDialog = ProgressUtil.showHttpLoading(this);
+        }
+        httpDialog.show();
         ApproveService.saveApprove(mUserId, "01", editRemark.getText().toString(), applyId, this);
     }
 
@@ -118,6 +144,10 @@ public class ApproveActivity extends AppCompatActivity implements
             return;
         }
 
+        if(null == httpDialog) {
+            httpDialog = ProgressUtil.showHttpLoading(this);
+        }
+        httpDialog.show();
         ApproveService.saveApprove(mUserId, "02", editRemark.getText().toString(), applyId, this);
     }
 
@@ -176,11 +206,19 @@ public class ApproveActivity extends AppCompatActivity implements
     public void onApproveSucess(String content, String reason) {
 
         if(content.equals("OK")) {
-            if(reason.equals("01")) {
-                //当前审批人已经审批，返回list页面
+            if (httpDialog.isShowing()) {
+                httpDialog.dismiss();
+            }
+            //当前审批人已经审批，返回list页面
+            if(approveType == 0) {
                 Intent intent = new Intent();
                 intent.putExtra("result", "OK");
                 ApproveActivity.this.setResult(RESULT_OK, intent);
+                ApproveActivity.this.finish();
+            }
+            else {
+                Intent intent = new Intent(ApproveActivity.this, MainActivity.class);
+                startActivity(intent);
                 ApproveActivity.this.finish();
             }
         }

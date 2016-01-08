@@ -121,6 +121,9 @@
         <receiver android:name=".Receiver.AutoReceiver">
         </receiver>
 
+        <receiver android:name=".Receiver.DeskCountChangeReceiver">
+        </receiver>
+
         <receiver android:name=".Receiver.AppRebootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

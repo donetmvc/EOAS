@@ -120,10 +120,10 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/img_approve"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:src="@mipmap/icon_list_approve" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

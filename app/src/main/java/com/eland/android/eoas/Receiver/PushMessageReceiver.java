@@ -44,6 +44,7 @@ public class PushMessageReceiver extends BroadcastReceiver {
 
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
+            String applyId = bundle.getString(JPushInterface.EXTRA_EXTRA);
 
             //打开自定义的Activity
             Intent i = new Intent(context, ApproveActivity.class);
