@@ -161,16 +161,22 @@ public class ApproveListFragment extends Fragment implements ApproveListService.
         ButterKnife.unbind(this);
     }
 
-    @Override
-    public void onSuccess(List<ApproveListInfo> list) {
-        if(httpDialog.isShowing()) {
+    private void clearLoading() {
+        if(null != refresh) {
+            refresh.finishRefresh();
+            refresh.finishRefreshLoadMore();
+        }
+        if(httpDialog != null && httpDialog.isShowing()) {
             httpDialog.dismiss();
         }
-        refresh.finishRefresh();
+    }
+
+    @Override
+    public void onSuccess(List<ApproveListInfo> list) {
+        clearLoading();
 
         if(null != list && list.size() > 0) {
             mList = list;
-
         }
         else {
             mList = new ArrayList<>();
@@ -191,10 +197,7 @@ public class ApproveListFragment extends Fragment implements ApproveListService.
 
     @Override
     public void onFailure(int code, String msg) {
-        if(httpDialog.isShowing()) {
-            httpDialog.dismiss();
-        }
-        refresh.finishRefresh();
+        clearLoading();
         ToastUtil.showToast(context, msg, Toast.LENGTH_LONG);
     }
 }

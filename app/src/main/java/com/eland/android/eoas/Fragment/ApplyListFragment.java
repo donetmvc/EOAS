@@ -23,9 +23,11 @@ import com.eland.android.eoas.Activity.ApplyActivity;
 import com.eland.android.eoas.Activity.ApplyStateActivity;
 import com.eland.android.eoas.Adapt.ApplyListAdapt;
 import com.eland.android.eoas.Model.ApplyListInfo;
+import com.eland.android.eoas.Model.Constant;
 import com.eland.android.eoas.R;
 import com.eland.android.eoas.Service.ApplyListService;
 import com.eland.android.eoas.Util.ProgressUtil;
+import com.eland.android.eoas.Util.SharedReferenceHelper;
 import com.eland.android.eoas.Util.ToastUtil;
 import com.eland.android.eoas.Views.SwipeRefreshView.MaterialRefreshLayout;
 import com.eland.android.eoas.Views.SwipeRefreshView.MaterialRefreshListener;
@@ -57,6 +59,7 @@ public class ApplyListFragment extends Fragment implements ApplyListService.IOnS
 
     Dialog httpDialog;
     private String startDate,endDate;
+    private String mUserId;
 
     private REFRESH_TYPE refreshType = REFRESH_TYPE.RERESH;
 
@@ -103,6 +106,8 @@ public class ApplyListFragment extends Fragment implements ApplyListService.IOnS
 
         startDate = simpleDateFormat.format(cal.getTime());
         endDate = simpleDateFormat.format(cal1.getTime());
+
+        mUserId = SharedReferenceHelper.getInstance(context).getValue(Constant.LOGINID);
     }
 
     private void initAdapt() {
@@ -169,7 +174,7 @@ public class ApplyListFragment extends Fragment implements ApplyListService.IOnS
     }
 
     private void getData() {
-        ApplyListService.searchApplyList("liu.wenbin", "2015-12-01", "2015-12-31", this);
+        ApplyListService.searchApplyList(mUserId, startDate, endDate, this);
     }
 
     @Override
@@ -218,9 +223,11 @@ public class ApplyListFragment extends Fragment implements ApplyListService.IOnS
     }
 
     private void clearLoading() {
-        refresh.finishRefresh();
-        refresh.finishRefreshLoadMore();
-        if(httpDialog.isShowing()) {
+        if(null != refresh) {
+            refresh.finishRefresh();
+            refresh.finishRefreshLoadMore();
+        }
+        if(httpDialog != null && httpDialog.isShowing()) {
             httpDialog.dismiss();
         }
     }

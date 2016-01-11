@@ -157,15 +157,23 @@ public class SearchActivity extends AppCompatActivity implements ContactService.
         contactService.searchContact(userId, this);
     }
 
+    private void clearLoading() {
+        if(null != refresh) {
+            refresh.finishRefresh();
+            refresh.finishRefreshLoadMore();
+        }
+        if(httpDialog != null && httpDialog.isShowing()) {
+            httpDialog.dismiss();
+        }
+    }
+
     @Override
     public void onSearchSuccess(ArrayList<LoginInfo> list) {
         if(null != list && list.size() > 0) {
             startFindLikeData(list);
         }
         else {
-            if (httpDialog.isShowing()) {
-                httpDialog.dismiss();
-            }
+            clearLoading();
             ToastUtil.showToast(this, "没有搜索到匹配的人员信息", Toast.LENGTH_SHORT);
         }
     }
@@ -203,9 +211,6 @@ public class SearchActivity extends AppCompatActivity implements ContactService.
         } else {
             ToastUtil.showToast(this, "没有搜索到匹配的人员信息", Toast.LENGTH_SHORT);
         }
-
-        if (httpDialog.isShowing()) {
-            httpDialog.dismiss();
-        }
+        clearLoading();
     }
 }

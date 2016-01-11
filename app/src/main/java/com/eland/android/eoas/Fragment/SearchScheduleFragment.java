@@ -131,7 +131,6 @@ public class SearchScheduleFragment extends Fragment implements SearchScheduleSe
                 refresh.finishRefreshLoadMore();
                 refreshType = REFRESHTYEP.REFRESH;
 
-                mList.clear();
                 mAdapt.notifyDataSetChanged();
                 getData();
             }
@@ -214,30 +213,33 @@ public class SearchScheduleFragment extends Fragment implements SearchScheduleSe
         SearchScheduleService.searchSchedule(mUserId, startDate, endDate, this);
     }
 
-    @Override
-    public void onSuccess(List<ScheduleInfo> list) {
-        if(null != list && list.size() > 0) {
-            mList = list;
-            mAdapt.setList(mList);
-            mAdapt.notifyDataSetChanged();
+    private void clearLoading() {
+        if(null != refresh) {
+            refresh.finishRefresh();
+            refresh.finishRefreshLoadMore();
         }
-        refresh.finishRefresh();
-        refresh.finishRefreshLoadMore();
-
-        if(httpDialog.isShowing()) {
+        if(httpDialog != null && httpDialog.isShowing()) {
             httpDialog.dismiss();
         }
     }
 
     @Override
-    public void onFailure(int code, String msg) {
-        ToastUtil.showToast(context, msg, Toast.LENGTH_SHORT);
-        refresh.finishRefresh();
-        refresh.finishRefreshLoadMore();
-
-        if(httpDialog.isShowing()) {
-            httpDialog.dismiss();
+    public void onSuccess(List<ScheduleInfo> list) {
+        clearLoading();
+        if(null != list && list.size() > 0) {
+            mList = list;
+            mAdapt.setList(mList);
+            mAdapt.notifyDataSetChanged();
         }
+        else {
+            ToastUtil.showToast(context, "没有可查询的数据", Toast.LENGTH_SHORT);
+        }
+    }
+
+    @Override
+    public void onFailure(int code, String msg) {
+        clearLoading();
+        ToastUtil.showToast(context, msg, Toast.LENGTH_SHORT);
     }
 
     @Override
