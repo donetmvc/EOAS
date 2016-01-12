@@ -116,7 +116,9 @@ public class ContactFragment extends Fragment implements ContactService.IOnSearc
 
                     @Override
                     public void run() {
-                        refresh.finishRefreshLoadMore();
+                        if(null != refresh) {
+                            refresh.finishRefreshLoadMore();
+                        }
                     }
                 }, 3000);
             }

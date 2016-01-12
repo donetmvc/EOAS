@@ -7,7 +7,7 @@ import android.util.Log;
  */
 public class ConsoleUtil {
 
-    private final static boolean DEBUG = false;
+    private final static boolean DEBUG = true;
 
     //verbose
     public static void v(String tag, String msg) {

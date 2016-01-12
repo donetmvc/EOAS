@@ -141,7 +141,9 @@ public class ApplyListFragment extends Fragment implements ApplyListService.IOnS
 
                     @Override
                     public void run() {
-                        refresh.finishRefreshLoadMore();
+                        if(null != refresh) {
+                            refresh.finishRefreshLoadMore();
+                        }
                     }
                 }, 3000);
             }

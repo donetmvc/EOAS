@@ -20,6 +20,7 @@ import com.amap.api.maps2d.AMapUtils;
 import com.amap.api.maps2d.model.LatLng;
 import com.eland.android.eoas.R;
 import com.eland.android.eoas.Util.ConsoleUtil;
+import com.eland.android.eoas.Util.SharedReferenceHelper;
 
 /**
  * Created by liu.wenbin on 15/12/17.
@@ -105,7 +106,7 @@ public class RegAutoService extends Service implements AMapLocationListener, Sch
     }
 
     private void startLocation() {
-        ConsoleUtil.i(TAG, "----------RegWorkInfoService:" + "Location Start");
+        //ConsoleUtil.i(TAG, "----------RegWorkInfoService:" + "Location Start");
         mLocationClient.startLocation();
     }
 
@@ -138,12 +139,12 @@ public class RegAutoService extends Service implements AMapLocationListener, Sch
                     distance = distance2;
                 }
 
-                ConsoleUtil.i(TAG, "----------RegWorkInfoService:" + distance);
+                //ConsoleUtil.i(TAG, "----------RegWorkInfoService:" + distance);
 
                 if(type.equals("AUTO")) {
 
                     if(distance < 300.0) {
-                        ConsoleUtil.i(TAG, "----------RegWorkInfoService:" + "Location end");
+                        //ConsoleUtil.i(TAG, "----------RegWorkInfoService:" + "Location end");
                         mLocationClient.stopLocation();
                         startRegService();
                     }
@@ -166,7 +167,7 @@ public class RegAutoService extends Service implements AMapLocationListener, Sch
     private void startRegService() {
         ScheduleService scheduleService = new ScheduleService();
         scheduleService.setOnScheduleListener(this);
-        ConsoleUtil.i(TAG, "----------RegWorkInfoService:" + "Regist start" + isAm);
+        //ConsoleUtil.i(TAG, "----------RegWorkInfoService:" + "Regist start" + isAm);
         scheduleService.regScheduleAM(imei, isAm);
     }
 

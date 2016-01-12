@@ -9,6 +9,7 @@ import com.eland.android.eoas.Service.CheckRegScheduleService;
 import com.eland.android.eoas.Service.RegAutoService;
 import com.eland.android.eoas.Service.RegWorkInfoService;
 import com.eland.android.eoas.Util.ConsoleUtil;
+import com.eland.android.eoas.Util.SharedReferenceHelper;
 import com.eland.android.eoas.Util.SystemMethodUtil;
 
 import java.text.SimpleDateFormat;
@@ -27,6 +28,7 @@ public class AutoReceiver extends BroadcastReceiver implements CheckRegScheduleS
     private TelephonyManager telephonyManager;
     private String imei;
     private String isAm;
+    private String recievedBroadcast = "false";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -44,9 +46,13 @@ public class AutoReceiver extends BroadcastReceiver implements CheckRegScheduleS
             String formatDate = format.format(currentDate);
             int hour = Integer.valueOf(formatDate.substring(0, 5).replace(":", ""));
 
-            if((hour >= 650 && hour <= 830) || hour > 1705 && hour < 1800) {
-                //check are you reg schedule
-                startCheck();
+            recievedBroadcast = SharedReferenceHelper.getInstance(context).getValue("REG_AUTO");
+            ConsoleUtil.i(TAG, "--------Received:------------" + recievedBroadcast);
+            if(!recievedBroadcast.equals("true")) {
+                if((hour >= 650 && hour <= 830) || hour > 1705 && hour < 1800) {
+                    //check are you reg schedule
+                    startCheck();
+                }
             }
         }
 
@@ -66,6 +72,7 @@ public class AutoReceiver extends BroadcastReceiver implements CheckRegScheduleS
     }
 
     private void startCheck() {
+        SharedReferenceHelper.getInstance(context).setValue("REG_AUTO", "true");
         CheckRegScheduleService checkService = new CheckRegScheduleService();
         checkService.check(imei, this);
     }
@@ -86,7 +93,9 @@ public class AutoReceiver extends BroadcastReceiver implements CheckRegScheduleS
     @Override
     public void onCheckSuccess(String msg) {
 //        startRegService();
+        ConsoleUtil.i(TAG, "--------Message:------------" + msg);
         if(msg.equals("EMPTY")) {
+            SharedReferenceHelper.getInstance(context).setValue("REG_AUTO", "false");
             if(!SystemMethodUtil.isWorked(context, "RegAutoService")) {
                 startRegService();
             }

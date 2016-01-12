@@ -104,7 +104,9 @@ public class ApproveListFragment extends Fragment implements ApproveListService.
 
                     @Override
                     public void run() {
-                        refresh.finishRefreshLoadMore();
+                        if(null != refresh) {
+                            refresh.finishRefreshLoadMore();
+                        }
                     }
                 }, 3000);
             }

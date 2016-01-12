@@ -145,7 +145,9 @@ public class SearchScheduleFragment extends Fragment implements SearchScheduleSe
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        refresh.finishRefreshLoadMore();
+                        if(null != refresh) {
+                            refresh.finishRefreshLoadMore();
+                        }
                     }
                 }, 3000);
 
