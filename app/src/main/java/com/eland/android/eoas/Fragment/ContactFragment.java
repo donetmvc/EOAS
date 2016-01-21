@@ -211,17 +211,19 @@ public class ContactFragment extends Fragment implements ContactService.IOnSearc
     @Override
     public void onSearchSuccess(ArrayList<LoginInfo> list) {
         clearLoading();
-        if(list != null && list.get(list.size() - 1) != null) {
-            //把数据加入缓存
-            CacheInfoUtil.saveContact(context, list);
+        if(null != listView) {
+            if(list != null && list.get(list.size() - 1) != null) {
+                //把数据加入缓存
+                CacheInfoUtil.saveContact(context, list);
 
-            mLsit.clear();
-            mLsit.addAll(list);
-            mAdapt.setList(mLsit);
-            mAdapt.notifyDataSetChanged();
-        }
-        else {
-            ToastUtil.showToast(context, "没有可查询的数据", Toast.LENGTH_LONG);
+                mLsit.clear();
+                mLsit.addAll(list);
+                mAdapt.setList(mLsit);
+                mAdapt.notifyDataSetChanged();
+            }
+            else {
+                ToastUtil.showToast(context, "没有可查询的数据", Toast.LENGTH_LONG);
+            }
         }
     }
 

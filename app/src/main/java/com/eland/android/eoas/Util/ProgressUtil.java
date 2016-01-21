@@ -48,6 +48,7 @@ public class ProgressUtil {
         dialog.setContentView(view);
 
         dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         dialog.show();
 
         return dialog;

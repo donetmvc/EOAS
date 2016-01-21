@@ -21,6 +21,7 @@ import com.eland.android.eoas.Fragment.DrawerFragment;
 import com.eland.android.eoas.Fragment.MainFragment;
 import com.eland.android.eoas.Model.Constant;
 import com.eland.android.eoas.R;
+import com.eland.android.eoas.Util.HttpRequstUtil;
 import com.eland.android.eoas.Util.ProgressUtil;
 import com.eland.android.eoas.Util.SharedReferenceHelper;
 import com.eland.android.eoas.Util.ToastUtil;
@@ -182,8 +183,15 @@ public class MainActivity extends AppCompatActivity implements ProgressUtil.IOnM
     private void hideFragments(FragmentTransaction transaction) {
         if (mainFragment != null && mainFragment.isAdded()) {
             String isChanging = SharedReferenceHelper.getInstance(this).getValue(Constant.EOAS_ISCHANGINGTHEME);
-            if(isChanging.equals("TURE") && mainFragment.getParentFragment() != null) {
-                transaction.hide(mainFragment);
+            if(isChanging.equals("TURE")) {
+                int i = fragmentManager.getBackStackEntryCount();
+                if(i > 0) {
+                    transaction.hide(mainFragment);
+                }
+                else {
+                    SharedReferenceHelper.getInstance(this).setValue(Constant.EOAS_ISCHANGINGTHEME, "FALSE");
+                    transaction.show(mainFragment);
+                }
             }
             else {
                 SharedReferenceHelper.getInstance(this).setValue(Constant.EOAS_ISCHANGINGTHEME, "FALSE");

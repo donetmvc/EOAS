@@ -18,10 +18,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eland.android.eoas.Model.Constant;
 import com.eland.android.eoas.R;
 import com.eland.android.eoas.Service.RegWorkInfoService;
 import com.eland.android.eoas.Service.ScheduleService;
 import com.eland.android.eoas.Util.ConsoleUtil;
+import com.eland.android.eoas.Util.SharedReferenceHelper;
 import com.eland.android.eoas.Util.SystemMethodUtil;
 import com.eland.android.eoas.Util.ToastUtil;
 
@@ -128,12 +130,10 @@ public class RegistScheduleFragment extends Fragment implements AnimationListene
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         startRegist();
     }
 
     private void startRegist() {
-
         if (isAM.equals("AM")) {
             Intent intent = new Intent(context, RegWorkInfoService.class);
             context.bindService(intent, conn, Context.BIND_AUTO_CREATE);
@@ -178,14 +178,16 @@ public class RegistScheduleFragment extends Fragment implements AnimationListene
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            if (msg.what == CANREGIST) {
-                context.unbindService(conn);
-                scheduleService.regScheduleAM(imei, isAM);
-                txtDistance.setVisibility(View.GONE);
-            } else {
-                float distance = (float)msg.obj;
-                txtDistance.setVisibility(View.VISIBLE);
-                txtDistance.setText("距离考勤点还有" + String.valueOf(distance) + "米");
+            if(null != context && null != txtDistance) {
+                if (msg.what == CANREGIST) {
+                    context.unbindService(conn);
+                    scheduleService.regScheduleAM(imei, isAM);
+                    txtDistance.setVisibility(View.GONE);
+                } else {
+                    float distance = (float)msg.obj;
+                    txtDistance.setVisibility(View.VISIBLE);
+                    txtDistance.setText("距离考勤点还有" + String.valueOf(distance) + "米");
+                }
             }
         }
     };
@@ -194,7 +196,14 @@ public class RegistScheduleFragment extends Fragment implements AnimationListene
         if(null != gifDrawable && gifDrawable.isPlaying()) {
             //gifDrawable.stop();
             gifDrawable.recycle();
-            imgGif.setImageDrawable(context.getResources().getDrawable(R.drawable.schedule_nomor));
+            String theme = SharedReferenceHelper.getInstance(getContext()).getValue(Constant.EOAS_THEME);
+            if(!theme.isEmpty() && theme.equals("RED")) {
+                imgGif.setImageDrawable(context.getResources().getDrawable(R.drawable.schedule_nomor));
+            }
+            else {
+                imgGif.setImageDrawable(context.getResources().getDrawable(R.drawable.schedule_nomor_blue));
+            }
+            gifDrawable = null;
         }
         stopRegist();
     }
@@ -218,10 +227,6 @@ public class RegistScheduleFragment extends Fragment implements AnimationListene
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-
-//        if(null != conn) {
-//            context.unbindService(conn);
-//        }
     }
 
     @Override
@@ -234,13 +239,17 @@ public class RegistScheduleFragment extends Fragment implements AnimationListene
 
     @Override
     public void onScheduleSuccess() {
-        ToastUtil.showToast(context, "打卡成功.", Toast.LENGTH_LONG);
-        setDisableImg();
+        if(context != null && imgGif != null) {
+            ToastUtil.showToast(context, "打卡成功.", Toast.LENGTH_LONG);
+            setDisableImg();
+        }
     }
 
     @Override
     public void onScheduleFailure(int code, String msg) {
-        ToastUtil.showToast(context, msg, Toast.LENGTH_LONG);
-        setDisableImg();
+        if(context != null && imgGif != null) {
+            ToastUtil.showToast(context, msg, Toast.LENGTH_LONG);
+            setDisableImg();
+        }
     }
 }

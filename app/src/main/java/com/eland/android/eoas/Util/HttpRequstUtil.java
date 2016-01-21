@@ -22,6 +22,10 @@ public class HttpRequstUtil {
         client.get(getAbsoluteUri(url), params, response);
     }
 
+    public static void get(Context context, String url, RequestParams params, JsonHttpResponseHandler response) {
+        client.get(context, getAbsoluteUri(url), params, response);
+    }
+
     public static void post(Context context, String url, StringEntity stringEntity, JsonHttpResponseHandler response) {
         client.post(context, getAbsoluteUri(url), stringEntity, "application/json", response);
     }
@@ -32,6 +36,10 @@ public class HttpRequstUtil {
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(getAbsoluteUri(url), params, responseHandler);
+    }
+
+    public static void cancelAllRequest(Context context, boolean cancel) {
+        client.cancelRequests(context, cancel);
     }
 
     private static String getAbsoluteUri(String url) {

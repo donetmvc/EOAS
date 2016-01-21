@@ -241,20 +241,24 @@ public class SearchScheduleFragment extends Fragment implements SearchScheduleSe
     @Override
     public void onSuccess(List<ScheduleInfo> list) {
         clearLoading();
-        if(null != list && list.size() > 0) {
-            mList = list;
-            mAdapt.setList(mList);
-            mAdapt.notifyDataSetChanged();
-        }
-        else {
-            ToastUtil.showToast(context, "没有可查询的数据", Toast.LENGTH_SHORT);
+        if(null != listView) {
+            if(null != list && list.size() > 0) {
+                mList = list;
+                mAdapt.setList(mList);
+                mAdapt.notifyDataSetChanged();
+            }
+            else {
+                ToastUtil.showToast(context, "没有可查询的数据", Toast.LENGTH_SHORT);
+            }
         }
     }
 
     @Override
     public void onFailure(int code, String msg) {
-        clearLoading();
-        ToastUtil.showToast(context, msg, Toast.LENGTH_SHORT);
+        if(null != listView) {
+            clearLoading();
+            ToastUtil.showToast(context, msg, Toast.LENGTH_SHORT);
+        }
     }
 
     @Override

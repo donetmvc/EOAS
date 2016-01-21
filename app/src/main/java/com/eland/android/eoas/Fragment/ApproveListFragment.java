@@ -189,29 +189,33 @@ public class ApproveListFragment extends Fragment implements ApproveListService.
     public void onSuccess(List<ApproveListInfo> list) {
         clearLoading();
 
-        if(null != list && list.size() > 0) {
-            mList = list;
+        if(null != listView) {
+            if(null != list && list.size() > 0) {
+                mList = list;
+            }
+            else {
+                mList = new ArrayList<>();
+            }
+
+            mAdapter = new ApproveListAdapt(context, mList) ;
+            AnimationAdapter animAdapter = new ScaleInAnimationAdapter(mAdapter);
+            animAdapter.setAbsListView(listView);
+            animAdapter.setInitialDelayMillis(300);
+            listView.setAdapter(animAdapter);
+
+
+            Intent intent = new Intent(getActivity(), DeskCountChangeReceiver.class);
+            intent.setAction("EOAS_COUNT_CHANGED");
+            intent.putExtra("COUNT", String.valueOf(list.size() == 0 ? 0 : list.size()));
+            context.sendBroadcast(intent);
         }
-        else {
-            mList = new ArrayList<>();
-        }
-
-        mAdapter = new ApproveListAdapt(context, mList) ;
-        AnimationAdapter animAdapter = new ScaleInAnimationAdapter(mAdapter);
-        animAdapter.setAbsListView(listView);
-        animAdapter.setInitialDelayMillis(300);
-        listView.setAdapter(animAdapter);
-
-
-        Intent intent = new Intent(getActivity(), DeskCountChangeReceiver.class);
-        intent.setAction("EOAS_COUNT_CHANGED");
-        intent.putExtra("COUNT", String.valueOf(list.size() == 0 ? 0 : list.size()));
-        context.sendBroadcast(intent);
     }
 
     @Override
     public void onFailure(int code, String msg) {
         clearLoading();
-        ToastUtil.showToast(context, msg, Toast.LENGTH_LONG);
+        if(null != listView) {
+            ToastUtil.showToast(context, msg, Toast.LENGTH_LONG);
+        }
     }
 }

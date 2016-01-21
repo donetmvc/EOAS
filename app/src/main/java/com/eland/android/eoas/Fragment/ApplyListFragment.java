@@ -218,7 +218,7 @@ public class ApplyListFragment extends Fragment implements ApplyListService.IOnS
 
     @Override
     public void onSearchSuccess(List<ApplyListInfo> list) {
-        if(null != list && list.size() > 0) {
+        if(null != list && list.size() > 0 && listView != null) {
             mList = list;
             mAdapt.setList(mList);
             mAdapt.notifyDataSetChanged();
@@ -228,8 +228,10 @@ public class ApplyListFragment extends Fragment implements ApplyListService.IOnS
 
     @Override
     public void onSearchFailure(int code, String msg) {
-        ToastUtil.showToast(getContext(), msg, Toast.LENGTH_LONG);
-        clearLoading();
+        if(listView != null) {
+            ToastUtil.showToast(getContext(), msg, Toast.LENGTH_LONG);
+            clearLoading();
+        }
     }
 
     private void clearLoading() {
