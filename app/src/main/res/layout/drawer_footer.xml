@@ -116,6 +116,49 @@
             android:layout_height="1dp"
             android:background="@color/gray"></View>
 
+        <LinearLayout
+            android:id="@+id/lin_theme"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:gravity="center_vertical"
+            android:baselineAligned="false"
+            android:background="@drawable/drawer_item_selector">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="更换主题"
+                android:textSize="15dp"
+                android:gravity="center"
+                android:layout_weight="1" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/txt_theme_red"
+                    android:clickable="true"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/seg_text_unselected"/>
+
+                <TextView
+                    android:id="@+id/txt_theme_blue"
+                    android:clickable="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/seg_text_unselected_blue"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"></View>
+
     </LinearLayout>
 
     <LinearLayout
@@ -128,7 +171,7 @@
             android:id="@+id/lin_logout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/logout"
+            android:background="?attr/mainColor"
             android:clickable="true"
             android:gravity="center"
             android:layout_alignParentBottom="true"

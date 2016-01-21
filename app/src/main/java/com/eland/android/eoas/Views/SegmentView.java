@@ -1,6 +1,8 @@
 package com.eland.android.eoas.Views;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -19,6 +21,7 @@ public class SegmentView extends LinearLayout{
     private TextView textView1;
     private TextView textView2;
     private onSegmentViewClickListener listener;
+    private int nowColor;
 
     public SegmentView(Context context) {
         super(context);
@@ -27,6 +30,22 @@ public class SegmentView extends LinearLayout{
 
     public SegmentView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.SegmentText);
+        int count = ta.getIndexCount();
+        for (int i = 0; i < count; i++) {
+            int itemId = ta.getIndex(i); // 获取某个属性的Id值
+            switch (itemId) {
+                case R.styleable.SegmentText_seg_text_color: // 设置当前按钮的状态
+                    nowColor = ta.getColor(itemId, Color.RED);
+                    break;
+                case R.styleable.SegmentText_seg_back_color: // 设置按钮的背景图
+                    int backgroundId = ta.getResourceId(itemId, -1);
+
+                    break;
+                default:
+                    break;
+            }
+        }
         initView();
     }
 
@@ -36,7 +55,6 @@ public class SegmentView extends LinearLayout{
     }
 
     private void initView() {
-
         textView1 = new TextView(getContext());
         textView2 = new TextView(getContext());
         textView1.setLayoutParams(new LayoutParams(0, LayoutParams.WRAP_CONTENT, 1));
@@ -49,11 +67,15 @@ public class SegmentView extends LinearLayout{
         textView1.setPadding(3, 6, 3, 6);
         textView2.setPadding(3, 6, 3, 6);
         setSegmentTextSize(16);
+
         textView1.setBackgroundResource(R.drawable.seg_left);
         textView2.setBackgroundResource(R.drawable.seg_right);
+
         textView1.setSelected(true);
         textView1.setTextColor(getResources().getColor(R.color.seg_text_selected));
-        textView2.setTextColor(getResources().getColor(R.color.seg_text_unselected));
+        textView1.setBackgroundColor(nowColor);
+        textView2.setBackgroundColor(getResources().getColor(R.color.seg_text_selected));
+        textView2.setTextColor(nowColor);
         this.removeAllViews();
         this.addView(textView1);
         this.addView(textView2);
@@ -68,8 +90,10 @@ public class SegmentView extends LinearLayout{
                 }
                 textView1.setSelected(true);
                 textView1.setTextColor(getResources().getColor(R.color.seg_text_selected));
+                textView1.setBackgroundColor(nowColor);
                 textView2.setSelected(false);
-                textView2.setTextColor(getResources().getColor(R.color.seg_text_unselected));
+                textView2.setTextColor(nowColor);
+                textView2.setBackgroundColor(getResources().getColor(R.color.seg_text_selected));
                 if (listener != null) {
                     listener.onSegmentViewClick(textView1, 0);
                 }
@@ -84,8 +108,10 @@ public class SegmentView extends LinearLayout{
                 }
                 textView2.setSelected(true);
                 textView2.setTextColor(getResources().getColor(R.color.seg_text_selected));
+                textView2.setBackgroundColor(nowColor);
                 textView1.setSelected(false);
-                textView1.setTextColor(getResources().getColor(R.color.seg_text_unselected));
+                textView1.setTextColor(nowColor);
+                textView1.setBackgroundColor(getResources().getColor(R.color.seg_text_selected));
                 if (listener != null) {
                     listener.onSegmentViewClick(textView2, 1);
                 }

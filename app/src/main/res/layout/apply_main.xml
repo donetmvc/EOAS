@@ -178,7 +178,9 @@
                         android:id="@+id/seg_starttime"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical"></com.eland.android.eoas.Views.SegmentView>
+                        android:gravity="center_vertical"
+                        app:seg_text_color="?attr/mainColor">
+                    </com.eland.android.eoas.Views.SegmentView>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -222,7 +224,9 @@
                         android:id="@+id/seg_endtime"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical"></com.eland.android.eoas.Views.SegmentView>
+                        android:gravity="center_vertical"
+                        app:seg_text_color="?attr/mainColor">
+                    </com.eland.android.eoas.Views.SegmentView>
                 </LinearLayout>
             </LinearLayout>
 
@@ -291,7 +295,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/bt_height"
                 android:textColor="#FFFFFFFF"
-                android:background="@color/seg_text_unselected"
+                android:background="?attr/mainColor"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
                 android:text="提交申请"
                 android:textSize="16dp"

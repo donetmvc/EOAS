@@ -9,7 +9,7 @@
         android:id="@+id/img_gif"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/schedule_nomor"/>
+        android:src="?attr/gifImage"/>
 
     <TextView
         android:id="@+id/txt_distance"

@@ -110,7 +110,9 @@
             android:id="@+id/step"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"></com.eland.android.eoas.Views.stepView.StepsView>
+            android:layout_marginTop="5dp"
+            app:indicatorColor="?attr/mainColor">
+        </com.eland.android.eoas.Views.stepView.StepsView>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

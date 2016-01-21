@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import com.eland.android.eoas.Model.LoginInfo;
 import com.eland.android.eoas.R;
 import com.eland.android.eoas.Service.ContactService;
 import com.eland.android.eoas.Util.CacheInfoUtil;
+import com.eland.android.eoas.Util.ConsoleUtil;
 import com.eland.android.eoas.Util.SharedReferenceHelper;
 import com.eland.android.eoas.Util.ToastUtil;
 import com.eland.android.eoas.Views.SwipeRefreshView.MaterialRefreshLayout;
@@ -55,6 +57,7 @@ public class ContactFragment extends Fragment implements ContactService.IOnSearc
     private ImageLoader imageLoader;
     String userId;
     Toolbar toolbar;
+    private String TAG = "EOAS";
 
     private ContactService contactService;
     private REFRESH_TYPE refreshType = REFRESH_TYPE.RERESH;
@@ -64,11 +67,18 @@ public class ContactFragment extends Fragment implements ContactService.IOnSearc
     }
 
     public ContactFragment() {
+        super();
+    }
+
+    public static ContactFragment newInstance(Bundle args) {
+        ContactFragment f = new ContactFragment();
+        f.setArguments(args);
+        return f;
     }
 
     @SuppressLint("ValidFragment")
     public ContactFragment(Context context) {
-        this.context = context;
+        //this.context = context;
     }
 
     @Override
@@ -78,9 +88,23 @@ public class ContactFragment extends Fragment implements ContactService.IOnSearc
     }
 
     @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        ConsoleUtil.i(TAG, "=====I am back=========");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        ConsoleUtil.i(TAG, "=====I am saved=========");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.contact_fragment, null);
         ButterKnife.bind(this, rootView);
+
+        this.context = getContext();
 
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));

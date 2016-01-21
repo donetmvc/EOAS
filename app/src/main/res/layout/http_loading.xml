@@ -12,7 +12,7 @@
         android:layout_height="70dp"
         android:background="@android:color/transparent"
         app:loading_width="5dp"
-        app:loading_color="@color/md_red_500" />
+        app:loading_color="?attr/mainColor" />
 
     <!--<LinearLayout-->
         <!--android:layout_width="match_parent"-->

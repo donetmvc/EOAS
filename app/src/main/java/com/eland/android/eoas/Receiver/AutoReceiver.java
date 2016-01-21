@@ -7,7 +7,6 @@ import android.telephony.TelephonyManager;
 
 import com.eland.android.eoas.Service.CheckRegScheduleService;
 import com.eland.android.eoas.Service.RegAutoService;
-import com.eland.android.eoas.Service.RegWorkInfoService;
 import com.eland.android.eoas.Util.ConsoleUtil;
 import com.eland.android.eoas.Util.SharedReferenceHelper;
 import com.eland.android.eoas.Util.SystemMethodUtil;
@@ -73,8 +72,10 @@ public class AutoReceiver extends BroadcastReceiver implements CheckRegScheduleS
 
     private void startCheck() {
         SharedReferenceHelper.getInstance(context).setValue("REG_AUTO", "true");
-        CheckRegScheduleService checkService = new CheckRegScheduleService();
-        checkService.check(imei, this);
+        if(!SystemMethodUtil.isWorked(context, "RegAutoService")) {
+            CheckRegScheduleService checkService = new CheckRegScheduleService();
+            checkService.check(imei, this);
+        }
     }
 
     private void startRegService() {
@@ -94,11 +95,9 @@ public class AutoReceiver extends BroadcastReceiver implements CheckRegScheduleS
     public void onCheckSuccess(String msg) {
 //        startRegService();
         ConsoleUtil.i(TAG, "--------Message:------------" + msg);
+        SharedReferenceHelper.getInstance(context).setValue("REG_AUTO", "false");
         if(msg.equals("EMPTY")) {
-            SharedReferenceHelper.getInstance(context).setValue("REG_AUTO", "false");
-            if(!SystemMethodUtil.isWorked(context, "RegAutoService")) {
-                startRegService();
-            }
+            startRegService();
         }
         else {
             stopRegService();

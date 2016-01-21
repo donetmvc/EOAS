@@ -1,6 +1,7 @@
 package com.eland.android.eoas.Views.stepView;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -23,6 +24,7 @@ public class StepsView extends LinearLayout implements StepsViewIndicator.OnDraw
     private String[] mLabels;
     private int mCompletedPosition;
     private int mLabelColor = Color.BLACK;
+    private int mIndicatorColor = Color.RED;
 
     public StepsView(Context context) {
         this(context, null);
@@ -35,6 +37,18 @@ public class StepsView extends LinearLayout implements StepsViewIndicator.OnDraw
     public StepsView(Context context, AttributeSet attrs,
             int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.StepsViewIndicator, defStyleAttr, 0);
+        int count = ta.getIndexCount();
+        for (int i = 0; i < count; i++) {
+            int itemId = ta.getIndex(i); // 获取某个属性的Id值
+            switch (itemId) {
+                case R.styleable.StepsViewIndicator_indicatorColor: // 设置当前按钮的状态
+                    mIndicatorColor = ta.getColor(itemId, Color.RED);
+                    break;
+                default:
+                    break;
+            }
+        }
         init();
     }
 
@@ -62,7 +76,7 @@ public class StepsView extends LinearLayout implements StepsViewIndicator.OnDraw
     }
 
     public StepsView setColorIndicator(int color) {
-        mStepsViewIndicator.setThumbColor(color);
+        mStepsViewIndicator.setThumbColor(mIndicatorColor);
         return this;
     }
 

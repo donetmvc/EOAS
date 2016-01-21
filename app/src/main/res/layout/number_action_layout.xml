@@ -16,9 +16,9 @@
         >
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@mipmap/icon_update"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="?attr/iconUpdate"
              />
 
         <com.eland.android.eoas.Views.EditTextView
@@ -39,7 +39,7 @@
             android:id="@+id/img_save"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@mipmap/icon_save"
+            android:src="?attr/iconSave"
             android:layout_weight="0.3" />
 
     </LinearLayout>

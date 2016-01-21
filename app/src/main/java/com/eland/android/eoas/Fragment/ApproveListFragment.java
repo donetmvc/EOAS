@@ -55,8 +55,18 @@ public class ApproveListFragment extends Fragment implements ApproveListService.
     private List<ApproveListInfo> mList;
     private Dialog httpDialog;
 
+    public ApproveListFragment() {
+        super();
+    }
+
+    public static ApproveListFragment newInstance(Bundle args) {
+        ApproveListFragment f = new ApproveListFragment();
+        f.setArguments(args);
+        return f;
+    }
+
     public ApproveListFragment(Context context) {
-        this.context = context;
+        //this.context = context;
     }
 
     @Override
@@ -70,6 +80,8 @@ public class ApproveListFragment extends Fragment implements ApproveListService.
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.contact_fragment, null);
         ButterKnife.bind(this, rootView);
+
+        this.context = getContext();
 
         initView();
         initAdapt();

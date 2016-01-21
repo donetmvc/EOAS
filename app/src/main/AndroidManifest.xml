@@ -63,7 +63,8 @@
 
         <activity
             android:name=".Activity.LauncherActivity"
-            android:theme="@style/NoAction">
+            android:theme="@style/NoAction"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -72,35 +73,33 @@
 
         <activity
             android:name=".Activity.LoginActivity"
-            android:theme="@style/LoginTheme"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">
-
         </activity>
 
         <activity
             android:name=".Activity.MainActivity"
-            android:theme="@style/NoActionBarTheme"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" >
-
         </activity>
 
         <activity android:name=".Activity.SearchActivity"
-            android:theme="@style/NoActionBarTheme"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan|adjustResize" >
         </activity>
 
         <activity android:name=".Activity.ApplyActivity"
-            android:theme="@style/NoActionBarTheme"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan|adjustResize" >
         </activity>
 
         <activity android:name=".Activity.ApplyStateActivity"
-            android:theme="@style/NoActionBarTheme"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan|adjustResize" >
         </activity>
 
         <activity android:name=".Activity.SetProxyUserActivity"
-            android:theme="@style/NoActionBarTheme"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan|adjustResize" >
         </activity>
 
@@ -134,7 +133,7 @@
         <!--JPush config start-->
         <!-- For test only 测试状态通知栏，需要打开的Activity -->
         <activity android:name=".Activity.ApproveActivity"
-            android:theme="@style/NoActionBarTheme"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan|adjustResize" >
             <intent-filter>
                 <action android:name="jpush.testAction" />
@@ -219,7 +218,6 @@
         <!-- Required  . Enable it you can get statistics data with channel -->
         <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>
         <meta-data android:name="JPUSH_APPKEY" android:value="5f696814898713d356233d2b" /> <!--  </>值来自开发者平台取得的AppKey-->
-
         <!--JPush config end-->
 
     </application>

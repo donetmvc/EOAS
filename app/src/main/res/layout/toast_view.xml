@@ -11,7 +11,7 @@
         android:layout_centerInParent="true"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:textColor="@color/md_red_500"
+        android:textColor="?attr/mainColor"
         android:textSize="14sp"
         ></TextView>
 

@@ -53,11 +53,25 @@ public class LoginActivity extends AppCompatActivity implements
     private String downUri;
     private ProgressUtil dialogUtil;
     private MaterialDialog updateDialog;
+    private String theme = "";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        theme = SharedReferenceHelper.getInstance(this).getValue(Constant.EOAS_THEME);
+        if(!theme.isEmpty()) {
+            if(theme.equals("RED")) {
+                setTheme(R.style.LoginThemeRed);
+            }
+            else {
+                setTheme(R.style.LoginThemeBlue);
+            }
+        }
+        else {
+            setTheme(R.style.LoginThemeRed);
+        }
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
         context = this;
         ButterKnife.bind(this);

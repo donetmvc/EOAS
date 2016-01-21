@@ -3,6 +3,7 @@ package com.eland.android.eoas.Fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -47,12 +48,19 @@ public class MainFragment extends Fragment implements ApproveListService.IOnAppr
     private String mUserId;
 
     public MainFragment() {
+        super();
+    }
+
+    public static MainFragment newInstance(Bundle args) {
+        MainFragment f = new MainFragment();
+        f.setArguments(args);
+        return f;
     }
 
     @SuppressLint("ValidFragment")
-    public MainFragment(Context context, FragmentManager fragmentManager) {
-        this.context = context;
-        this.fragmentManager = fragmentManager;
+    public MainFragment(Context context) {
+//        this.context = context;
+//        this.fragmentManager = getFragmentManager();
     }
 
     @Override
@@ -60,6 +68,9 @@ public class MainFragment extends Fragment implements ApproveListService.IOnAppr
         rootView = inflater.inflate(R.layout.main_fragment, null);
 
         ButterKnife.bind(this, rootView);
+
+        this.context = getContext();
+        this.fragmentManager = getFragmentManager();
 
         mUserId = SharedReferenceHelper.getInstance(context).getValue(Constant.LOGINID);
         setApproveCount();
@@ -95,43 +106,74 @@ public class MainFragment extends Fragment implements ApproveListService.IOnAppr
     }
 
     @OnClick(R.id.img_registSchedule) void goRegistSchedule() {
-        //ToastUtil.showToast(context, "点击了", Toast.LENGTH_LONG);
-        registScheduleFragment = new RegistScheduleFragment(context);
-        Fragment mainFragment = fragmentManager.getFragments().get(1);
-        goView(mainFragment, registScheduleFragment);
+//        registScheduleFragment = new RegistScheduleFragment(context);
+//        Fragment mainFragment = fragmentManager.getFragments().get(1);
+
+        Fragment ft = fragmentManager.findFragmentByTag("RegistFragment");
+        Bundle args = new Bundle();
+        registScheduleFragment = ft == null ? RegistScheduleFragment.newInstance(args) : (RegistScheduleFragment)ft;
+
+        //contactFragment = new ContactFragment(context);
+        Fragment mainFragment = fragmentManager.findFragmentByTag("MainFragment");
+
+        goView(mainFragment, registScheduleFragment, "RegistFragment");
     }
 
     @OnClick(R.id.img_contact) void goContact() {
-        contactFragment = new ContactFragment(context);
-        Fragment mainFragment = fragmentManager.getFragments().get(1);
-        goView(mainFragment, contactFragment);
+        Fragment ft = fragmentManager.findFragmentByTag("ContactFragment");
+        Bundle args = new Bundle();
+        contactFragment = ft == null ? ContactFragment.newInstance(args) : (ContactFragment)ft;
+
+        //contactFragment = new ContactFragment(context);
+        Fragment mainFragment = fragmentManager.findFragmentByTag("MainFragment");
+        goView(mainFragment, contactFragment, "ContactFragment");
     }
 
     @OnClick(R.id.img_searchSchedule) void goSearchSchedule() {
-        SearchScheduleFragment searchScheduleFragment = new SearchScheduleFragment(context);
-        Fragment mainFragment = fragmentManager.getFragments().get(1);
-        goView(mainFragment, searchScheduleFragment);
+//        SearchScheduleFragment searchScheduleFragment = new SearchScheduleFragment(context);
+//        Fragment mainFragment = fragmentManager.getFragments().get(1);
+        Fragment ft = fragmentManager.findFragmentByTag("SearchScheduleFragment");
+        Bundle args = new Bundle();
+        SearchScheduleFragment searchScheduleFragment = ft == null ? SearchScheduleFragment.newInstance(args) : (SearchScheduleFragment)ft;
+
+        //contactFragment = new ContactFragment(context);
+        Fragment mainFragment = fragmentManager.findFragmentByTag("MainFragment");
+        goView(mainFragment, searchScheduleFragment, "SearchScheduleFragment");
     }
 
     @OnClick(R.id.img_applyList) void goApplyList() {
-        ApplyListFragment applyListFragment = new ApplyListFragment(context);
-        Fragment mainFragment = fragmentManager.getFragments().get(1);
-        goView(mainFragment, applyListFragment);
+//        ApplyListFragment applyListFragment = new ApplyListFragment(context);
+//        Fragment mainFragment = fragmentManager.getFragments().get(1);
+
+        Fragment ft = fragmentManager.findFragmentByTag("ApplyListFragment");
+        Bundle args = new Bundle();
+        ApplyListFragment applyListFragment = ft == null ? ApplyListFragment.newInstance(args) : (ApplyListFragment)ft;
+
+        //contactFragment = new ContactFragment(context);
+        Fragment mainFragment = fragmentManager.findFragmentByTag("MainFragment");
+        goView(mainFragment, applyListFragment, "ApplyListFragment");
     }
 
     @OnClick(R.id.img_approveList) void goApproveList() {
-        ApproveListFragment approveListFragment = new ApproveListFragment(context);
-        Fragment mainFragment = fragmentManager.getFragments().get(1);
-        goView(mainFragment, approveListFragment);
+//        ApproveListFragment approveListFragment = new ApproveListFragment(context);
+//        Fragment mainFragment = fragmentManager.getFragments().get(1);
+
+        Fragment ft = fragmentManager.findFragmentByTag("ApproveListFragment");
+        Bundle args = new Bundle();
+        ApproveListFragment approveListFragment = ft == null ? ApproveListFragment.newInstance(args) : (ApproveListFragment)ft;
+
+        //contactFragment = new ContactFragment(context);
+        Fragment mainFragment = fragmentManager.findFragmentByTag("MainFragment");
+        goView(mainFragment, approveListFragment, "ApproveListFragment");
     }
 
-    private void goView(Fragment from, Fragment to) {
+    private void goView(Fragment from, Fragment to, String tag) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.setCustomAnimations(R.anim.push_up_in, R.anim.push_up_out);
         //hideFragments(transaction);
         if (from.isAdded()) {
-            transaction.hide(from).add(R.id.main_content, to).addToBackStack(null).commit();
+            transaction.hide(from).add(R.id.main_content, to, tag).addToBackStack(null).commit();
             //transaction.add(R.id.main_content, registScheduleFragment);
         } else {
             transaction.hide(from).show(to).commit();
@@ -163,7 +205,7 @@ public class MainFragment extends Fragment implements ApproveListService.IOnAppr
         Intent intent = new Intent(getActivity(), DeskCountChangeReceiver.class);
         intent.setAction("EOAS_COUNT_CHANGED");
         intent.putExtra("COUNT", String.valueOf(list.size() == 0 ? 0 : list.size()));
-        context.sendBroadcast(intent);
+        getContext().sendBroadcast(intent);
     }
 
     @Override

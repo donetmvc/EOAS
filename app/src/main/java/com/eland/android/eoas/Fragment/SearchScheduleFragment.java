@@ -68,11 +68,18 @@ public class SearchScheduleFragment extends Fragment implements SearchScheduleSe
     private android.app.Dialog httpDialog;
 
     public SearchScheduleFragment() {
+        super();
+    }
+
+    public static SearchScheduleFragment newInstance(Bundle args) {
+        SearchScheduleFragment f = new SearchScheduleFragment();
+        f.setArguments(args);
+        return f;
     }
 
     @SuppressLint("ValidFragment")
     public SearchScheduleFragment(Context context) {
-        this.context = context;
+        //this.context = context;
     }
 
     @Override
@@ -85,6 +92,12 @@ public class SearchScheduleFragment extends Fragment implements SearchScheduleSe
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.searchschedule_fragment, null);
         ButterKnife.bind(this, rootView);
+
+        this.context = getContext();
+
+        if(null != context) {
+            context = getContext();
+        }
 
         initView();
         initListener();

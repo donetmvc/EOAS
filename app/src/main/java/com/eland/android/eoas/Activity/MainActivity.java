@@ -1,6 +1,7 @@
 package com.eland.android.eoas.Activity;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,8 +19,10 @@ import android.widget.Toast;
 import com.eland.android.eoas.Application.EOASApplication;
 import com.eland.android.eoas.Fragment.DrawerFragment;
 import com.eland.android.eoas.Fragment.MainFragment;
+import com.eland.android.eoas.Model.Constant;
 import com.eland.android.eoas.R;
 import com.eland.android.eoas.Util.ProgressUtil;
+import com.eland.android.eoas.Util.SharedReferenceHelper;
 import com.eland.android.eoas.Util.ToastUtil;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
@@ -54,9 +57,22 @@ public class MainActivity extends AppCompatActivity implements ProgressUtil.IOnM
     private ProgressUtil dialogUtil;
     private MaterialDialog updateMainDialog;
     private Context context;
+    private String theme = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        theme = SharedReferenceHelper.getInstance(this).getValue(Constant.EOAS_THEME);
+        if(!theme.isEmpty()) {
+            if(theme.equals("RED")) {
+                setTheme(R.style.MainThenmeRed);
+            }
+            else {
+                setTheme(R.style.MainThenmeBlue);
+            }
+        }
+        else {
+            setTheme(R.style.MainThenmeRed);
+        }
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -114,25 +130,28 @@ public class MainActivity extends AppCompatActivity implements ProgressUtil.IOnM
     }
 
     private void initUpdate() {
-        updateManagerListener = new UpdateManagerListener() {
-            @Override
-            public void onNoUpdateAvailable() {
 
-            }
+        if(null == updateManagerListener) {
+            updateManagerListener = new UpdateManagerListener() {
+                @Override
+                public void onNoUpdateAvailable() {
 
-            @Override
-            public void onUpdateAvailable(String result) {
-                AppBean appBean = getAppBeanFromString(result);
-                String message = appBean.getReleaseNote();
-                downUri = appBean.getDownloadURL();
+                }
 
-                updateMainDialog = dialogUtil.showDialogUpdateForMain(message, getResources().getString(R.string.hasupdate), context);
-                updateMainDialog.show();
-            }
-        };
+                @Override
+                public void onUpdateAvailable(String result) {
+                    AppBean appBean = getAppBeanFromString(result);
+                    String message = appBean.getReleaseNote();
+                    downUri = appBean.getDownloadURL();
 
-        //检测更新
-        PgyUpdateManager.register(this, updateManagerListener);
+                    updateMainDialog = dialogUtil.showDialogUpdateForMain(message, getResources().getString(R.string.hasupdate), context);
+                    updateMainDialog.show();
+                }
+            };
+
+            //检测更新
+            PgyUpdateManager.register(this, updateManagerListener);
+        }
     }
 
     /*
@@ -142,14 +161,18 @@ public class MainActivity extends AppCompatActivity implements ProgressUtil.IOnM
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.setCustomAnimations(R.anim.push_up_in, R.anim.push_up_out);
+
+        Fragment ft = fragmentManager.findFragmentByTag("MainFragment");
+        Bundle args = new Bundle();
+        mainFragment = ft == null ? MainFragment.newInstance(args) : (MainFragment)ft;
+
         switch (menuType) {
             case MAIN_FRAGMENT:
-                hideFragments(transaction);
-                if (null == mainFragment) {
-                    mainFragment = new MainFragment(MainActivity.this, fragmentManager);
-                    transaction.add(R.id.main_content, mainFragment);
+                if (null != mainFragment && mainFragment.isAdded()) {
+                    //transaction.show(mainFragment);
+                    hideFragments(transaction);
                 } else {
-                    transaction.show(mainFragment);
+                    transaction.add(R.id.main_content, mainFragment, "MainFragment");
                 }
                 break;
         }
@@ -157,8 +180,15 @@ public class MainActivity extends AppCompatActivity implements ProgressUtil.IOnM
     }
 
     private void hideFragments(FragmentTransaction transaction) {
-        if (mainFragment != null) {
-            transaction.hide(mainFragment);
+        if (mainFragment != null && mainFragment.isAdded()) {
+            String isChanging = SharedReferenceHelper.getInstance(this).getValue(Constant.EOAS_ISCHANGINGTHEME);
+            if(isChanging.equals("TURE") && mainFragment.getParentFragment() != null) {
+                transaction.hide(mainFragment);
+            }
+            else {
+                SharedReferenceHelper.getInstance(this).setValue(Constant.EOAS_ISCHANGINGTHEME, "FALSE");
+                transaction.show(mainFragment);
+            }
         }
     }
 

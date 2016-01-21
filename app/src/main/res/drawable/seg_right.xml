@@ -3,14 +3,14 @@
     <item android:state_selected="true">
         <shape >
             <stroke android:color="#FFFFFF" android:width="1dp"/>
-            <solid android:color="@color/seg_text_unselected"/>
+            <!--<solid android:color="@color/seg_text_unselected"/>-->
             <corners android:topLeftRadius="0dp" android:bottomLeftRadius="0dp" android:topRightRadius="3dp" android:bottomRightRadius="3dp"/>
         </shape>
     </item>
     <item>
         <shape >
             <stroke android:color="#FFFFFF" android:width="1dp"/>
-            <solid android:color="#FFFFFF"/>
+            <!--<solid android:color="#FFFFFF"/>-->
             <corners android:topLeftRadius="0dp" android:bottomLeftRadius="0dp" android:topRightRadius="3dp" android:bottomRightRadius="3dp"/>
         </shape>
     </item>

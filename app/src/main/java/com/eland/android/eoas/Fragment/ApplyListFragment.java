@@ -71,9 +71,15 @@ public class ApplyListFragment extends Fragment implements ApplyListService.IOnS
         super();
     }
 
+    public static ApplyListFragment newInstance(Bundle args) {
+        ApplyListFragment f = new ApplyListFragment();
+        f.setArguments(args);
+        return f;
+    }
+
     @SuppressLint("ValidFragment")
     public ApplyListFragment(Context context) {
-        this.context = context;
+        //this.context = context;
     }
 
     @Override
@@ -87,6 +93,8 @@ public class ApplyListFragment extends Fragment implements ApplyListService.IOnS
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.contact_fragment, null);
         ButterKnife.bind(this, rootView);
+
+        this.context = getContext();
 
         initView();
         initAdapt();

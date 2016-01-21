@@ -66,6 +66,18 @@ public class SearchActivity extends AppCompatActivity implements ContactService.
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        String theme = SharedReferenceHelper.getInstance(this).getValue(Constant.EOAS_THEME);
+        if(!theme.isEmpty()) {
+            if(theme.equals("RED")) {
+                setTheme(R.style.MainThenmeRed);
+            }
+            else {
+                setTheme(R.style.MainThenmeBlue);
+            }
+        }
+        else {
+            setTheme(R.style.MainThenmeRed);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         EOASApplication.getInstance().addActivity(this);

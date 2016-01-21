@@ -53,18 +53,24 @@ public class ApproveListService {
                     }
                 }
 
-                onApproveListListener.onSuccess(list);
+                if(null != onApproveListListener) {
+                    onApproveListListener.onSuccess(list);
+                }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                onApproveListListener.onFailure(99999, "连接服务器超时");
+                if(null != onApproveListListener) {
+                    onApproveListListener.onFailure(99999, "连接服务器超时");
+                }
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                onApproveListListener.onFailure(99999, "连接服务器超时");
+                if(null != onApproveListListener) {
+                    onApproveListListener.onFailure(99999, "连接服务器超时");
+                }
             }
         });
     }

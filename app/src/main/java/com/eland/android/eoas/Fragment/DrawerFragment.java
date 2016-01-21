@@ -65,7 +65,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.EmptyStackException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -103,6 +102,10 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
     TextView txtVersionname;
     @Bind(R.id.lin_update)
     LinearLayout linUpdate;
+    @Bind(R.id.txt_theme_red)
+    TextView txtThemeRed;
+    @Bind(R.id.txt_theme_blue)
+    TextView txtThemeBlue;
     private String TAG = "EOAS";
     private MainActivity mainActivity;
     private View rootView;
@@ -159,6 +162,7 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
             .build();
 
     public DrawerFragment() {
+        super();
     }
 
     public DrawerFragment(MainActivity mainActivity) {
@@ -227,7 +231,7 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
         }
 
         //设置用户是否接收push
-        if(CacheInfoUtil.loadIsReceive(getContext(), loginId)) {
+        if (CacheInfoUtil.loadIsReceive(getContext(), loginId)) {
             bSwitch.setChecked(true);
             JPushInterface.resumePush(getContext().getApplicationContext());
         } else {
@@ -373,6 +377,20 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
         getContext().startService(serviceIntent);
 
         getActivity().finish();
+    }
+
+    @OnClick(R.id.txt_theme_red) void theme_red() {
+        SharedReferenceHelper.getInstance(getContext()).setValue(Constant.EOAS_THEME, "RED");
+        SharedReferenceHelper.getInstance(getContext()).setValue(Constant.EOAS_ISCHANGINGTHEME, "TURE");
+        getActivity().recreate();
+        //ToastUtil.showToast(getContext(), "red", Toast.LENGTH_SHORT);
+    }
+
+    @OnClick(R.id.txt_theme_blue) void theme_blue() {
+        SharedReferenceHelper.getInstance(getContext()).setValue(Constant.EOAS_THEME, "BLUE");
+        SharedReferenceHelper.getInstance(getContext()).setValue(Constant.EOAS_ISCHANGINGTHEME, "TURE");
+        getActivity().recreate();
+        //ToastUtil.showToast(getContext(), "blue", Toast.LENGTH_SHORT);
     }
 
     private void clearCach() {
@@ -588,7 +606,7 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
 
     @Override
     public void OnDialogConfirmListener() {
-        if(null != updateDialog) {
+        if (null != updateDialog) {
             updateDialog.dismiss();
             updateManagerListener.startDownloadTask(getActivity(), downUri);
         }

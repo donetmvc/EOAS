@@ -28,7 +28,9 @@
         <com.eland.android.eoas.Views.stepView.StepsView
             android:id="@+id/step"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></com.eland.android.eoas.Views.stepView.StepsView>
+            android:layout_height="wrap_content"
+            app:indicatorColor="?attr/mainColor">
+        </com.eland.android.eoas.Views.stepView.StepsView>
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

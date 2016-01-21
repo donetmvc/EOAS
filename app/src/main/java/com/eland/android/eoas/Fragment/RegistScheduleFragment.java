@@ -59,11 +59,18 @@ public class RegistScheduleFragment extends Fragment implements AnimationListene
     public int NOTREGIST = 1;
 
     public RegistScheduleFragment() {
+        super();
+    }
+
+    public static RegistScheduleFragment newInstance(Bundle args) {
+        RegistScheduleFragment f = new RegistScheduleFragment();
+        f.setArguments(args);
+        return f;
     }
 
     @SuppressLint("ValidFragment")
     public RegistScheduleFragment(Context context) {
-        this.context = context;
+        //this.context = context;
     }
 
     @Override
@@ -76,6 +83,8 @@ public class RegistScheduleFragment extends Fragment implements AnimationListene
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.registschedule_fragment, null);
         ButterKnife.bind(this, rootView);
+
+        this.context = getContext();
 
         initFragment();
 
@@ -182,10 +191,11 @@ public class RegistScheduleFragment extends Fragment implements AnimationListene
     };
 
     private void setDisableImg() {
-        gifDrawable.stop();
-        imgGif.setImageDrawable(context.getResources().getDrawable(R.drawable.schedule_nomor));
-        gifDrawable = null;
-
+        if(null != gifDrawable && gifDrawable.isPlaying()) {
+            //gifDrawable.stop();
+            gifDrawable.recycle();
+            imgGif.setImageDrawable(context.getResources().getDrawable(R.drawable.schedule_nomor));
+        }
         stopRegist();
     }
 

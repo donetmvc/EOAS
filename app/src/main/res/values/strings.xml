@@ -15,5 +15,11 @@
         <item>@color/material_yellow</item>
     </integer-array>
 
+    <integer-array name="material_colors_blue">
+        <item>@color/seg_text_unselected_blue</item>
+        <item>@color/seg_text_unselected_blue</item>
+        <item>@color/seg_text_unselected_blue</item>
+        <item>@color/seg_text_unselected_blue</item>
+    </integer-array>
 
 </resources>

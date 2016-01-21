@@ -8,9 +8,66 @@
 
     </style>
 
-    <style name="LoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="LoginThemeRed" parent="Theme.AppCompat.Light.NoActionBar">
         <!--状态栏颜色-->
-        <item name="colorPrimaryDark">@color/seg_text_unselected</item>
+        <item name="colorPrimaryDark">?attr/loginColor</item>
+        <item name="buttonBack">@drawable/bg_bt_raise_color_red</item>
+        <item name="loginColor">@color/seg_text_unselected</item>
+        <item name="mainColor">@color/seg_text_unselected</item>
+    </style>
+
+    <style name="LoginThemeBlue" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--状态栏颜色-->
+        <item name="colorPrimaryDark">?attr/loginColor</item>
+        <item name="buttonBack">@drawable/bg_bt_raise_color</item>
+        <item name="loginColor">@color/seg_text_unselected_blue</item>
+        <item name="mainColor">@color/seg_text_unselected_blue</item>
+    </style>
+
+    <style name="MainThenmeRed" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--状态栏颜色-->
+        <item name="colorPrimaryDark">?attr/mainColor</item>
+        <!--Toolbar颜色-->
+        <item name="colorPrimary">@color/md_white_1000</item>
+        <!--返回键样式-->
+        <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
+
+        <!--控件switch,checkbox,radio激活状态和非激活状态颜色-->
+        <item name="colorControlNormal">@color/colorControlNormal</item>
+        <item name="colorControlActivated">?attr/mainColor</item>
+        <item name="colorButtonNormal">@color/md_white_1000</item>
+        <item name="colorSwitchThumbNormal">@color/colorSwitchThumbNormal</item>
+        <item name="mainColor">@color/seg_text_unselected</item>
+        <item name="iconUpdate">@drawable/icon_update</item>
+        <item name="iconSave">@drawable/icon_save</item>
+        <item name="logoutPress">@drawable/drawer_exit_item_pressed</item>
+        <item name="logoutUnPress">@drawable/drawer_exit_item_unpressed</item>
+        <item name="arrayColor">@array/material_colors</item>
+        <item name="gifImage">@drawable/schedule_nomor</item>
+        <item name="headerBack">@drawable/header</item>
+    </style>
+
+    <style name="MainThenmeBlue" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--状态栏颜色-->
+        <item name="colorPrimaryDark">?attr/mainColor</item>
+        <!--Toolbar颜色-->
+        <item name="colorPrimary">@color/md_white_1000</item>
+        <!--返回键样式-->
+        <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
+
+        <!--控件switch,checkbox,radio激活状态和非激活状态颜色-->
+        <item name="colorControlNormal">@color/colorControlNormal</item>
+        <item name="colorControlActivated">?attr/mainColor</item>
+        <item name="colorButtonNormal">@color/md_white_1000</item>
+        <item name="colorSwitchThumbNormal">@color/colorSwitchThumbNormal</item>
+        <item name="mainColor">@color/seg_text_unselected_blue</item>
+        <item name="iconUpdate">@drawable/icon_update_blue</item>
+        <item name="iconSave">@drawable/icon_save_blue</item>
+        <item name="logoutPress">@drawable/drawer_exit_item_pressed_blue</item>
+        <item name="logoutUnPress">@drawable/drawer_exit_item_unpressed_blue</item>
+        <item name="arrayColor">@array/material_colors_blue</item>
+        <item name="gifImage">@drawable/schedule_nomor_blue</item>
+        <item name="headerBack">@drawable/header_blue</item>
     </style>
 
     <!--不带actionbar，将使用toolbar来代替-->
@@ -38,8 +95,9 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar">
-        <item name="android:background">@color/seg_text_unselected</item>
+        <item name="android:background">?attr/mainColor</item>
     </style>
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
     </style>
 
@@ -66,13 +124,14 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowAnimationStyle">@style/ActionSheetAnimation</item>
     </style>
+
     <style name="ActionSheetAnimation" parent="@android:style/Animation.Dialog">
         <item name="android:windowEnterAnimation">@anim/push_up_in</item>
         <item name="android:windowExitAnimation">@anim/push_up_out</item>
     </style>
 
     <style name="RaiseWaveColorButtonRippleStyle" parent="Material.Drawable.Ripple.Wave.Light">
-        <item name="android:background">@drawable/bg_bt_raise_color_red</item>
+        <item name="android:background">?attr/buttonBack</item>
         <item name="rd_rippleColor">#33000000</item>
         <item name="rd_leftPadding">1dp</item>
         <item name="rd_topPadding">1dp</item>
@@ -100,7 +159,7 @@
         <item name="dp_yearItemHeight">48dp</item>
         <item name="dp_textColor">@color/abc_primary_text_material_dark</item>
         <item name="dp_textHighlightColor">#FFFFFFFF</item>
-        <item name="dp_selectionColor">@color/seg_text_unselected</item>
+        <item name="dp_selectionColor">?attr/mainColor</item>
         <item name="dp_animDuration">@android:integer/config_mediumAnimTime</item>
         <item name="dp_inInterpolator">@android:anim/decelerate_interpolator</item>
         <item name="dp_outInterpolator">@android:anim/decelerate_interpolator</item>
@@ -110,7 +169,7 @@
         <item name="dp_textDisableColor">@color/abc_secondary_text_material_dark</item>
         <item name="dp_headerPrimaryHeight">144dp</item>
         <item name="dp_headerSecondaryHeight">32dp</item>
-        <item name="dp_headerPrimaryColor">@color/seg_text_unselected</item>
+        <item name="dp_headerPrimaryColor">?attr/mainColor</item>
         <item name="dp_headerSecondaryColor">?attr/colorPrimaryDark</item>
         <item name="dp_headerPrimaryTextSize">@dimen/abc_text_size_display_2_material</item>
         <item name="dp_headerSecondaryTextSize">@dimen/abc_text_size_headline_material</item>

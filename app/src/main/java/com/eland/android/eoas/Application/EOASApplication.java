@@ -32,7 +32,6 @@ public class EOASApplication extends Application {
         if(mInstance == null) {
             mInstance = new EOASApplication();
         }
-
         return mInstance;
     }
 

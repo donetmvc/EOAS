@@ -44,5 +44,26 @@
     <!--step view-->
     <declare-styleable name="StepsViewIndicator">
         <attr name="numOfSteps" format="integer" />
+        <attr name="indicatorColor" format="reference" />
+    </declare-styleable>
+
+    <!--login theme-->
+    <attr name="buttonBack" format="reference" />
+    <attr name="loginColor" format="color" />
+
+    <!--main theme-->
+    <attr name="mainColor" format="color" />
+    <attr name="iconUpdate" format="reference" />
+    <attr name="iconSave" format="reference" />
+    <attr name="logoutPress" format="reference" />
+    <attr name="logoutUnPress" format="reference" />
+
+    <attr name="arrayColor" format="reference" />
+    <attr name="gifImage" format="reference" />
+    <attr name="headerBack" format="reference" />
+
+    <declare-styleable name="SegmentText">
+        <attr name="seg_text_color" format="reference" />
+        <attr name="seg_back_color" format="reference" />
     </declare-styleable>
 </resources>

@@ -8,7 +8,7 @@
         android:id="@+id/user_info_layout"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:background="@drawable/header">
+        android:background="?attr/headerBack">
 
         <com.eland.android.eoas.Views.CircleImageView
             android:id="@+id/img_photo"
@@ -55,7 +55,7 @@
             android:layout_alignParentEnd="true"
             android:layout_above="@+id/txt_email"
             android:layout_alignTop="@+id/txt_tel"
-           />
+            />
 
         <TextView
             android:id="@+id/txt_email"

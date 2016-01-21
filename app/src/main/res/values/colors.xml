@@ -3,13 +3,15 @@
     <color name="seg_text_selected">#FFFFFFFF</color>
     <color name="seg_text_unselected">#FFF44336</color>
 
+    <color name="seg_text_unselected_blue">#FF21ACE3</color>
+
     <drawable name="edit_bg_select">#FFF44336</drawable>
     <drawable name="edit_bg_normal">#000000</drawable>
 
     <color name="text_color">#FF717171</color><!--浅玫瑰色 -->
 
     <array name="progress_colors">
-        <item>#FF3F8AF8</item>
+        <item>#FF21ACE3</item>
         <item>#FFF44336</item>
         <item>#FFF2AF3A</item>
         <item>#FF279B5E</item>
@@ -25,6 +27,13 @@
     <color name="green">#FF3BBD79</color>
 
     <color name="colorControlNormal">#FF78909C</color>
-    <color name="colorControlActivated">#FF03A9F4</color>
+    <color name="colorControlActivated">#FF21ACE3</color>
     <color name="colorSwitchThumbNormal">#FF78909C</color>
+
+
+    <color name="logout_press">#FFD8433C</color>
+    <color name="logout_unpress">#FFF44336</color>
+
+    <color name="logout_press_blue">#FF25B1E9</color>
+    <color name="logout_unpress_blue">#FF21ACE3</color>
 </resources>

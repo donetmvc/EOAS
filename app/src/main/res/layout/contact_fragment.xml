@@ -14,7 +14,7 @@
         app:overlay="false"
         app:wave_show="false"
         app:progress_backgroud_color="#FFFAFAFA"
-        app:progress_colors="@array/material_colors"
+        app:progress_colors="?attr/arrayColor"
         app:wave_height_type="normal"
         app:progress_show_arrow="true"
         app:isLoadMore="true">
