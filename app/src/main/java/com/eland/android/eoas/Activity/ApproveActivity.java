@@ -59,6 +59,8 @@ public class ApproveActivity extends AppCompatActivity implements
     private String[] approves;
     private int approvePosition = 0;
     private int approveType = 0;
+    private ApproveService approveService;
+    private ApplyService applyService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,11 +79,14 @@ public class ApproveActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_approve);
         ButterKnife.bind(this);
+        approveService = new ApproveService(this);
+        applyService = new ApplyService(this);
 
         initParams();
         initToolbar();
         initView();
     }
+
 
     private void initParams() {
         mUserId = SharedReferenceHelper.getInstance(this).getValue(Constant.LOGINID);
@@ -136,7 +141,7 @@ public class ApproveActivity extends AppCompatActivity implements
     }
 
     private void startSearchApproveInfo() {
-        ApproveService.searchApplyInfo(mUserId, applyId, this);
+        approveService.searchApplyInfo(mUserId, applyId, this);
     }
 
     @OnClick(R.id.btn_approve)
@@ -145,7 +150,7 @@ public class ApproveActivity extends AppCompatActivity implements
             httpDialog = ProgressUtil.showHttpLoading(this);
         }
         httpDialog.show();
-        ApproveService.saveApprove(mUserId, "01", editRemark.getText().toString(), applyId, this);
+        approveService.saveApprove(mUserId, "01", editRemark.getText().toString(), applyId, this);
     }
 
     @OnClick(R.id.btn_refuse)
@@ -160,7 +165,7 @@ public class ApproveActivity extends AppCompatActivity implements
             httpDialog = ProgressUtil.showHttpLoading(this);
         }
         httpDialog.show();
-        ApproveService.saveApprove(mUserId, "02", editRemark.getText().toString(), applyId, this);
+        approveService.saveApprove(mUserId, "02", editRemark.getText().toString(), applyId, this);
     }
 
     @Override
@@ -239,7 +244,7 @@ public class ApproveActivity extends AppCompatActivity implements
             txtContent.setText(content);
             txtRemark.setText(reason);
 
-            ApplyService.searchApprogressList(mUserId, applyId, this);
+            applyService.searchApprogressList(mUserId, applyId, this);
         }
     }
 
@@ -250,5 +255,13 @@ public class ApproveActivity extends AppCompatActivity implements
         }
 
         ToastUtil.showToast(this, msg, Toast.LENGTH_SHORT);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        approveService.cancel();
+        applyService.cancel();
     }
 }

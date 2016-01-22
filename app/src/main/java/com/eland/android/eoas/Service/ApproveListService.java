@@ -1,5 +1,7 @@
 package com.eland.android.eoas.Service;
 
+import android.content.Context;
+
 import com.eland.android.eoas.Model.ApproveListInfo;
 import com.eland.android.eoas.Util.HttpRequstUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -19,11 +21,17 @@ import cz.msebera.android.httpclient.Header;
  */
 public class ApproveListService {
 
-    public static void searchApproveList(String userId, final IOnApproveListListener onApproveListListener) {
+    private Context context;
+
+    public ApproveListService(Context context) {
+        this.context = context;
+    }
+
+    public void searchApproveList(String userId, final IOnApproveListListener onApproveListListener) {
         String uri = "api/Push";
         RequestParams params = new RequestParams("userId", userId);
 
-        HttpRequstUtil.get(uri, params, new JsonHttpResponseHandler() {
+        HttpRequstUtil.get(context, uri, params, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -73,6 +81,10 @@ public class ApproveListService {
                 }
             }
         });
+    }
+
+    public void cancel() {
+        HttpRequstUtil.cancelSingleRequest(context, true);
     }
 
     public interface IOnApproveListListener {

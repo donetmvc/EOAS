@@ -39,7 +39,7 @@ public class ProxyService {
         params.add("EndDate", endDate);
         params.add("userId", userId);
 
-        HttpRequstUtil.get(uri, params, new JsonHttpResponseHandler() {
+        HttpRequstUtil.get(context, uri, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
@@ -146,6 +146,10 @@ public class ProxyService {
                 }
             }
         });
+    }
+
+    public void cancel() {
+        HttpRequstUtil.cancelSingleRequest(context, true);
     }
 
     public interface IOnSearchProxyInfoListener {

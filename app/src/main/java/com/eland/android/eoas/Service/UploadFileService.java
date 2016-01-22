@@ -33,7 +33,7 @@ public class UploadFileService {
         try {
             params.put(fileName, myFile);
 
-            HttpRequstUtil.post(uri, params, new AsyncHttpResponseHandler(){
+            HttpRequstUtil.post(context, uri, params, new AsyncHttpResponseHandler(){
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     if(null != iOnUploadListener) {
@@ -57,6 +57,10 @@ public class UploadFileService {
 
     public void setUploadListener(IOnUploadListener iOnUploadListener) {
         this.iOnUploadListener = iOnUploadListener;
+    }
+
+    public void cancel() {
+        HttpRequstUtil.cancelSingleRequest(context, true);
     }
 
     public interface IOnUploadListener {

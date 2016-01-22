@@ -66,6 +66,7 @@ public class SearchScheduleFragment extends Fragment implements SearchScheduleSe
         REFRESH,LOAD_MORE,NONE
     }
     private android.app.Dialog httpDialog;
+    private SearchScheduleService searchScheduleService;
 
     public SearchScheduleFragment() {
         super();
@@ -94,6 +95,7 @@ public class SearchScheduleFragment extends Fragment implements SearchScheduleSe
         ButterKnife.bind(this, rootView);
 
         this.context = getContext();
+        searchScheduleService = new SearchScheduleService(context);
 
         if(null != context) {
             context = getContext();
@@ -225,7 +227,7 @@ public class SearchScheduleFragment extends Fragment implements SearchScheduleSe
     }
 
     private void getData() {
-        SearchScheduleService.searchSchedule(mUserId, startDate, endDate, this);
+        searchScheduleService.searchSchedule(mUserId, startDate, endDate, this);
     }
 
     private void clearLoading() {
@@ -241,29 +243,27 @@ public class SearchScheduleFragment extends Fragment implements SearchScheduleSe
     @Override
     public void onSuccess(List<ScheduleInfo> list) {
         clearLoading();
-        if(null != listView) {
-            if(null != list && list.size() > 0) {
-                mList = list;
-                mAdapt.setList(mList);
-                mAdapt.notifyDataSetChanged();
-            }
-            else {
-                ToastUtil.showToast(context, "没有可查询的数据", Toast.LENGTH_SHORT);
-            }
+
+        if(null != list && list.size() > 0) {
+            mList = list;
+            mAdapt.setList(mList);
+            mAdapt.notifyDataSetChanged();
+        }
+        else {
+            ToastUtil.showToast(context, "没有可查询的数据", Toast.LENGTH_SHORT);
         }
     }
 
     @Override
     public void onFailure(int code, String msg) {
-        if(null != listView) {
-            clearLoading();
-            ToastUtil.showToast(context, msg, Toast.LENGTH_SHORT);
-        }
+        clearLoading();
+        ToastUtil.showToast(context, msg, Toast.LENGTH_SHORT);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        searchScheduleService.cancel();
         ButterKnife.unbind(this);
     }
 }

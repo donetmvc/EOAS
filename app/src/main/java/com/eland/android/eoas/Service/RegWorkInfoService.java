@@ -38,6 +38,7 @@ public class RegWorkInfoService extends Service implements AMapLocationListener,
     private NotificationManager notificationManager;
     private Bitmap icon;
     private int regCount = 0;
+    private ScheduleService scheduleService;
 
     @Override
     public void onCreate() {
@@ -164,7 +165,7 @@ public class RegWorkInfoService extends Service implements AMapLocationListener,
     }
 
     private void startRegService() {
-        ScheduleService scheduleService = new ScheduleService();
+        scheduleService = new ScheduleService(getApplicationContext());
         scheduleService.setOnScheduleListener(this);
         ConsoleUtil.i(TAG, "----------RegWorkInfoService:" + "Regist start" + isAm);
         scheduleService.regScheduleAM(imei, isAm);
@@ -217,6 +218,7 @@ public class RegWorkInfoService extends Service implements AMapLocationListener,
     @Override
     public void onDestroy() {
         super.onDestroy();
+        scheduleService.cancel();
         mLocationClient.stopLocation();
         mLocationClient.onDestroy();
         stopSelf();

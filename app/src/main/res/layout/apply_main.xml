@@ -24,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.7"
-            android:text="0.7天"
+            android:text="0.0天"
             android:gravity="center_vertical" />
 
     </LinearLayout>

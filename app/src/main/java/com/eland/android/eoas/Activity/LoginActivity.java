@@ -156,7 +156,6 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
         return;
     }
 
@@ -214,5 +213,11 @@ public class LoginActivity extends AppCompatActivity implements
     public void OnDialogConfirmListener() {
         updateDialog.dismiss();
         updateManagerListener.startDownloadTask(LoginActivity.this, downUri);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        loginService.cancel();
     }
 }

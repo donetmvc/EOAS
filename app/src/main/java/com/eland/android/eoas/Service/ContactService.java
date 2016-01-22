@@ -1,6 +1,8 @@
 package com.eland.android.eoas.Service;
 
 
+import android.content.Context;
+
 import com.eland.android.eoas.Application.EOASApplication;
 import com.eland.android.eoas.Model.LoginInfo;
 import com.eland.android.eoas.Util.HttpRequstUtil;
@@ -21,6 +23,12 @@ import cz.msebera.android.httpclient.Header;
  */
 public class ContactService {
 
+    private Context context;
+
+    public ContactService(Context context) {
+        this.context = context;
+    }
+
     public void searchContact(final String userId, final IOnSearchContactListener iOnSearchContactListener) {
         String uri = "api/contact";
 
@@ -29,7 +37,7 @@ public class ContactService {
         params.put("type", "123");
         params.put("tips", "321");
 
-        HttpRequstUtil.get(uri, params, new JsonHttpResponseHandler() {
+        HttpRequstUtil.get(context, uri, params, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -88,6 +96,10 @@ public class ContactService {
                 iOnSearchContactListener.onSearchFailure(99999, "连接服务器失败");
             }
         });
+    }
+
+    public void cancel() {
+        HttpRequstUtil.cancelSingleRequest(context, true);
     }
 
     public interface IOnSearchContactListener {

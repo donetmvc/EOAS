@@ -178,7 +178,7 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
         bSwitch = (Switch) rootView.findViewById(R.id.sw_receive);
         chooseImageUtil = new ChooseImageUtil();
         uploadFileService = new UploadFileService(getContext());
-        updateService = new UpdatePhoneNmService();
+        updateService = new UpdatePhoneNmService(getContext());
         chooseImageUtil.setOnAlbumListener(this);
         chooseImageUtil.setOnCarmerListener(this);
         uploadFileService.setUploadListener(this);
@@ -400,6 +400,8 @@ public class DrawerFragment extends Fragment implements ChooseImageUtil.IOnCarme
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        updateService.cancel();
+        uploadFileService.cancel();
         if (null != bitmap) {
             bitmap.recycle();
         }

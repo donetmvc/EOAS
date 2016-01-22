@@ -54,6 +54,7 @@ public class ApproveListFragment extends Fragment implements ApproveListService.
     private ApproveListAdapt mAdapter;
     private List<ApproveListInfo> mList;
     private Dialog httpDialog;
+    private ApproveListService approveListService;
 
     public ApproveListFragment() {
         super();
@@ -82,7 +83,7 @@ public class ApproveListFragment extends Fragment implements ApproveListService.
         ButterKnife.bind(this, rootView);
 
         this.context = getContext();
-
+        approveListService = new ApproveListService(context);
         initView();
         initAdapt();
         initListener();
@@ -166,12 +167,13 @@ public class ApproveListFragment extends Fragment implements ApproveListService.
     }
 
     private void getData() {
-        ApproveListService.searchApproveList(mUserId, this);
+        approveListService.searchApproveList(mUserId, this);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        approveListService.cancel();
         ButterKnife.unbind(this);
     }
 

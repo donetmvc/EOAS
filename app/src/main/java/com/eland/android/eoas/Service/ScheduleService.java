@@ -18,6 +18,10 @@ public class ScheduleService {
     private Context context;
     private IScheduleListener iScheduleListener;
 
+    public ScheduleService(Context context) {
+        this.context = context;
+    }
+
     public void regSchedulePM(String imei, final String isAM) {
         String uri = "api/adm";
         RequestParams params = new RequestParams();
@@ -85,6 +89,10 @@ public class ScheduleService {
 
             }
         });
+    }
+
+    public void cancel() {
+        HttpRequstUtil.cancelSingleRequest(context, true);
     }
 
     public void setOnScheduleListener(IScheduleListener iScheduleListener) {

@@ -11,60 +11,57 @@ import org.json.JSONObject;
 import cz.msebera.android.httpclient.Header;
 
 /**
- * Created by liu.wenbin on 15/12/8.
+ * Created by liu.wenbin on 16/1/22.
+ * test android-async-http cancel
  */
-public class UpdatePhoneNmService {
+public class TestScheduleService {
 
     private Context context;
 
-    public UpdatePhoneNmService(Context context) {
+    public TestScheduleService(Context context) {
         this.context = context;
     }
 
-    private IOnUpdateListener iOnUpdateListener;
-
-    public void updateCellNo(String userId, final String cellNo, final IOnUpdateListener iOnUpdateListener) {
-
-        String uri = "api/Contact/";
-
+    public void regSchedule(String imei, String isAM, final IOnTestScheduleListener iOnTestScheduleListener) {
+        String uri = "api/adm";
         RequestParams params = new RequestParams();
-        params.put("userId", userId);
-        params.put("cellNo", cellNo);
+        params.put("iemi", imei);
+        params.put("registTime", "");
+        params.put("isAM", isAM);
 
         HttpRequstUtil.get(context, uri, params, new JsonHttpResponseHandler() {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                if(null != iOnUpdateListener) {
-                    iOnUpdateListener.onUpdateFailure(99999, "");
+
+                if (null != iOnTestScheduleListener) {
+                    iOnTestScheduleListener.onFailuer(99999, "无法连接服务器.");
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                if(null != iOnUpdateListener) {
 
-                    if(responseString.equals("\"OK\"")) {
-                        iOnUpdateListener.onUpdateSuccess(cellNo);
-                    }
-                    else {
-                        iOnUpdateListener.onUpdateFailure(1000, responseString);
+                if (null != iOnTestScheduleListener) {
+                    if (responseString.equals("\"OK\"")) {
+                        iOnTestScheduleListener.onSuccess();
+                    } else {
+                        iOnTestScheduleListener.onFailuer(44444, responseString);
                     }
                 }
+
             }
         });
-
     }
 
     public void cancel() {
         HttpRequstUtil.cancelSingleRequest(context, true);
     }
 
-    public interface IOnUpdateListener {
-        void onUpdateSuccess(String number);
-        void onUpdateFailure(int code, String msg);
+    public interface IOnTestScheduleListener {
+        void onSuccess();
+        void onFailuer(int code, String msg);
     }
-
 }

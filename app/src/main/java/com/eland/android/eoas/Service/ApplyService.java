@@ -1,5 +1,7 @@
 package com.eland.android.eoas.Service;
 
+import android.content.Context;
+
 import com.eland.android.eoas.Util.ConsoleUtil;
 import com.eland.android.eoas.Util.HttpRequstUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -16,15 +18,20 @@ import cz.msebera.android.httpclient.Header;
 public class ApplyService {
 
     private static String TAG = "EOAS";
+    private Context context;
 
-    public static void searchVacationType(String userId, final IOnApplyListener iOnApplyListener) {
+    public ApplyService(Context context) {
+        this.context = context;
+    }
+
+    public void searchVacationType(String userId, final IOnApplyListener iOnApplyListener) {
         String uri = "api/Apply";
 
         RequestParams params = new RequestParams();
         params.add("userId", userId);
         params.add("type", "02");
 
-        HttpRequstUtil.get(uri, params, new JsonHttpResponseHandler() {
+        HttpRequstUtil.get(context, uri, params, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -48,13 +55,13 @@ public class ApplyService {
 
     }
 
-    public static void searchVacationDays(String userId, final IOnApplyListener iOnApplyListener) {
+    public void searchVacationDays(String userId, final IOnApplyListener iOnApplyListener) {
         String uri = "api/Apply";
 
         RequestParams params = new RequestParams();
         params.add("userId", userId);
 
-        HttpRequstUtil.get(uri, params, new JsonHttpResponseHandler() {
+        HttpRequstUtil.get(context, uri, params, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -76,7 +83,7 @@ public class ApplyService {
         });
     }
 
-    public static void searchDiffDays(String userId, String startDate, String endDate,
+    public void searchDiffDays(String userId, String startDate, String endDate,
                                       String startTime, String endTime, String vacationType,
                                       final IOnApplyListener iOnApplyListener) {
         String uri = "api/Time";
@@ -88,7 +95,7 @@ public class ApplyService {
         params.add("endTime", endTime);
         params.add("vacationType", vacationType);
 
-        HttpRequstUtil.get(uri, params, new JsonHttpResponseHandler() {
+        HttpRequstUtil.get(context, uri, params, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -109,7 +116,7 @@ public class ApplyService {
         });
     }
 
-    public static void saveApply(String userId, String startDate, String endDate, String startTime, String endTime,
+    public void saveApply(String userId, String startDate, String endDate, String startTime, String endTime,
                                  String vacationType, String vacationDate, String remark,
                                  final IOnApplyListener iOnApplyListener) {
         String uri = "api/Apply";
@@ -123,7 +130,7 @@ public class ApplyService {
         params.add("s7", userId);
         params.add("s8", remark);
 
-        HttpRequstUtil.get(uri, params, new JsonHttpResponseHandler() {
+        HttpRequstUtil.get(context, uri, params, new JsonHttpResponseHandler() {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
@@ -141,13 +148,13 @@ public class ApplyService {
 
     }
 
-    public static void searchApprogressList(String userId, String applyId, final IOnApplyListener iOnApplyListener) {
+    public void searchApprogressList(String userId, String applyId, final IOnApplyListener iOnApplyListener) {
         String uri = "api/ADM";
         RequestParams params = new RequestParams();
         params.add("userId", userId);
         params.add("applyId", applyId);
 
-        HttpRequstUtil.get(uri, params, new JsonHttpResponseHandler(){
+        HttpRequstUtil.get(context, uri, params, new JsonHttpResponseHandler(){
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -167,6 +174,10 @@ public class ApplyService {
                 iOnApplyListener.onFailure(1, 99999, "连接服务器超时");
             }
         });
+    }
+
+    public void cancel() {
+        HttpRequstUtil.cancelSingleRequest(context, true);
     }
 
     public interface IOnApplyListener {

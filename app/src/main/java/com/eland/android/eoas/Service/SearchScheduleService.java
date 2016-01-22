@@ -1,5 +1,7 @@
 package com.eland.android.eoas.Service;
 
+import android.content.Context;
+
 import com.eland.android.eoas.Model.ScheduleInfo;
 import com.eland.android.eoas.Util.HttpRequstUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -19,7 +21,13 @@ import cz.msebera.android.httpclient.Header;
  */
 public class SearchScheduleService {
 
-    public static void searchSchedule(String userId, String startDate, String endDate, final IOnSearchScheduleListener iOnSearchScheduleListener) {
+    private Context context;
+
+    public SearchScheduleService(Context context) {
+        this.context = context;
+    }
+
+    public void searchSchedule(String userId, String startDate, String endDate, final IOnSearchScheduleListener iOnSearchScheduleListener) {
         String uri = "api/ADM";
 
         RequestParams params = new RequestParams();
@@ -28,7 +36,7 @@ public class SearchScheduleService {
         params.add("endDate",endDate);
         params.add("app","");
 
-        HttpRequstUtil.get(uri, params, new JsonHttpResponseHandler() {
+        HttpRequstUtil.get(context, uri, params, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -60,18 +68,22 @@ public class SearchScheduleService {
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                iOnSearchScheduleListener.onFailure(9999, "数据异常，请重试");
+                iOnSearchScheduleListener.onFailure(9999, "连接服务器超时");
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                iOnSearchScheduleListener.onFailure(9999, "服务器异常");
+                iOnSearchScheduleListener.onFailure(9999, "连接服务器超时");
             }
         });
 
+    }
+
+    public void cancel() {
+        HttpRequstUtil.cancelSingleRequest(context, true);
     }
 
     public interface IOnSearchScheduleListener {

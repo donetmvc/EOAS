@@ -95,7 +95,8 @@ public class ContactAdapt extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 //ToastUtil.showToast(context, "打电话咯", Toast.LENGTH_LONG);
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + dto.cellNo));
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + dto.cellNo));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling

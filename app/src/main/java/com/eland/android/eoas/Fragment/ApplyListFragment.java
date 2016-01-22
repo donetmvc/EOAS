@@ -67,6 +67,8 @@ public class ApplyListFragment extends Fragment implements ApplyListService.IOnS
         RERESH, LOAD
     }
 
+    private ApplyListService applyListService;
+
     public ApplyListFragment() {
         super();
     }
@@ -95,6 +97,7 @@ public class ApplyListFragment extends Fragment implements ApplyListService.IOnS
         ButterKnife.bind(this, rootView);
 
         this.context = getContext();
+        applyListService = new ApplyListService(context);
 
         initView();
         initAdapt();
@@ -184,7 +187,7 @@ public class ApplyListFragment extends Fragment implements ApplyListService.IOnS
     }
 
     private void getData() {
-        ApplyListService.searchApplyList(mUserId, startDate, endDate, this);
+        applyListService.searchApplyList(mUserId, startDate, endDate, this);
     }
 
     @Override
@@ -247,6 +250,7 @@ public class ApplyListFragment extends Fragment implements ApplyListService.IOnS
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        applyListService.cancel();
         ButterKnife.unbind(this);
     }
 }

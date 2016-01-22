@@ -44,6 +44,8 @@ public class ApplyStateActivity extends AppCompatActivity implements ApplyServic
     private int approvePosition = 0;
     private String mUserId;
 
+    private ApplyService applyService;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         String theme = SharedReferenceHelper.getInstance(this).getValue(Constant.EOAS_THEME);
@@ -62,6 +64,8 @@ public class ApplyStateActivity extends AppCompatActivity implements ApplyServic
 
         setContentView(R.layout.activity_apply_state);
         ButterKnife.bind(this);
+
+        applyService = new ApplyService(this);
 
         mUserId = SharedReferenceHelper.getInstance(this).getValue(Constant.LOGINID);
         initToolbar();
@@ -98,7 +102,7 @@ public class ApplyStateActivity extends AppCompatActivity implements ApplyServic
     private void initApproveState() {
         httpDialog = ProgressUtil.showHttpLoading(this);
 
-        ApplyService.searchApprogressList(mUserId, applyId, this);
+        applyService.searchApprogressList(mUserId, applyId, this);
     }
 
     @Override

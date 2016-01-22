@@ -108,7 +108,7 @@ public class ContactFragment extends Fragment implements ContactService.IOnSearc
 
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
-        contactService = new ContactService();
+        contactService = new ContactService(context);
         userId = SharedReferenceHelper.getInstance(context).getValue(Constant.LOGINID);
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
@@ -179,6 +179,7 @@ public class ContactFragment extends Fragment implements ContactService.IOnSearc
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        contactService.cancel();
         ButterKnife.unbind(this);
     }
 

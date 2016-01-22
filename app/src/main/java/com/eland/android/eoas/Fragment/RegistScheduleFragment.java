@@ -22,6 +22,7 @@ import com.eland.android.eoas.Model.Constant;
 import com.eland.android.eoas.R;
 import com.eland.android.eoas.Service.RegWorkInfoService;
 import com.eland.android.eoas.Service.ScheduleService;
+import com.eland.android.eoas.Service.TestScheduleService;
 import com.eland.android.eoas.Util.ConsoleUtil;
 import com.eland.android.eoas.Util.SharedReferenceHelper;
 import com.eland.android.eoas.Util.SystemMethodUtil;
@@ -40,7 +41,8 @@ import pl.droidsonroids.gif.GifImageView;
 /**
  * Created by liu.wenbin on 15/11/30.
  */
-public class RegistScheduleFragment extends Fragment implements AnimationListener, ScheduleService.IScheduleListener {
+public class RegistScheduleFragment extends Fragment implements AnimationListener,
+        ScheduleService.IScheduleListener {
 
     @Bind(R.id.img_gif)
     GifImageView imgGif;
@@ -87,7 +89,6 @@ public class RegistScheduleFragment extends Fragment implements AnimationListene
         ButterKnife.bind(this, rootView);
 
         this.context = getContext();
-
         initFragment();
 
         if (autoRegist) {
@@ -98,7 +99,7 @@ public class RegistScheduleFragment extends Fragment implements AnimationListene
     }
 
     private void initFragment() {
-        scheduleService = new ScheduleService();
+        scheduleService = new ScheduleService(context);
         scheduleService.setOnScheduleListener(this);
         telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         imei = telephonyManager.getDeviceId();
@@ -226,6 +227,7 @@ public class RegistScheduleFragment extends Fragment implements AnimationListene
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        scheduleService.cancel();
         ButterKnife.unbind(this);
     }
 

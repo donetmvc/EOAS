@@ -79,6 +79,7 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
     private String vacationTypeCode = "01";
     private String yearVacation,adjustVacation,companyVacation = "0.0";
     private List<NameValueInfo> mList;
+    private ApplyService applyService;
 
     private android.app.Dialog httpDialog;
 
@@ -101,6 +102,7 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
         setContentView(R.layout.activity_apply);
         ButterKnife.bind(this);
 
+        applyService = new ApplyService(this);
         //初始化页面loading
         httpDialog = ProgressUtil.showHttpLoading(this);
 
@@ -177,11 +179,11 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
     }
 
     private void initVacationDays() {
-        ApplyService.searchVacationDays(mUserId, this);
+        applyService.searchVacationDays(mUserId, this);
     }
 
     private void initSpinner() {
-        ApplyService.searchVacationType(mUserId, this);
+        applyService.searchVacationType(mUserId, this);
     }
 
     private void getDiffDate() {
@@ -198,7 +200,7 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
             }
         }
 
-        ApplyService.searchDiffDays(mUserId, startDate, endDate, startTime, endTime, vacationTypeCode, this);
+        applyService.searchDiffDays(mUserId, startDate, endDate, startTime, endTime, vacationTypeCode, this);
     }
 
     private void setDate(String start, String end) {
@@ -330,7 +332,7 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
             httpDialog.show();
         }
 
-        ApplyService.saveApply(mUserId, startDate, endDate, startTime, endTime, vacationTypeCode, diffDays,
+        applyService.saveApply(mUserId, startDate, endDate, startTime, endTime, vacationTypeCode, diffDays,
                 editRemark.getText().toString(), this);
     }
 
@@ -454,4 +456,11 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
             httpDialog.dismiss();
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        applyService.cancel();
+    }
+
 }

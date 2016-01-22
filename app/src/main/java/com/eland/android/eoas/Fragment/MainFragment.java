@@ -46,6 +46,7 @@ public class MainFragment extends Fragment implements ApproveListService.IOnAppr
     private static final int SCHEDULE_REGISTER = 10;    //打卡
     private String TAG = "EOAS";
     private String mUserId;
+    private ApproveListService approveListService;
 
     public MainFragment() {
         super();
@@ -71,6 +72,7 @@ public class MainFragment extends Fragment implements ApproveListService.IOnAppr
 
         this.context = getContext();
         this.fragmentManager = getFragmentManager();
+        approveListService = new ApproveListService(context);
 
         mUserId = SharedReferenceHelper.getInstance(context).getValue(Constant.LOGINID);
         setApproveCount();
@@ -78,7 +80,7 @@ public class MainFragment extends Fragment implements ApproveListService.IOnAppr
     }
 
     private void setApproveCount() {
-        ApproveListService.searchApproveList(mUserId, this);
+        approveListService.searchApproveList(mUserId, this);
     }
 
     @Override

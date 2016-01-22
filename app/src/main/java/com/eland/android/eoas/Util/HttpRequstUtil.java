@@ -18,6 +18,10 @@ public class HttpRequstUtil {
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
+    static {
+        client.setMaxRetriesAndTimeout(2, 1000);
+    }
+
     public static void get(String url, RequestParams params, JsonHttpResponseHandler response) {
         client.get(getAbsoluteUri(url), params, response);
     }
@@ -30,15 +34,15 @@ public class HttpRequstUtil {
         client.post(context, getAbsoluteUri(url), stringEntity, "application/json", response);
     }
 
-    public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        client.post(getAbsoluteUri(url), params, responseHandler);
+    public static void post(Context context, String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        client.post(context, getAbsoluteUri(url), params, responseHandler);
     }
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(getAbsoluteUri(url), params, responseHandler);
     }
 
-    public static void cancelAllRequest(Context context, boolean cancel) {
+    public static void cancelSingleRequest(Context context, boolean cancel) {
         client.cancelRequests(context, cancel);
     }
 

@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.eland.android.eoas.Adapt.ContactAdapt;
 import com.eland.android.eoas.Adapt.ProxyAdapt;
 import com.eland.android.eoas.Model.Constant;
 import com.eland.android.eoas.Model.ProxyInfo;
@@ -224,5 +223,11 @@ public class SetProxyUserActivity extends AppCompatActivity implements ProxyServ
         else {
             ToastUtil.showToast(this, msg, Toast.LENGTH_SHORT);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        proxyService.cancel();
     }
 }

@@ -83,7 +83,7 @@ public class SearchActivity extends AppCompatActivity implements ContactService.
         EOASApplication.getInstance().addActivity(this);
         ButterKnife.bind(this);
 
-        contactService = new ContactService();
+        contactService = new ContactService(this);
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(this));
 
@@ -224,5 +224,11 @@ public class SearchActivity extends AppCompatActivity implements ContactService.
             ToastUtil.showToast(this, "没有搜索到匹配的人员信息", Toast.LENGTH_SHORT);
         }
         clearLoading();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        contactService.cancel();
     }
 }

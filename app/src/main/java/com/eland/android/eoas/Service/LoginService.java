@@ -32,7 +32,7 @@ public class LoginService {
         params.put("password", password);
         params.put("imei", imei);
 
-        HttpRequstUtil.get(uri, params, new JsonHttpResponseHandler() {
+        HttpRequstUtil.get(context, uri, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
@@ -82,6 +82,10 @@ public class LoginService {
 
     public void setOnSignInListener(ISignInListener isignInListener) {
         this.isignInListener = isignInListener;
+    }
+
+    public void cancel() {
+        HttpRequstUtil.cancelSingleRequest(context, true);
     }
 
     public interface ISignInListener {

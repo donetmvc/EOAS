@@ -1,5 +1,7 @@
 package com.eland.android.eoas.Service;
 
+import android.content.Context;
+
 import com.eland.android.eoas.Util.HttpRequstUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -15,13 +17,19 @@ import cz.msebera.android.httpclient.Header;
  */
 public class ApproveService {
 
-    public static void searchApplyInfo(String userId, String applyId, final IOnApproveListener iOnApproveListener) {
+    private Context context;
+
+    public ApproveService(Context context) {
+        this.context = context;
+    }
+
+    public void searchApplyInfo(String userId, String applyId, final IOnApproveListener iOnApproveListener) {
         String uri = "api/Push";
         RequestParams params = new RequestParams();
         params.add("userId", userId);
         params.add("applyId", applyId);
 
-        HttpRequstUtil.get(uri, params, new JsonHttpResponseHandler() {
+        HttpRequstUtil.get(context, uri, params, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -59,7 +67,7 @@ public class ApproveService {
         });
     }
 
-    public static void saveApprove(String userId, final String approveCode, String approveReason, String applyId, final IOnApproveListener iOnApproveListener) {
+    public void saveApprove(String userId, final String approveCode, String approveReason, String applyId, final IOnApproveListener iOnApproveListener) {
         String uri = "api/Push";
         RequestParams params = new RequestParams();
         params.add("userId", userId);
@@ -67,7 +75,7 @@ public class ApproveService {
         params.add("approveStateCode", approveCode);
         params.add("approveStateReason", approveReason);
 
-        HttpRequstUtil.get(uri, params, new JsonHttpResponseHandler() {
+        HttpRequstUtil.get(context, uri, params, new JsonHttpResponseHandler() {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
@@ -93,6 +101,10 @@ public class ApproveService {
                 iOnApproveListener.onApproveFailure(99999, "连接服务器超时");
             }
         });
+    }
+
+    public void cancel() {
+        HttpRequstUtil.cancelSingleRequest(context, true);
     }
 
     public interface IOnApproveListener {

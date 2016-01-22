@@ -33,6 +33,7 @@ public class ProgressUtil {
         Dialog dialog = new Dialog(context, R.style.CustomDialog);
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         dialog.show();
 
         return dialog;

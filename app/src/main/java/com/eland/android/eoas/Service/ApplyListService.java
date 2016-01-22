@@ -1,5 +1,7 @@
 package com.eland.android.eoas.Service;
 
+import android.content.Context;
+
 import com.eland.android.eoas.Model.ApplyListInfo;
 import com.eland.android.eoas.Util.HttpRequstUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -19,7 +21,13 @@ import cz.msebera.android.httpclient.Header;
  */
 public class ApplyListService {
 
-    public static void searchApplyList(String userId, String startDate, String endDate, final IOnSearchApplyListListener iOnSearchApplyListListener) {
+    private Context context;
+
+    public ApplyListService(Context context) {
+        this.context = context;
+    }
+
+    public void searchApplyList(String userId, String startDate, String endDate, final IOnSearchApplyListListener iOnSearchApplyListListener) {
         String uri = "api/Apply";
 
         RequestParams params = new RequestParams();
@@ -28,7 +36,7 @@ public class ApplyListService {
         params.add("endDate", endDate);
         params.add("searchType", "01"); //休假类型
 
-        HttpRequstUtil.get(uri, params, new JsonHttpResponseHandler() {
+        HttpRequstUtil.get(context, uri, params, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -79,6 +87,10 @@ public class ApplyListService {
             }
 
         });
+    }
+
+    public void cancel() {
+        HttpRequstUtil.cancelSingleRequest(context, true);
     }
 
     public interface IOnSearchApplyListListener {
