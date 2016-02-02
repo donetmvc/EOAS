@@ -47,7 +47,7 @@ public class ApplyListService {
 
                 if(null != response && response.length() > 0) {
                     try {
-                        for(int i = 0; i < response.length(); i++) {
+                        for(int i = response.length() - 1; i >= 0; i--) {
                             dto = new ApplyListInfo();
                             JSONObject object = response.getJSONObject(i);
 

@@ -190,6 +190,11 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
         if(httpDialog != null && !httpDialog.isShowing()) {
             httpDialog.show();
         }
+        setVacationType();
+        applyService.searchDiffDays(mUserId, startDate, endDate, startTime, endTime, vacationTypeCode, this);
+    }
+
+    private void setVacationType() {
         String select = spinnerVacationtype.getSelectedItem().toString();
         //find vacation code
         if(null != mList && mList.size() > 0) {
@@ -199,8 +204,6 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
                 }
             }
         }
-
-        applyService.searchDiffDays(mUserId, startDate, endDate, startTime, endTime, vacationTypeCode, this);
     }
 
     private void setDate(String start, String end) {
@@ -285,7 +288,9 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
     }
 
     private boolean validateInput() {
-        double all = Double.valueOf(txtAllVacation.getText().toString());
+        setVacationType();
+
+        double all = 0.0;
 
         if(editRemark.getText().toString().isEmpty()) {
             ToastUtil.showToast(this, "请填写休假理由", Toast.LENGTH_LONG);
@@ -295,21 +300,21 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
         //06 - adjust 07 - year 11 - company
         if(vacationTypeCode.equals("06")) {
             double adjust = Double.valueOf(txtAdjustVacation.getText().toString());
-            if(all < adjust) {
+            if(all >= adjust) {
                 ToastUtil.showToast(this, "调休假不足，请选择其他休假类型", Toast.LENGTH_LONG);
                 return false;
             }
         }
         else if(vacationTypeCode.equals("07")) {
             double years = Double.valueOf(txtYearVacation.getText().toString());
-            if(all < years) {
+            if(all >= years) {
                 ToastUtil.showToast(this, "年休假不足，请选择其他休假类型", Toast.LENGTH_LONG);
                 return false;
             }
         }
         else if(vacationTypeCode.equals("11")) {
             double company = Double.valueOf(txtCompanyVacation.getText().toString());
-            if(all < company) {
+            if(all >= company) {
                 ToastUtil.showToast(this, "企业年休假不足，请选择其他休假类型", Toast.LENGTH_LONG);
                 return false;
             }
