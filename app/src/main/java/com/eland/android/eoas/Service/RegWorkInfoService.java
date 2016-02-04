@@ -53,6 +53,8 @@ public class RegWorkInfoService extends Service implements AMapLocationListener,
             initParams(intent);
         }
 
+        scheduleService = new ScheduleService(getApplicationContext());
+        scheduleService.setOnScheduleListener(this);
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         icon = BitmapFactory.decodeResource(getResources(),
                 R.mipmap.ic_launcher);
@@ -165,8 +167,6 @@ public class RegWorkInfoService extends Service implements AMapLocationListener,
     }
 
     private void startRegService() {
-        scheduleService = new ScheduleService(getApplicationContext());
-        scheduleService.setOnScheduleListener(this);
         ConsoleUtil.i(TAG, "----------RegWorkInfoService:" + "Regist start" + isAm);
         scheduleService.regScheduleAM(imei, isAm);
     }
@@ -217,11 +217,13 @@ public class RegWorkInfoService extends Service implements AMapLocationListener,
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
-        scheduleService.cancel();
+        if(null != scheduleService) {
+            scheduleService.cancel();
+        }
         mLocationClient.stopLocation();
         mLocationClient.onDestroy();
         stopSelf();
+        super.onDestroy();
     }
 
     @Nullable
