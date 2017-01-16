@@ -87,7 +87,6 @@ public class ApproveActivity extends AppCompatActivity implements
         initView();
     }
 
-
     private void initParams() {
         mUserId = SharedReferenceHelper.getInstance(this).getValue(Constant.LOGINID);
         Intent intent = getIntent();
@@ -256,7 +255,6 @@ public class ApproveActivity extends AppCompatActivity implements
 
         ToastUtil.showToast(this, msg, Toast.LENGTH_SHORT);
     }
-
 
     @Override
     protected void onDestroy() {

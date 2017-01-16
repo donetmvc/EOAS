@@ -134,12 +134,14 @@ public class RegWorkInfoService extends Service implements AMapLocationListener,
                 float distance2 = AMapUtils.calculateLineDistance(startLatlng, endLatlng1);
 
                 //取最小距离，防止位置偏差
-                if(distance1 < distance2) {
-                    distance = distance1;
-                }
-                else {
-                    distance = distance2;
-                }
+                distance = distance1 < distance2 ? distance1 : distance2;
+
+//                if(distance1 < distance2) {
+//                    distance = distance1;
+//                }
+//                else {
+//                    distance = distance2;
+//                }
 
                 ConsoleUtil.i(TAG, "----------RegWorkInfoService:" + distance);
 

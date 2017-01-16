@@ -92,7 +92,9 @@ public class ScheduleService {
     }
 
     public void cancel() {
-        HttpRequstUtil.cancelSingleRequest(context, true);
+        if(null != context) {
+            HttpRequstUtil.cancelSingleRequest(context, true);
+        }
     }
 
     public void setOnScheduleListener(IScheduleListener iScheduleListener) {

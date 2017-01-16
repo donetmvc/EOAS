@@ -14,4 +14,6 @@ public class LoginInfo implements Serializable {
     public String email;
     public String cellNo;
     public String url;
+    public String backCellNo;
+    public String backName;
 }

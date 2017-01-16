@@ -52,6 +52,8 @@ public class ContactService {
                             JSONObject object = response.getJSONObject(i);
                             String userIds = object.getString("userIDField");
                             String cellNo = object.getString("cellNoField");
+                            String backCellNo = object.getString("backCellNoField");
+                            String backName = object.getString("backNameField");
 
                             //没名没姓没电话号码的一律不显示作为惩戒，任性。
                             if(userIds.isEmpty() || userIds.equals("null")
@@ -65,6 +67,8 @@ public class ContactService {
                             dto.cellNo = cellNo;
                             dto.userName = object.getString("userNameField");
                             dto.email = userIds + "@eland.co.kr";
+                            dto.backCellNo = backCellNo;
+                            dto.backName = backName;
                             dto.url = EOASApplication.getInstance().photoUri + userIds.replace(".", "") + ".jpg";
 
 

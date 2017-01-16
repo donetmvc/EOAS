@@ -30,14 +30,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.R.attr.fragment;
+import static android.R.attr.max;
 
 
 /**
@@ -82,6 +87,9 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
     private ApplyService applyService;
 
     private android.app.Dialog httpDialog;
+
+    private long maxTime;
+    private long minTime;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -129,6 +137,16 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
         setTime("08", "13");
         setDate(nowDate, nowDate);
         setDiffDays("0.5");
+
+        String thisYearStart = nowDate.substring(0, 4) + "-01-01";
+        String thisYearEnd = nowDate.substring(0, 4) + "-12-31";
+        try  {
+            maxTime = simpleDateFormat.parse(thisYearEnd).getTime();
+            minTime = simpleDateFormat.parse(thisYearStart).getTime();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initToolbar() {
@@ -209,6 +227,29 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
     private void setDate(String start, String end) {
         startDate = start;
         endDate = end;
+
+//        Calendar ca = Calendar.getInstance();
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        String thisYear = ca.YEAR + "-12-31";
+//
+//        try {
+//            if (dateFormat.parse(start).getTime() > dateFormat.parse(thisYear).getTime()) {
+//                txtStartdate.setText(thisYear);
+//            }
+//            else {
+//                txtStartdate.setText(start);
+//            }
+//
+//            if (dateFormat.parse(end).getTime() > dateFormat.parse(thisYear).getTime()) {
+//                txtEnddate.setText(thisYear);
+//            }
+//            else {
+//                txtEnddate.setText(end);
+//            }
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+
         txtStartdate.setText(startDate);
         txtEnddate.setText(endDate);
     }
@@ -225,14 +266,21 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
 
     @OnClick(R.id.txt_startdate)
     void setStartDate() {
+
+
         Dialog.Builder builder = new DatePickerDialog.Builder(R.style.Material_App_Dialog_DatePicker) {
+//            @Override
+//            public DatePickerDialog.Builder dateRange(long min, long max) {
+//                min = minTime;
+//                max = maxTime;
+//                return super.dateRange(min, max);
+//            }
+
             @Override
             public void onPositiveActionClicked(DialogFragment fragment) {
                 DatePickerDialog dialog = (DatePickerDialog) fragment.getDialog();
 
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-//                startDate = dialog.getFormattedDate(format);
-//                txtStartdate.setText(startDate);
                 setDate(dialog.getFormattedDate(format), endDate);
                 getDiffDate();
                 super.onPositiveActionClicked(fragment);
@@ -248,6 +296,7 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
         builder.positiveAction("确定")
                 .negativeAction("取消");
         DialogFragment fragment = DialogFragment.newInstance(builder);
+
         fragment.show(getSupportFragmentManager(), null);
     }
 
@@ -255,12 +304,17 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
     void setEndDate() {
         Dialog.Builder builder = new DatePickerDialog.Builder(R.style.Material_App_Dialog_DatePicker) {
             @Override
+            public DatePickerDialog.Builder dateRange(long min, long max) {
+                min = minTime;
+                max = maxTime;
+                return super.dateRange(min, max);
+            }
+
+            @Override
             public void onPositiveActionClicked(DialogFragment fragment) {
                 DatePickerDialog dialog = (DatePickerDialog) fragment.getDialog();
 
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-//                endDate = dialog.getFormattedDate(format);
-//                txtEnddate.setText(endDate);
                 setDate(startDate, dialog.getFormattedDate(format));
                 getDiffDate();
                 super.onPositiveActionClicked(fragment);
@@ -271,7 +325,7 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
                 //Toast.makeText(fragment.getDialog().getContext(), "Cancelled" , Toast.LENGTH_SHORT).show();
                 super.onNegativeActionClicked(fragment);
             }
-        };
+        }.dateRange(minTime, maxTime);
 
         builder.positiveAction("确定")
                 .negativeAction("取消");
@@ -289,35 +343,34 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
 
     private boolean validateInput() {
         setVacationType();
-
         double all = 0.0;
-
-        if(editRemark.getText().toString().isEmpty()) {
-            ToastUtil.showToast(this, "请填写休假理由", Toast.LENGTH_LONG);
-            return false;
-        }
 
         //06 - adjust 07 - year 11 - company
         if(vacationTypeCode.equals("06")) {
             double adjust = Double.valueOf(txtAdjustVacation.getText().toString());
-            if(all >= adjust) {
+            if(all >= adjust || Double.valueOf(diffDays) > adjust) {
                 ToastUtil.showToast(this, "调休假不足，请选择其他休假类型", Toast.LENGTH_LONG);
                 return false;
             }
         }
         else if(vacationTypeCode.equals("07")) {
             double years = Double.valueOf(txtYearVacation.getText().toString());
-            if(all >= years) {
+            if(all >= years || Double.valueOf(diffDays) > years) {
                 ToastUtil.showToast(this, "年休假不足，请选择其他休假类型", Toast.LENGTH_LONG);
                 return false;
             }
         }
         else if(vacationTypeCode.equals("11")) {
             double company = Double.valueOf(txtCompanyVacation.getText().toString());
-            if(all >= company) {
+            if(all >= company || Double.valueOf(diffDays) > company) {
                 ToastUtil.showToast(this, "企业年休假不足，请选择其他休假类型", Toast.LENGTH_LONG);
                 return false;
             }
+        }
+
+        if(editRemark.getText().toString().isEmpty()) {
+            ToastUtil.showToast(this, "请填写休假理由", Toast.LENGTH_LONG);
+            return false;
         }
 
         if(diffDays.equals("0.0")) {
@@ -391,6 +444,7 @@ public class ApplyActivity extends AppCompatActivity implements ApplyService.IOn
         ArrayAdapter<String> adapter = new ArrayAdapter<>(ApplyActivity.this, R.layout.vacation_spinner_layout, vacationTypes);
         adapter.setDropDownViewResource(R.layout.vacation_spinner_dropdown);
         spinnerVacationtype.setAdapter(adapter);
+
         if (httpDialog.isShowing()) {
             httpDialog.dismiss();
         }
