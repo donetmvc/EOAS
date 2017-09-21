@@ -1,5 +1,6 @@
 package com.eland.android.eoas.Activity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,9 @@ import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
 import com.rey.material.widget.Button;
+import com.zhy.m.permission.MPermissions;
+import com.zhy.m.permission.PermissionDenied;
+import com.zhy.m.permission.PermissionGrant;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -55,9 +59,19 @@ public class LoginActivity extends AppCompatActivity implements
     private MaterialDialog updateDialog;
     private String theme = "";
 
+    private static final int REQUEST_CODE_WRITEEXTERNAL_STORAGE = 1;
+    private static final int REQUECT_CODE_READPHONESTATE = 2;
+    private static final int REQEST_CODE_ACCESS_FINE_LOCATION = 3;
+    private static final int REQEST_CODE_RECORD_AUDIO = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //read phone state
+        if (!MPermissions.shouldShowRequestPermissionRationale(LoginActivity.this,
+                Manifest.permission.READ_PHONE_STATE, REQUECT_CODE_READPHONESTATE)) {
+            MPermissions.requestPermissions(LoginActivity.this, REQUECT_CODE_READPHONESTATE, Manifest.permission.READ_PHONE_STATE);
+        }
+
         theme = SharedReferenceHelper.getInstance(this).getValue(Constant.EOAS_THEME);
         if(!theme.isEmpty()) {
             if(theme.equals("RED")) {
@@ -78,6 +92,76 @@ public class LoginActivity extends AppCompatActivity implements
 
         initActivity();
         initUpdate();
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+    {
+        MPermissions.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+
+    @PermissionGrant(REQUEST_CODE_WRITEEXTERNAL_STORAGE)
+    public void requestExternalSuccess()
+    {
+        //access gps
+        if (!MPermissions.shouldShowRequestPermissionRationale(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION, REQEST_CODE_ACCESS_FINE_LOCATION))
+        {
+            MPermissions.requestPermissions(LoginActivity.this, REQEST_CODE_ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+    }
+
+    @PermissionDenied(REQUEST_CODE_WRITEEXTERNAL_STORAGE)
+    public void requestExternalFailed()
+    {
+        //Toast.makeText(this, "DENY ACCESS SDCARD!", Toast.LENGTH_SHORT).show();
+    }
+
+    @PermissionGrant(REQUECT_CODE_READPHONESTATE)
+    public void requestPhoneStateSuccess()
+    {
+        //access EXTERNAL
+        if (!MPermissions.shouldShowRequestPermissionRationale(LoginActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_CODE_WRITEEXTERNAL_STORAGE))
+        {
+            MPermissions.requestPermissions(LoginActivity.this, REQUEST_CODE_WRITEEXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+    }
+
+    @PermissionDenied(REQUECT_CODE_READPHONESTATE)
+    public void requestPhoneStateFailed()
+    {
+        //Toast.makeText(this, "DENY ACCESS SDCARD!", Toast.LENGTH_SHORT).show();
+    }
+
+    @PermissionGrant(REQEST_CODE_ACCESS_FINE_LOCATION)
+    public void requestLocationSuccess()
+    {
+        //Toast.makeText(this, "GRANT ACCESS SDCARD!", Toast.LENGTH_SHORT).show();
+        //access Mic
+        if (!MPermissions.shouldShowRequestPermissionRationale(LoginActivity.this, Manifest.permission.RECORD_AUDIO, REQEST_CODE_RECORD_AUDIO))
+        {
+            MPermissions.requestPermissions(LoginActivity.this, REQEST_CODE_RECORD_AUDIO, Manifest.permission.RECORD_AUDIO);
+        }
+    }
+
+    @PermissionDenied(REQUECT_CODE_READPHONESTATE)
+    public void requestMicFailed()
+    {
+        //Toast.makeText(this, "DENY ACCESS SDCARD!", Toast.LENGTH_SHORT).show();
+    }
+
+    @PermissionGrant(REQEST_CODE_RECORD_AUDIO)
+    public void requestMicSuccess()
+    {
+        //Toast.makeText(this, "GRANT ACCESS SDCARD!", Toast.LENGTH_SHORT).show();
+    }
+
+    @PermissionDenied(REQEST_CODE_RECORD_AUDIO)
+    public void requestLocationFailed()
+    {
+        //Toast.makeText(this, "DENY ACCESS SDCARD!", Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.btn_login)

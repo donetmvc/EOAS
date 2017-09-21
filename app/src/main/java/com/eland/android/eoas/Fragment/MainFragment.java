@@ -22,8 +22,6 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.amap.api.maps2d.AMapUtils;
-import com.amap.api.maps2d.model.LatLng;
 import com.eland.android.eoas.Activity.MainActivity;
 import com.eland.android.eoas.Model.ApproveListInfo;
 import com.eland.android.eoas.Model.Constant;

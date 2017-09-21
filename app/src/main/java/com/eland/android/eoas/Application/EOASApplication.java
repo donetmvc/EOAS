@@ -39,15 +39,12 @@ public class EOASApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-
-        //check permission
-
         //蒲公英捕捉crash
         PgyCrashManager.register(this);
 
         //初始化JPush 正式发布是，需要把注释打开
-//        JPushInterface.setDebugMode(true);
-//        JPushInterface.init(this);
+        JPushInterface.setDebugMode(false);
+        JPushInterface.init(this);
 
         initApplicantion();
     }
